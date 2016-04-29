@@ -1,0 +1,23 @@
+global:
+  qsname: quickstart-aws-vpc
+  reporting: true
+  regions:
+    - us-east-1
+    - us-west-1
+    - eu-west-1
+    - us-west-2
+    - sa-east-1
+    - eu-central-1
+    - ap-northeast-1
+    - ap-southeast-1
+    - ap-southeast-2
+    - ap-northeast-2
+  cis3bucket:  s3://quickstart-ci-bucket
+ 
+tests:
+  quickstart-aws-vpct1:
+    template_file: quickstart-aws-vpc-example1.template
+    parameter_input: quickstart-aws-vpc-exampleparms1.json
+  quickstart-aws-vpct2:
+    template_file: quickstart-aws-vpc-example2.template
+    parameter_input: quickstart-aws-vpc-exampleparms2.json
