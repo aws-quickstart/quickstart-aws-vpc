@@ -1,0 +1,77 @@
+[
+    {
+        "ParameterKey": "AvailabilityZones",
+        "ParameterValue": [
+            "ap-southeast-1a",
+            "ap-southeast-1b"
+        ]
+    },
+    {
+        "ParameterKey": "CreateProtectedSubnets",
+        "ParameterValue": "false"
+    },
+    {
+        "ParameterKey": "KeyPairName",
+        "ParameterValue": "cikey"
+    },
+    {
+        "ParameterKey": "NATInstanceType",
+        "ParameterValue": "t2.small"
+    },
+    {
+        "ParameterKey": "NumberOfAZs",
+        "ParameterValue": "2"
+    },
+    {
+        "ParameterKey": "PrivateSubnet1CIDR",
+        "ParameterValue": "10.0.0.0/19"
+    },
+    {
+        "ParameterKey": "PrivateSubnet2CIDR",
+        "ParameterValue": "10.0.64.0/19"
+    },
+    {
+        "ParameterKey": "PrivateSubnet3CIDR",
+        "ParameterValue": "10.0.128.0/19"
+    },
+    {
+        "ParameterKey": "PrivateSubnet4CIDR",
+        "ParameterValue": "10.0.192.0/19"
+    },
+    {
+        "ParameterKey": "ProtectedSubnet1CIDR",
+        "ParameterValue": "10.0.48.0/21"
+    },
+    {
+        "ParameterKey": "ProtectedSubnet2CIDR",
+        "ParameterValue": "10.0.112.0/21"
+    },
+    {
+        "ParameterKey": "ProtectedSubnet3CIDR",
+        "ParameterValue": "10.0.176.0/21"
+    },
+    {
+        "ParameterKey": "ProtectedSubnet4CIDR",
+        "ParameterValue": "10.0.240.0/21"
+    },
+    {
+        "ParameterKey": "PublicSubnet1CIDR",
+        "ParameterValue": "10.0.32.0/21"
+    },
+    {
+        "ParameterKey": "PublicSubnet2CIDR",
+        "ParameterValue": "10.0.96.0/21"
+    },
+    {
+        "ParameterKey": "PublicSubnet3CIDR",
+        "ParameterValue": "10.0.160.0/21"
+    },
+    {
+        "ParameterKey": "PublicSubnet4CIDR",
+        "ParameterValue": "10.0.224.0/21"
+    },
+    {
+        "ParameterKey": "VPCCIDR",
+        "ParameterValue": "10.0.0.0/16"
+    }
+]
