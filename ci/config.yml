@@ -1,23 +1,52 @@
 global:
   qsname: quickstart-aws-vpc
+  owner: quickstart@amazon.com
+  marketplace-ami: false
+  cis3bucket:  s3://quickstart-ci-bucket
+  prod-s3-path: s3://quickstart-reference/aws/vpc
   reporting: true
   regions:
-    - us-east-1
-    - us-west-1
-    - eu-west-1
-    - us-west-2
-    - sa-east-1
-    - eu-central-1
     - ap-northeast-1
+    - ap-northeast-2
     - ap-southeast-1
     - ap-southeast-2
-    - ap-northeast-2
-  cis3bucket:  s3://quickstart-ci-bucket
- 
+    - eu-central-1
+    - eu-west-1
+    - sa-east-1
+    - us-east-1
+    - us-west-1
+    - us-west-2
 tests:
-  quickstart-aws-vpct1:
-    template_file: quickstart-aws-vpc-example1.template
-    parameter_input: quickstart-aws-vpc-exampleparms1.json
-  quickstart-aws-vpct2:
-    template_file: quickstart-aws-vpc-example2.template
-    parameter_input: quickstart-aws-vpc-exampleparms2.json
+  complete-us-east-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-complete-us-east-1.json
+  defaults-ap-northeast-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-ap-northeast-1.json
+  defaults-ap-northeast-2:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-ap-northeast-2.json
+  defaults-ap-southeast-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-ap-southeast-1.json
+  defaults-ap-southeast-2:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-ap-southeast-2.json
+  defaults-eu-central-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-eu-central-1.json
+  defaults-eu-west-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-eu-west-1.json
+  defaults-sa-east-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-sa-east-1.json
+  defaults-us-east-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-us-east-1.json
+  defaults-us-west-1:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-us-west-1.json
+  defaults-us-west-2:
+    template_file: aws-vpc.template
+    parameter_input: aws-vpc-defaults-us-west-2.json
