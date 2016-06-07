@@ -1,0 +1,2039 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "QS(0027) - This template creates a multi-AZ, multi-subnet Virtual Private Cloud (VPC) infrastructure with managed NAT gateways in the public subnet for each Availability Zone. Protected subnets can also be created with independently configurable network ACLs. If NAT gateways are not available for the region, NAT instances are deployed. **WARNING** This template creates AWS resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "Availability Zone Configuration"
+                    },
+                    "Parameters": [
+                        "NumberOfAZs",
+                        "AvailabilityZones"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Network Configuration"
+                    },
+                    "Parameters": [
+                        "CreateProtectedSubnets",
+                        "VPCCIDR",
+                        "PrivateSubnet1CIDR",
+                        "PublicSubnet1CIDR",
+                        "ProtectedSubnet1CIDR",
+                        "PrivateSubnet2CIDR",
+                        "PublicSubnet2CIDR",
+                        "ProtectedSubnet2CIDR",
+                        "PrivateSubnet3CIDR",
+                        "PublicSubnet3CIDR",
+                        "ProtectedSubnet3CIDR",
+                        "PrivateSubnet4CIDR",
+                        "PublicSubnet4CIDR",
+                        "ProtectedSubnet4CIDR"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Amazon EC2 Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName",
+                        "NATInstanceType"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "AvailabilityZones": {
+                    "default": "Availability Zones"
+                },
+                "CreateProtectedSubnets": {
+                    "default": "Create Protected Subnets"
+                },
+                "KeyPairName": {
+                    "default": "Key Pair Name"
+                },
+                "NATInstanceType": {
+                    "default": "NAT Instance Type"
+                },
+                "NumberOfAZs": {
+                    "default": "Number of Availability Zones"
+                },
+                "PrivateSubnet1CIDR": {
+                    "default": "Private Subnet 1 CIDR"
+                },
+                "PrivateSubnet2CIDR": {
+                    "default": "Private Subnet 2 CIDR"
+                },
+                "PrivateSubnet3CIDR": {
+                    "default": "Private Subnet 3 CIDR"
+                },
+                "PrivateSubnet4CIDR": {
+                    "default": "Private Subnet 4 CIDR"
+                },
+                "ProtectedSubnet1CIDR": {
+                    "default": "Protected Subnet 1 CIDR"
+                },
+                "ProtectedSubnet2CIDR": {
+                    "default": "Protected Subnet 2 CIDR"
+                },
+                "ProtectedSubnet3CIDR": {
+                    "default": "Protected Subnet 3 CIDR"
+                },
+                "ProtectedSubnet4CIDR": {
+                    "default": "Protected Subnet 4 CIDR"
+                },
+                "PublicSubnet1CIDR": {
+                    "default": "Public Subnet 1 CIDR"
+                },
+                "PublicSubnet2CIDR": {
+                    "default": "Public Subnet 2 CIDR"
+                },
+                "PublicSubnet3CIDR": {
+                    "default": "Public Subnet 3 CIDR"
+                },
+                "PublicSubnet4CIDR": {
+                    "default": "Public Subnet 4 CIDR"
+                },
+                "VPCCIDR": {
+                    "default": "VPC CIDR"
+                }
+            }
+        }
+    },
+    "Parameters": {
+        "AvailabilityZones": {
+            "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved.",
+            "Type": "List<AWS::EC2::AvailabilityZone::Name>"
+        },
+        "CreateProtectedSubnets": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "false",
+            "Description": "To create protected subnets in each AZ, set this parameter to true.",
+            "Type": "String"
+        },
+        "KeyPairName": {
+            "Description": "Public/private key pairs allow you to securely connect to your NAT instance after it launches. This is only used if the region does not support NAT gateways.",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "NATInstanceType": {
+            "AllowedValues": [
+                "t2.small",
+                "t2.medium"
+            ],
+            "Default": "t2.small",
+            "Description": "Amazon EC2 instance type for the NAT Instances. This is only used if the region does not support NAT gateways.",
+            "Type": "String"
+        },
+        "NumberOfAZs": {
+            "AllowedValues": [
+                "2",
+                "3",
+                "4"
+            ],
+            "Default": "2",
+            "Description": "Number of Availability Zones to use in the VPC. This must match the number of AZs in the list of Availability Zones parameter.",
+            "Type": "String"
+        },
+        "PrivateSubnet1CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.0.0/19",
+            "Description": "CIDR block for Private subnet 1 located in AZ1",
+            "Type": "String"
+        },
+        "PrivateSubnet2CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.64.0/19",
+            "Description": "CIDR block for Private subnet 2 located in AZ2",
+            "Type": "String"
+        },
+        "PrivateSubnet3CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.128.0/19",
+            "Description": "CIDR block for Private subnet 3 located in AZ3",
+            "Type": "String"
+        },
+        "PrivateSubnet4CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.192.0/19",
+            "Description": "CIDR block for Private subnet 4 located in AZ4",
+            "Type": "String"
+        },
+        "ProtectedSubnet1CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.48.0/21",
+            "Description": "CIDR block for Protected subnet 1 located in AZ1",
+            "Type": "String"
+        },
+        "ProtectedSubnet2CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.112.0/21",
+            "Description": "CIDR block for Protected subnet 2 located in AZ2",
+            "Type": "String"
+        },
+        "ProtectedSubnet3CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.176.0/21",
+            "Description": "CIDR block for Protected subnet 3 located in AZ3",
+            "Type": "String"
+        },
+        "ProtectedSubnet4CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.240.0/21",
+            "Description": "CIDR block for Protected subnet 4 located in AZ4",
+            "Type": "String"
+        },
+        "PublicSubnet1CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.32.0/20",
+            "Description": "CIDR block for the Public DMZ subnet 1 located in AZ1",
+            "Type": "String"
+        },
+        "PublicSubnet2CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.96.0/20",
+            "Description": "CIDR block for the Public DMZ subnet 2 located in AZ2",
+            "Type": "String"
+        },
+        "PublicSubnet3CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.160.0/20",
+            "Description": "CIDR block for the Public DMZ subnet 3 located in AZ3",
+            "Type": "String"
+        },
+        "PublicSubnet4CIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.224.0/20",
+            "Description": "CIDR block for the Public DMZ subnet 4 located in AZ4",
+            "Type": "String"
+        },
+        "VPCCIDR": {
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "Default": "10.0.0.0/16",
+            "Description": "CIDR block for the VPC",
+            "Type": "String"
+        }
+    },
+    "Mappings": {
+        "AWSAMIRegionMap": {
+            "AMI": {
+                "AWSNAT": "amzn-ami-vpc-nat-hvm-2016.03.1.x86_64-ebs"
+            },
+            "ap-northeast-1": {
+                "AWSNAT": "ami-5d170c33"
+            },
+            "ap-northeast-2": {
+                "AWSNAT": "ami-0d32fa63"
+            },
+            "ap-southeast-1": {
+                "AWSNAT": "ami-4ddb0c2e"
+            },
+            "ap-southeast-2": {
+                "AWSNAT": "ami-9094b9f3"
+            },
+            "eu-central-1": {
+                "AWSNAT": "ami-b2c321dd"
+            },
+            "eu-west-1": {
+                "AWSNAT": "ami-a2971ed1"
+            },
+            "sa-east-1": {
+                "AWSNAT": "ami-a28d04ce"
+            },
+            "us-east-1": {
+                "AWSNAT": "ami-bae80fd7"
+            },
+            "us-west-1": {
+                "AWSNAT": "ami-3885fb58"
+            },
+            "us-west-2": {
+                "AWSNAT": "ami-d3f506b3"
+            }
+        }
+    },
+    "Conditions": {
+        "3AZCondition": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "NumberOfAZs"
+                        },
+                        "3"
+                    ]
+                },
+                {
+                    "Condition": "4AZCondition"
+                }
+            ]
+        },
+        "4AZCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "NumberOfAZs"
+                },
+                "4"
+            ]
+        },
+        "ProtectedSubnetsCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "CreateProtectedSubnets"
+                },
+                "true"
+            ]
+        },
+        "ProtectedSubnets&3AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "ProtectedSubnetsCondition"
+                },
+                {
+                    "Condition": "3AZCondition"
+                }
+            ]
+        },
+        "ProtectedSubnets&4AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "ProtectedSubnetsCondition"
+                },
+                {
+                    "Condition": "4AZCondition"
+                }
+            ]
+        },
+        "NATInstanceCondition": {
+            "Fn::Or": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "ap-northeast-2"
+                    ]
+                },
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "sa-east-1"
+                    ]
+                },
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "us-gov-west-1"
+                    ]
+                },
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "cn-north-1"
+                    ]
+                }
+            ]
+        },
+        "NATGatewayCondition": {
+            "Fn::Not": [
+                {
+                    "Condition": "NATInstanceCondition"
+                }
+            ]
+        },
+        "NATInstance&3AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "NATInstanceCondition"
+                },
+                {
+                    "Condition": "3AZCondition"
+                }
+            ]
+        },
+        "NATInstance&4AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "NATInstanceCondition"
+                },
+                {
+                    "Condition": "4AZCondition"
+                }
+            ]
+        },
+        "NATGateway&3AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "NATGatewayCondition"
+                },
+                {
+                    "Condition": "3AZCondition"
+                }
+            ]
+        },
+        "NATGateway&4AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "NATGatewayCondition"
+                },
+                {
+                    "Condition": "4AZCondition"
+                }
+            ]
+        }
+    },
+    "Resources": {
+        "DHCPOptions": {
+            "Type": "AWS::EC2::DHCPOptions",
+            "Properties": {
+                "DomainNameServers": [
+                    "AmazonProvidedDNS"
+                ]
+            }
+        },
+        "VPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": {
+                    "Ref": "VPCCIDR"
+                }
+            }
+        },
+        "VPCDHCPOptionsAssociation": {
+            "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "DhcpOptionsId": {
+                    "Ref": "DHCPOptions"
+                }
+            }
+        },
+        "InternetGateway": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    }
+                ]
+            }
+        },
+        "VPCGatewayAttachment": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "InternetGatewayId": {
+                    "Ref": "InternetGateway"
+                }
+            }
+        },
+        "PrivateSubnet1": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PrivateSubnet1CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "0",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 1"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PrivateSubnet2CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "1",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 2"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet3": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PrivateSubnet3CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "2",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 3"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet4": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PrivateSubnet4CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "3",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 4"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet1": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "ProtectedSubnet1CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "0",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 1"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet2": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "ProtectedSubnet2CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "1",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protect subnet 2"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet3": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "ProtectedSubnet3CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "2",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 3"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet4": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "ProtectedSubnet4CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "3",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 4"
+                    }
+                ]
+            }
+        },
+        "PublicSubnet1": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PublicSubnet1CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "0",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Public subnet 1"
+                    }
+                ]
+            }
+        },
+        "PublicSubnet2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PublicSubnet2CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "1",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Public subnet 2"
+                    }
+                ]
+            }
+        },
+        "PublicSubnet3": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PublicSubnet3CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "2",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Public subnet 3"
+                    }
+                ]
+            }
+        },
+        "PublicSubnet4": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PublicSubnet4CIDR"
+                },
+                "AvailabilityZone": {
+                    "Fn::Select": [
+                        "3",
+                        {
+                            "Ref": "AvailabilityZones"
+                        }
+                    ]
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Public subnet 4"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet1RouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 1"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet1Route": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet1RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance1"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway1"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "PrivateSubnet1RouteTableAssociation": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PrivateSubnet1"
+                },
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet1RouteTable"
+                }
+            }
+        },
+        "PrivateSubnet2RouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 2"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet2Route": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet2RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance2"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway2"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "PrivateSubnet2RouteTableAssociation": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PrivateSubnet2"
+                },
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet2RouteTable"
+                }
+            }
+        },
+        "PrivateSubnet3RouteTable": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 3"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet3Route": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet3RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance3"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway3"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "PrivateSubnet3RouteTableAssociation": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PrivateSubnet3"
+                },
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet3RouteTable"
+                }
+            }
+        },
+        "PrivateSubnet4RouteTable": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Private"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Private subnet 4"
+                    }
+                ]
+            }
+        },
+        "PrivateSubnet4Route": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet4RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance4"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway4"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "PrivateSubnet4RouteTableAssociation": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PrivateSubnet4"
+                },
+                "RouteTableId": {
+                    "Ref": "PrivateSubnet4RouteTable"
+                }
+            }
+        },
+        "ProtectedSubnet1NetworkAcl": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::NetworkAcl",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 1"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet1NetworkAclAssociation": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet1"
+                },
+                "NetworkAclId": {
+                    "Ref": "ProtectedSubnet1NetworkAcl"
+                }
+            }
+        },
+        "ProtectedSubnet1RouteTable": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 1"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet1Route": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet1RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance1"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway1"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "ProtectedSubnet1RouteTableAssociation": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet1"
+                },
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet1RouteTable"
+                }
+            }
+        },
+        "ProtectedSubnet2NetworkAcl": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::NetworkAcl",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 2"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet2NetworkAclAssociation": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet2"
+                },
+                "NetworkAclId": {
+                    "Ref": "ProtectedSubnet2NetworkAcl"
+                }
+            }
+        },
+        "ProtectedSubnet2RouteTable": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 2"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet2Route": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet2RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance2"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway2"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "ProtectedSubnet2RouteTableAssociation": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet2"
+                },
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet2RouteTable"
+                }
+            }
+        },
+        "ProtectedSubnet3NetworkAcl": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::NetworkAcl",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 3"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet3NetworkAclAssociation": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet3"
+                },
+                "NetworkAclId": {
+                    "Ref": "ProtectedSubnet3NetworkAcl"
+                }
+            }
+        },
+        "ProtectedSubnet3RouteTable": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 3"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet3Route": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet3RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance3"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway3"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "ProtectedSubnet3RouteTableAssociation": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet3"
+                },
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet3RouteTable"
+                }
+            }
+        },
+        "ProtectedSubnet4NetworkAcl": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::NetworkAcl",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 4"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet4NetworkAclAssociation": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet4"
+                },
+                "NetworkAclId": {
+                    "Ref": "ProtectedSubnet4NetworkAcl"
+                }
+            }
+        },
+        "ProtectedSubnet4RouteTable": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Protected"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "Protected subnet 4"
+                    }
+                ]
+            }
+        },
+        "ProtectedSubnet4Route": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet4RouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance4"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "NatGatewayId": {
+                    "Fn::If": [
+                        "NATGatewayCondition",
+                        {
+                            "Ref": "NATGateway4"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "ProtectedSubnet4RouteTableAssociation": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "ProtectedSubnet4"
+                },
+                "RouteTableId": {
+                    "Ref": "ProtectedSubnet4RouteTable"
+                }
+            }
+        },
+        "PublicSubnetRouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    }
+                ]
+            }
+        },
+        "PublicSubnetRoute": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PublicSubnetRouteTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": {
+                    "Ref": "InternetGateway"
+                }
+            }
+        },
+        "PublicSubnet1RouteTableAssociation": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PublicSubnet1"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicSubnetRouteTable"
+                }
+            }
+        },
+        "PublicSubnet2RouteTableAssociation": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PublicSubnet2"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicSubnetRouteTable"
+                }
+            }
+        },
+        "PublicSubnet3RouteTableAssociation": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PublicSubnet3"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicSubnetRouteTable"
+                }
+            }
+        },
+        "PublicSubnet4RouteTableAssociation": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PublicSubnet4"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicSubnetRouteTable"
+                }
+            }
+        },
+        "NAT1EIP": {
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance1"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "NAT2EIP": {
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance2"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "NAT3EIP": {
+            "Condition": "3AZCondition",
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance3"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "NAT4EIP": {
+            "Condition": "4AZCondition",
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc",
+                "InstanceId": {
+                    "Fn::If": [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "NATInstance4"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }
+            }
+        },
+        "NATGateway1": {
+            "Condition": "NATGatewayCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::NatGateway",
+            "Properties": {
+                "AllocationId": {
+                    "Fn::GetAtt": [
+                        "NAT1EIP",
+                        "AllocationId"
+                    ]
+                },
+                "SubnetId": {
+                    "Ref": "PublicSubnet1"
+                }
+            }
+        },
+        "NATGateway2": {
+            "Condition": "NATGatewayCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::NatGateway",
+            "Properties": {
+                "AllocationId": {
+                    "Fn::GetAtt": [
+                        "NAT2EIP",
+                        "AllocationId"
+                    ]
+                },
+                "SubnetId": {
+                    "Ref": "PublicSubnet2"
+                }
+            }
+        },
+        "NATGateway3": {
+            "Condition": "NATGateway&3AZCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::NatGateway",
+            "Properties": {
+                "AllocationId": {
+                    "Fn::GetAtt": [
+                        "NAT3EIP",
+                        "AllocationId"
+                    ]
+                },
+                "SubnetId": {
+                    "Ref": "PublicSubnet3"
+                }
+            }
+        },
+        "NATGateway4": {
+            "Condition": "NATGateway&4AZCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::NatGateway",
+            "Properties": {
+                "AllocationId": {
+                    "Fn::GetAtt": [
+                        "NAT4EIP",
+                        "AllocationId"
+                    ]
+                },
+                "SubnetId": {
+                    "Ref": "PublicSubnet4"
+                }
+            }
+        },
+        "NATInstance1": {
+            "Condition": "NATInstanceCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSAMIRegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AWSNAT"
+                    ]
+                },
+                "InstanceType": {
+                    "Ref": "NATInstanceType"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "NAT1"
+                    }
+                ],
+                "NetworkInterfaces": [
+                    {
+                        "GroupSet": [
+                            {
+                                "Ref": "NATInstanceSecurityGroup"
+                            }
+                        ],
+                        "AssociatePublicIpAddress": "true",
+                        "DeviceIndex": "0",
+                        "DeleteOnTermination": "true",
+                        "SubnetId": {
+                            "Ref": "PublicSubnet1"
+                        }
+                    }
+                ],
+                "KeyName": {
+                    "Fn::If" : [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "KeyPairName"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "SourceDestCheck": "false"
+            }
+        },
+        "NATInstance2": {
+            "Condition": "NATInstanceCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSAMIRegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AWSNAT"
+                    ]
+                },
+                "InstanceType": {
+                    "Ref": "NATInstanceType"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "NAT2"
+                    }
+                ],
+                "NetworkInterfaces": [
+                    {
+                        "GroupSet": [
+                            {
+                                "Ref": "NATInstanceSecurityGroup"
+                            }
+                        ],
+                        "AssociatePublicIpAddress": "true",
+                        "DeviceIndex": "0",
+                        "DeleteOnTermination": "true",
+                        "SubnetId": {
+                            "Ref": "PublicSubnet2"
+                        }
+                    }
+                ],
+                "KeyName": {
+                    "Fn::If" : [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "KeyPairName"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "SourceDestCheck": "false"
+            }
+        },
+        "NATInstance3": {
+            "Condition": "NATInstance&3AZCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSAMIRegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AWSNAT"
+                    ]
+                },
+                "InstanceType": {
+                    "Ref": "NATInstanceType"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "NAT3"
+                    }
+                ],
+                "NetworkInterfaces": [
+                    {
+                        "GroupSet": [
+                            {
+                                "Ref": "NATInstanceSecurityGroup"
+                            }
+                        ],
+                        "AssociatePublicIpAddress": "true",
+                        "DeviceIndex": "0",
+                        "DeleteOnTermination": "true",
+                        "SubnetId": {
+                            "Ref": "PublicSubnet3"
+                        }
+                    }
+                ],
+                "KeyName": {
+                    "Fn::If" : [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "KeyPairName"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "SourceDestCheck": "false"
+            }
+        },
+        "NATInstance4": {
+            "Condition": "NATInstance&4AZCondition",
+            "DependsOn": "VPCGatewayAttachment",
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSAMIRegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AWSNAT"
+                    ]
+                },
+                "InstanceType": {
+                    "Ref": "NATInstanceType"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "NAT4"
+                    }
+                ],
+                "NetworkInterfaces": [
+                    {
+                        "GroupSet": [
+                            {
+                                "Ref": "NATInstanceSecurityGroup"
+                            }
+                        ],
+                        "AssociatePublicIpAddress": "true",
+                        "DeviceIndex": "0",
+                        "DeleteOnTermination": "true",
+                        "SubnetId": {
+                            "Ref": "PublicSubnet4"
+                        }
+                    }
+                ],
+                "KeyName": {
+                    "Fn::If" : [
+                        "NATInstanceCondition",
+                        {
+                            "Ref": "KeyPairName"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "SourceDestCheck": "false"
+            }
+        },
+        "NATInstanceSecurityGroup": {
+            "Condition": "NATInstanceCondition",
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Enables outbound internet access for the VPC via the NAT instances",
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "icmp",
+                        "FromPort": "-1",
+                        "ToPort": "-1",
+                        "CidrIp": {
+                            "Ref": "VPCCIDR"
+                        }
+                    },
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": "1",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Ref": "VPCCIDR"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "Outputs": {
+        "PrivateSubnet1CIDR": {
+            "Description": "Private subnet CIDR in AZ1",
+            "Value": {
+                "Ref": "PrivateSubnet1CIDR"
+            }
+        },
+        "PrivateSubnet1ID": {
+            "Description": "Private subnet ID in AZ1",
+            "Value": {
+                "Ref": "PrivateSubnet1"
+            }
+        },
+        "PrivateSubnet2CIDR": {
+            "Description": "Private subnet CIDR in AZ2",
+            "Value": {
+                "Ref": "PrivateSubnet2CIDR"
+            }
+        },
+        "PrivateSubnet2ID": {
+            "Description": "Private subnet ID in AZ2",
+            "Value": {
+                "Ref": "PrivateSubnet2"
+            }
+        },
+        "PrivateSubnet3CIDR": {
+            "Condition": "3AZCondition",
+            "Description": "Private subnet CIDR in AZ3",
+            "Value": {
+                "Ref": "PrivateSubnet3CIDR"
+            }
+        },
+        "PrivateSubnet3ID": {
+            "Condition": "3AZCondition",
+            "Description": "Private subnet ID in AZ3",
+            "Value": {
+                "Ref": "PrivateSubnet3"
+            }
+        },
+        "PrivateSubnet4CIDR": {
+            "Condition": "4AZCondition",
+            "Description": "Private subnet CIDR in AZ4",
+            "Value": {
+                "Ref": "PrivateSubnet4CIDR"
+            }
+        },
+        "PrivateSubnet4ID": {
+            "Condition": "4AZCondition",
+            "Description": "Private subnet ID in AZ4",
+            "Value": {
+                "Ref": "PrivateSubnet4"
+            }
+        },
+        "ProtectedSubnet1CIDR": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Description": "Protected subnet CIDR in AZ1",
+            "Value": {
+                "Ref": "ProtectedSubnet1CIDR"
+            }
+        },
+        "ProtectedSubnet1ID": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Description": "Protected subnet ID in AZ1",
+            "Value": {
+                "Ref": "ProtectedSubnet1"
+            }
+        },
+        "ProtectedSubnet2CIDR": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Description": "Protected subnet CIDR in AZ2",
+            "Value": {
+                "Ref": "ProtectedSubnet2CIDR"
+            }
+        },
+        "ProtectedSubnet2ID": {
+            "Condition": "ProtectedSubnetsCondition",
+            "Description": "Protected subnet ID in AZ2",
+            "Value": {
+                "Ref": "ProtectedSubnet2"
+            }
+        },
+        "ProtectedSubnet3CIDR": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Description": "Protected subnet CIDR in AZ3",
+            "Value": {
+                "Ref": "ProtectedSubnet3CIDR"
+            }
+        },
+        "ProtectedSubnet3ID": {
+            "Condition": "ProtectedSubnets&3AZCondition",
+            "Description": "Protected subnet ID in AZ3",
+            "Value": {
+                "Ref": "ProtectedSubnet3"
+            }
+        },
+        "ProtectedSubnet4CIDR": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Description": "Protected subnet CIDR in AZ4",
+            "Value": {
+                "Ref": "ProtectedSubnet4CIDR"
+            }
+        },
+        "ProtectedSubnet4ID": {
+            "Condition": "ProtectedSubnets&4AZCondition",
+            "Description": "Protected subnet ID in AZ4",
+            "Value": {
+                "Ref": "ProtectedSubnet4"
+            }
+        },
+        "PublicSubnet1CIDR": {
+            "Description": "Public subnet CIDR in AZ1",
+            "Value": {
+                "Ref": "PublicSubnet1CIDR"
+            }
+        },
+        "PublicSubnet1ID": {
+            "Description": "Public subnet ID in AZ1",
+            "Value": {
+                "Ref": "PublicSubnet1"
+            }
+        },
+        "PublicSubnet2CIDR": {
+            "Description": "Public subnet CIDR in AZ2",
+            "Value": {
+                "Ref": "PublicSubnet2CIDR"
+            }
+        },
+        "PublicSubnet2ID": {
+            "Description": "Public subnet ID in AZ2",
+            "Value": {
+                "Ref": "PublicSubnet2"
+            }
+        },
+        "PublicSubnet3CIDR": {
+            "Condition": "3AZCondition",
+            "Description": "Public subnet CIDR in AZ3",
+            "Value": {
+                "Ref": "PublicSubnet3CIDR"
+            }
+        },
+        "PublicSubnet3ID": {
+            "Condition": "3AZCondition",
+            "Description": "Public subnet ID in AZ3",
+            "Value": {
+                "Ref": "PublicSubnet3"
+            }
+        },
+        "PublicSubnet4CIDR": {
+            "Condition": "4AZCondition",
+            "Description": "Public subnet CIDR in AZ4",
+            "Value": {
+                "Ref": "PublicSubnet4CIDR"
+            }
+        },
+        "PublicSubnet4ID": {
+            "Condition": "4AZCondition",
+            "Description": "Public subnet ID in AZ4",
+            "Value": {
+                "Ref": "PublicSubnet4"
+            }
+        },
+        "VPCCIDR": {
+            "Value": {
+                "Ref": "VPCCIDR"
+            },
+            "Description": "VPC CIDR"
+        },
+        "VPCID": {
+            "Value": {
+                "Ref": "VPC"
+            },
+            "Description": "VPC ID"
+        }
+    }
+}
