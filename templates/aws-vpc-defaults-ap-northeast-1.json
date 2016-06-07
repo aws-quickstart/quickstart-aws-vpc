@@ -1,10 +1,7 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": [
-            "ap-northeast-1b",
-            "ap-northeast-1c"
-        ]
+        "ParameterValue": "ap-northeast-1b,ap-northeast-1c"
     },
     {
         "ParameterKey": "CreateProtectedSubnets",

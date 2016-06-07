@@ -1,10 +1,7 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": [
-            "us-east-1a",
-            "us-east-1b"
-        ]
+        "ParameterValue": "us-east-1a,us-east-1b"
     },
     {
         "ParameterKey": "CreateProtectedSubnets",
