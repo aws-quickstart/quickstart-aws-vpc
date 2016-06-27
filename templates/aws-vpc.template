@@ -227,37 +227,37 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "AWSNAT": "amzn-ami-vpc-nat-hvm-2016.03.1.x86_64-ebs"
+                "AWSNAT": "amzn-ami-vpc-nat-hvm-2016.03.2.x86_64-ebs"
             },
             "ap-northeast-1": {
-                "AWSNAT": "ami-5d170c33"
+                "AWSNAT": "ami-2555ba44"
             },
             "ap-northeast-2": {
-                "AWSNAT": "ami-0d32fa63"
+                "AWSNAT": "ami-68e92206"
             },
             "ap-southeast-1": {
-                "AWSNAT": "ami-4ddb0c2e"
+                "AWSNAT": "ami-b6c111d5"
             },
             "ap-southeast-2": {
-                "AWSNAT": "ami-9094b9f3"
+                "AWSNAT": "ami-1cd6f87f"
             },
             "eu-central-1": {
-                "AWSNAT": "ami-b2c321dd"
+                "AWSNAT": "ami-9bf618f4"
             },
             "eu-west-1": {
-                "AWSNAT": "ami-a2971ed1"
+                "AWSNAT": "ami-89ee7cfa"
             },
             "sa-east-1": {
-                "AWSNAT": "ami-a28d04ce"
+                "AWSNAT": "ami-e257dc8e"
             },
             "us-east-1": {
-                "AWSNAT": "ami-bae80fd7"
+                "AWSNAT": "ami-8d8976e0"
             },
             "us-west-1": {
-                "AWSNAT": "ami-3885fb58"
+                "AWSNAT": "ami-407f0520"
             },
             "us-west-2": {
-                "AWSNAT": "ami-d3f506b3"
+                "AWSNAT": "ami-cc01f9ac"
             }
         }
     },
@@ -1670,7 +1670,7 @@
                     }
                 ],
                 "KeyName": {
-                    "Fn::If" : [
+                    "Fn::If": [
                         "NATInstanceCondition",
                         {
                             "Ref": "KeyPairName"
@@ -1722,7 +1722,7 @@
                     }
                 ],
                 "KeyName": {
-                    "Fn::If" : [
+                    "Fn::If": [
                         "NATInstanceCondition",
                         {
                             "Ref": "KeyPairName"
@@ -1774,7 +1774,7 @@
                     }
                 ],
                 "KeyName": {
-                    "Fn::If" : [
+                    "Fn::If": [
                         "NATInstanceCondition",
                         {
                             "Ref": "KeyPairName"
@@ -1826,7 +1826,7 @@
                     }
                 ],
                 "KeyName": {
-                    "Fn::If" : [
+                    "Fn::If": [
                         "NATInstanceCondition",
                         {
                             "Ref": "KeyPairName"
