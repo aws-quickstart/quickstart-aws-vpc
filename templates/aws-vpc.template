@@ -54,6 +54,18 @@
                 "KeyPairName": {
                     "default": "Key Pair Name"
                 },
+                "NACLProtectedSubnet1CIDR": {
+                    "default": "Network ACL Protected Subnet 1 CIDR"
+                },
+                "NACLProtectedSubnet2CIDR": {
+                    "default": "Network ACL Protected Subnet 2 CIDR"
+                },
+                "NACLProtectedSubnet3CIDR": {
+                    "default": "Network ACL Protected Subnet 3 CIDR"
+                },
+                "NACLProtectedSubnet4CIDR": {
+                    "default": "Network ACL Protected Subnet 4 CIDR"
+                },
                 "NATInstanceType": {
                     "default": "NAT Instance Type"
                 },
@@ -71,18 +83,6 @@
                 },
                 "PrivateSubnet4CIDR": {
                     "default": "Private Subnet 4 CIDR"
-                },
-                "NACLProtectedSubnet1CIDR": {
-                    "default": "Network ACL Protected Subnet 1 CIDR"
-                },
-                "NACLProtectedSubnet2CIDR": {
-                    "default": "Network ACL Protected Subnet 2 CIDR"
-                },
-                "NACLProtectedSubnet3CIDR": {
-                    "default": "Network ACL Protected Subnet 3 CIDR"
-                },
-                "NACLProtectedSubnet4CIDR": {
-                    "default": "Network ACL Protected Subnet 4 CIDR"
                 },
                 "PublicSubnet1CIDR": {
                     "default": "Public Subnet 1 CIDR"
