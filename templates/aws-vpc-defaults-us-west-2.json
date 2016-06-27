@@ -12,6 +12,22 @@
         "ParameterValue": "cikey"
     },
     {
+        "ParameterKey": "NACLProtectedSubnet1CIDR",
+        "ParameterValue": "10.0.48.0/21"
+    },
+    {
+        "ParameterKey": "NACLProtectedSubnet2CIDR",
+        "ParameterValue": "10.0.112.0/21"
+    },
+    {
+        "ParameterKey": "NACLProtectedSubnet3CIDR",
+        "ParameterValue": "10.0.176.0/21"
+    },
+    {
+        "ParameterKey": "NACLProtectedSubnet4CIDR",
+        "ParameterValue": "10.0.240.0/21"
+    },
+    {
         "ParameterKey": "NATInstanceType",
         "ParameterValue": "t2.small"
     },
@@ -34,22 +50,6 @@
     {
         "ParameterKey": "PrivateSubnet4CIDR",
         "ParameterValue": "10.0.192.0/19"
-    },
-    {
-        "ParameterKey": "ProtectedSubnet1CIDR",
-        "ParameterValue": "10.0.48.0/21"
-    },
-    {
-        "ParameterKey": "ProtectedSubnet2CIDR",
-        "ParameterValue": "10.0.112.0/21"
-    },
-    {
-        "ParameterKey": "ProtectedSubnet3CIDR",
-        "ParameterValue": "10.0.176.0/21"
-    },
-    {
-        "ParameterKey": "ProtectedSubnet4CIDR",
-        "ParameterValue": "10.0.240.0/21"
     },
     {
         "ParameterKey": "PublicSubnet1CIDR",
