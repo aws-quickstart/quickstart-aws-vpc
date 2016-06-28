@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "QS(0027) - This template creates a multi-AZ, multi-subnet Virtual Private Cloud (VPC) infrastructure with managed NAT gateways in the public subnet for each Availability Zone. Network ACL Protected subnets can also be created with independently configurable network ACLs. If NAT gateways are not available for the region, NAT instances are deployed. **WARNING** This template creates AWS resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Description": "This template creates a multi-AZ, multi-subnet Virtual Private Cloud (VPC) infrastructure with managed NAT gateways in the public subnet for each Availability Zone. Network ACL Protected subnets can also be created with independently configurable network ACLs. If NAT gateways are not available for the region, NAT instances are deployed. **WARNING** This template creates AWS resources. You will be billed for the AWS resources used if you create a stack from this template. QS(0027)",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -121,25 +121,25 @@
             "Type": "AWS::EC2::KeyPair::KeyName"
         },
         "NACLProtectedSubnet1CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.48.0/21",
             "Description": "CIDR block for Network ACL Protected subnet 1 located in AZ1",
             "Type": "String"
         },
         "NACLProtectedSubnet2CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.112.0/21",
             "Description": "CIDR block for Network ACL Protected subnet 2 located in AZ2",
             "Type": "String"
         },
         "NACLProtectedSubnet3CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.176.0/21",
             "Description": "CIDR block for Network ACL Protected subnet 3 located in AZ3",
             "Type": "String"
         },
         "NACLProtectedSubnet4CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.240.0/21",
             "Description": "CIDR block for Network ACL Protected subnet 4 located in AZ4",
             "Type": "String"
@@ -170,55 +170,55 @@
             "Type": "String"
         },
         "PrivateSubnet1CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.0.0/19",
             "Description": "CIDR block for Private subnet 1 located in AZ1",
             "Type": "String"
         },
         "PrivateSubnet2CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.64.0/19",
             "Description": "CIDR block for Private subnet 2 located in AZ2",
             "Type": "String"
         },
         "PrivateSubnet3CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.128.0/19",
             "Description": "CIDR block for Private subnet 3 located in AZ3",
             "Type": "String"
         },
         "PrivateSubnet4CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.192.0/19",
             "Description": "CIDR block for Private subnet 4 located in AZ4",
             "Type": "String"
         },
         "PublicSubnet1CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.32.0/20",
             "Description": "CIDR block for the Public DMZ subnet 1 located in AZ1",
             "Type": "String"
         },
         "PublicSubnet2CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.96.0/20",
             "Description": "CIDR block for the Public DMZ subnet 2 located in AZ2",
             "Type": "String"
         },
         "PublicSubnet3CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.160.0/20",
             "Description": "CIDR block for the Public DMZ subnet 3 located in AZ3",
             "Type": "String"
         },
         "PublicSubnet4CIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.224.0/20",
             "Description": "CIDR block for the Public DMZ subnet 4 located in AZ4",
             "Type": "String"
         },
         "VPCCIDR": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.0.0/16",
             "Description": "CIDR block for the VPC",
             "Type": "String"
