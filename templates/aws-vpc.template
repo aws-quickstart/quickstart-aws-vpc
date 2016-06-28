@@ -468,11 +468,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 1"
+                        "Value": "NACL Protected subnet 1"
                     }
                 ]
             }
@@ -498,7 +498,7 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
@@ -528,11 +528,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 3"
+                        "Value": "NACL Protected subnet 3"
                     }
                 ]
             }
@@ -558,11 +558,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 4"
+                        "Value": "NACL Protected subnet 4"
                     }
                 ]
             }
@@ -813,13 +813,41 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 1"
+                        "Value": "NACL Protected subnet 1"
                     }
                 ]
+            }
+        },
+        "NACLProtectedSubnet1NetworkAclEntryInbound": {
+            "Condition": "NACLProtectedSubnetsCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "false",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet1NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
+            }
+        },
+        "NACLProtectedSubnet1NetworkAclEntryOutbound": {
+            "Condition": "NACLProtectedSubnetsCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "true",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet1NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
             }
         },
         "NACLProtectedSubnet1NetworkAclAssociation": {
@@ -844,11 +872,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 1"
+                        "Value": "NACL Protected subnet 1"
                     }
                 ]
             }
@@ -907,13 +935,41 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 2"
+                        "Value": "NACL Protected subnet 2"
                     }
                 ]
+            }
+        },
+        "NACLProtectedSubnet2NetworkAclEntryInbound": {
+            "Condition": "NACLProtectedSubnetsCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "false",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet2NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
+            }
+        },
+        "NACLProtectedSubnet2NetworkAclEntryOutbound": {
+            "Condition": "NACLProtectedSubnetsCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "true",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet2NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
             }
         },
         "NACLProtectedSubnet2NetworkAclAssociation": {
@@ -938,11 +994,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 2"
+                        "Value": "NACL Protected subnet 2"
                     }
                 ]
             }
@@ -1001,13 +1057,41 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 3"
+                        "Value": "NACL Protected subnet 3"
                     }
                 ]
+            }
+        },
+        "NACLProtectedSubnet3NetworkAclEntryInbound": {
+            "Condition": "NACLProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "false",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet3NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
+            }
+        },
+        "NACLProtectedSubnet3NetworkAclEntryOutbound": {
+            "Condition": "NACLProtectedSubnets&3AZCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "true",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet3NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
             }
         },
         "NACLProtectedSubnet3NetworkAclAssociation": {
@@ -1032,11 +1116,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 3"
+                        "Value": "NACL Protected subnet 3"
                     }
                 ]
             }
@@ -1095,13 +1179,41 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 4"
+                        "Value": "NACL Protected subnet 4"
                     }
                 ]
+            }
+        },
+        "NACLProtectedSubnet4NetworkAclEntryInbound": {
+            "Condition": "NACLProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "false",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet4NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
+            }
+        },
+        "NACLProtectedSubnet4NetworkAclEntryOutbound": {
+            "Condition": "NACLProtectedSubnets&4AZCondition",
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "true",
+                "NetworkAclId": {
+                    "Ref": "NACLProtectedSubnet4NetworkAcl"
+                },
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100"
             }
         },
         "NACLProtectedSubnet4NetworkAclAssociation": {
@@ -1126,11 +1238,11 @@
                 "Tags": [
                     {
                         "Key": "Network",
-                        "Value": "Protected"
+                        "Value": "NACL Protected"
                     },
                     {
                         "Key": "Role",
-                        "Value": "Protected subnet 4"
+                        "Value": "NACL Protected subnet 4"
                     }
                 ]
             }
@@ -1923,56 +2035,56 @@
         },
         "NACLProtectedSubnet1CIDR": {
             "Condition": "NACLProtectedSubnetsCondition",
-            "Description": "Protected subnet CIDR in AZ1",
+            "Description": "NACL Protected subnet CIDR in AZ1",
             "Value": {
                 "Ref": "NACLProtectedSubnet1CIDR"
             }
         },
         "NACLProtectedSubnet1ID": {
             "Condition": "NACLProtectedSubnetsCondition",
-            "Description": "Protected subnet ID in AZ1",
+            "Description": "NACL Protected subnet ID in AZ1",
             "Value": {
                 "Ref": "NACLProtectedSubnet1"
             }
         },
         "NACLProtectedSubnet2CIDR": {
             "Condition": "NACLProtectedSubnetsCondition",
-            "Description": "Protected subnet CIDR in AZ2",
+            "Description": "NACL Protected subnet CIDR in AZ2",
             "Value": {
                 "Ref": "NACLProtectedSubnet2CIDR"
             }
         },
         "NACLProtectedSubnet2ID": {
             "Condition": "NACLProtectedSubnetsCondition",
-            "Description": "Protected subnet ID in AZ2",
+            "Description": "NACL Protected subnet ID in AZ2",
             "Value": {
                 "Ref": "NACLProtectedSubnet2"
             }
         },
         "NACLProtectedSubnet3CIDR": {
             "Condition": "NACLProtectedSubnets&3AZCondition",
-            "Description": "Protected subnet CIDR in AZ3",
+            "Description": "NACL Protected subnet CIDR in AZ3",
             "Value": {
                 "Ref": "NACLProtectedSubnet3CIDR"
             }
         },
         "NACLProtectedSubnet3ID": {
             "Condition": "NACLProtectedSubnets&3AZCondition",
-            "Description": "Protected subnet ID in AZ3",
+            "Description": "NACL Protected subnet ID in AZ3",
             "Value": {
                 "Ref": "NACLProtectedSubnet3"
             }
         },
         "NACLProtectedSubnet4CIDR": {
             "Condition": "NACLProtectedSubnets&4AZCondition",
-            "Description": "Protected subnet CIDR in AZ4",
+            "Description": "NACL Protected subnet CIDR in AZ4",
             "Value": {
                 "Ref": "NACLProtectedSubnet4CIDR"
             }
         },
         "NACLProtectedSubnet4ID": {
             "Condition": "NACLProtectedSubnets&4AZCondition",
-            "Description": "Protected subnet ID in AZ4",
+            "Description": "NACL Protected subnet ID in AZ4",
             "Value": {
                 "Ref": "NACLProtectedSubnet4"
             }
