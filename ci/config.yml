@@ -1,5 +1,4 @@
 global:
-  cis3bucket: 's3://quickstart-ci-bucket'
   marketplace-ami: false
   owner: quickstart@amazon.com
   prod-s3-path: 's3://quickstart-reference/aws/vpc'
