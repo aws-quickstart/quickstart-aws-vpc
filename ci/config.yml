@@ -32,6 +32,11 @@ tests:
     regions:
       - ap-northeast-2
     template_file: aws-vpc.template
+  defaults-ap-south-1:
+    parameter_input: aws-vpc-defaults-ap-south-1.json
+    regions:
+      - ap-south-1
+    template_file: aws-vpc.template
   defaults-ap-southeast-1:
     parameter_input: aws-vpc-defaults-ap-southeast-1.json
     regions:
