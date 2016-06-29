@@ -4,7 +4,7 @@
         "ParameterValue": "ap-southeast-1a,ap-southeast-1b"
     },
     {
-        "ParameterKey": "CreateProtectedSubnets",
+        "ParameterKey": "CreateNACLProtectedSubnets",
         "ParameterValue": "false"
     },
     {

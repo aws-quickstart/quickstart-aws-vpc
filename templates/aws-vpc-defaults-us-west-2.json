@@ -4,7 +4,7 @@
         "ParameterValue": "us-west-2a,us-west-2b"
     },
     {
-        "ParameterKey": "CreateProtectedSubnets",
+        "ParameterKey": "CreateNACLProtectedSubnets",
         "ParameterValue": "false"
     },
     {

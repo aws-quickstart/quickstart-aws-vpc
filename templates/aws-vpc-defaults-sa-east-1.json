@@ -4,7 +4,7 @@
         "ParameterValue": "sa-east-1b,sa-east-1c"
     },
     {
-        "ParameterKey": "CreateProtectedSubnets",
+        "ParameterKey": "CreateNACLProtectedSubnets",
         "ParameterValue": "false"
     },
     {

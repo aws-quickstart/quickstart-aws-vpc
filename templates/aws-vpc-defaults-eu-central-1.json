@@ -4,7 +4,7 @@
         "ParameterValue": "eu-central-1a,eu-central-1b"
     },
     {
-        "ParameterKey": "CreateProtectedSubnets",
+        "ParameterKey": "CreateNACLProtectedSubnets",
         "ParameterValue": "false"
     },
     {
