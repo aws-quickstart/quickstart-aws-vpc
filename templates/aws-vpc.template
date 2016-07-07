@@ -1964,14 +1964,6 @@
                 },
                 "SecurityGroupIngress": [
                     {
-                        "IpProtocol": "icmp",
-                        "FromPort": "-1",
-                        "ToPort": "-1",
-                        "CidrIp": {
-                            "Ref": "VPCCIDR"
-                        }
-                    },
-                    {
                         "IpProtocol": "-1",
                         "FromPort": "1",
                         "ToPort": "65535",
