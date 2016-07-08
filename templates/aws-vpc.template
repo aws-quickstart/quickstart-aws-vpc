@@ -323,14 +323,6 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "ap-northeast-2"
-                    ]
-                },
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "AWS::Region"
-                        },
                         "sa-east-1"
                     ]
                 },
