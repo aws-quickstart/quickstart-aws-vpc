@@ -18,16 +18,20 @@
                         "default": "Network Configuration"
                     },
                     "Parameters": [
+                        "VPCName",
                         "VPCCIDR",
+                        "PrivateSubnetANamePrefix",
                         "PrivateSubnet1ACIDR",
                         "PrivateSubnet2ACIDR",
                         "PrivateSubnet3ACIDR",
                         "PrivateSubnet4ACIDR",
+                        "PublicSubnetNamePrefix",
                         "PublicSubnet1CIDR",
                         "PublicSubnet2CIDR",
                         "PublicSubnet3CIDR",
                         "PublicSubnet4CIDR",
                         "CreateAdditionalPrivateSubnets",
+                        "PrivateSubnetBNamePrefix",
                         "PrivateSubnet1BCIDR",
                         "PrivateSubnet2BCIDR",
                         "PrivateSubnet3BCIDR",
@@ -40,6 +44,9 @@
                     },
                     "Parameters": [
                         "KeyPairName",
+                        "CreateBastionInstance",
+                        "BastionInstanceType",
+                        "BastionSSHCIDR",
                         "NATInstanceType"
                     ]
                 }
@@ -50,6 +57,15 @@
                 },
                 "CreateAdditionalPrivateSubnets": {
                     "default": "Create additional private subnets with dedicated network ACLs"
+                },
+                "CreateBastionInstance": {
+                    "default": "Create a Bastion instance"
+                },
+                "BastionInstanceType": {
+                    "default": "Bastion instance type"
+                },
+                "BastionSSHCIDR": {
+                    "default": "Bastion SSH access is allowed from this CIDR block"
                 },
                 "KeyPairName": {
                     "default": "Key pair name"
@@ -107,6 +123,27 @@
             "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved.",
             "Type": "List<AWS::EC2::AvailabilityZone::Name>"
         },
+        "BastionInstanceType": {
+            "AllowedValues": [
+                "t2.nano",
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "t2.large",
+                "m3.medium",
+                "m3.large",
+                "m4.large"
+            ],
+            "Default": "t2.micro",
+            "Description": "Amazon EC2 instance type for the Bastion instance. This is used only if the CreateBastionInstance parameter is 'true'.",
+            "Type": "String"
+        },
+        "BastionSSHCIDR": {
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
+            "Description": "CIDR range allowed to SSH into the Bastion instance. This is used only if the CreateBastionInstance parameter is 'true'.",
+            "Default": "0.0.0.0/0",
+            "Type": "String"
+        },
         "CreateAdditionalPrivateSubnets": {
             "AllowedValues": [
                 "true",
@@ -116,8 +153,17 @@
             "Description": "Set to true to create a network ACL protected subnet in each Availability Zone. If false, the CIDR parameters for those subnets will be ignored.",
             "Type": "String"
         },
+        "CreateBastionInstance": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "true",
+            "Description": "Set to true to create a Bastion instance used to access internal VPC resources.",
+            "Type": "String"
+        },
         "KeyPairName": {
-            "Description": "Public/private key pairs allow you to securely connect to your NAT instance after it launches. This is used only if the region does not support NAT gateways.",
+            "Description": "Public/private key pairs allow you to securely connect to your Bastion and/or NAT instances after they launch. This is used only if the region does not support NAT gateways or you provisioned a Bastion instance.",
             "Type": "AWS::EC2::KeyPair::KeyName"
         },
         "NATInstanceType": {
@@ -143,6 +189,16 @@
             ],
             "Default": "2",
             "Description": "Number of Availability Zones to use in the VPC. This must match your selections in the list of Availability Zones parameter.",
+            "Type": "String"
+        },
+        "PrivateSubnetANamePrefix": {
+            "Default": "private",
+            "Description": "Friendly name for the private subnet set A. Ex: a value of 'private' will result in subnets named like this: <VPCName>-private-us-east-1a",
+            "Type": "String"
+        },
+        "PrivateSubnetBNamePrefix": {
+            "Default": "protected",
+            "Description": "Friendly name for the private subnet set B. Ex: a value of 'protected' will result in subnets named like this: <VPCName>-protected-us-east-1a",
             "Type": "String"
         },
         "PrivateSubnet1ACIDR": {
@@ -193,6 +249,11 @@
             "Description": "CIDR block for private subnet 4B with dedicated network ACL located in Availability Zone 4",
             "Type": "String"
         },
+        "PublicSubnetNamePrefix": {
+            "Default": "public",
+            "Description": "Friendly name for the public subnets. Ex: a value of 'public' will result in subnets named like this: <VPCName>-public-us-east-1a",
+            "Type": "String"
+        },
         "PublicSubnet1CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.128.0/20",
@@ -222,45 +283,62 @@
             "Default": "10.0.0.0/16",
             "Description": "CIDR block for the VPC",
             "Type": "String"
+        },
+        "VPCName": {
+            "Default": "DevVPC",
+            "Description": "Friendly name for the VPC",
+            "Type": "String"
         }
     },
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "AWSNAT": "amzn-ami-vpc-nat-hvm-2016.03.3.x86_64-ebs"
+                "AWSNAT": "amzn-ami-vpc-nat-hvm-2016.03.3.x86_64-ebs",
+                "AmazonLinux": "amzn-ami-hvm-2016.03.3.x86_64-gp2"
             },
             "ap-northeast-1": {
-                "AWSNAT": "ami-2443b745"
+                "AWSNAT": "ami-2443b745",
+                "AmazonLinux": "ami-374db956"
             },
             "ap-northeast-2": {
-                "AWSNAT": "ami-d14388bf"
+                "AWSNAT": "ami-d14388bf",
+                "AmazonLinux": "ami-2b408b45"
             },
             "ap-south-1": {
-                "AWSNAT": "ami-e2b9d38d"
+                "AWSNAT": "ami-e2b9d38d",
+                "AmazonLinux": "ami-ffbdd790"
             },
             "ap-southeast-1": {
-                "AWSNAT": "ami-a79b49c4"
+                "AWSNAT": "ami-a79b49c4",
+                "AmazonLinux": "ami-a59b49c6"
             },
             "ap-southeast-2": {
-                "AWSNAT": "ami-53371f30"
+                "AWSNAT": "ami-53371f30",
+                "AmazonLinux": "ami-dc361ebf"
             },
             "eu-central-1": {
-                "AWSNAT": "ami-5825cd37"
+                "AWSNAT": "ami-5825cd37",
+                "AmazonLinux": "ami-ea26ce85"
             },
             "eu-west-1": {
-                "AWSNAT": "ami-a8dd45db"
+                "AWSNAT": "ami-a8dd45db",
+                "AmazonLinux": "ami-f9dd458a"
             },
             "sa-east-1": {
-                "AWSNAT": "ami-9336bcff"
+                "AWSNAT": "ami-9336bcff",
+                "AmazonLinux": "ami-6dd04501"
             },
             "us-east-1": {
-                "AWSNAT": "ami-4868ab25"
+                "AWSNAT": "ami-4868ab25",
+                "AmazonLinux": "ami-6869aa05"
             },
             "us-west-1": {
-                "AWSNAT": "ami-004b0f60"
+                "AWSNAT": "ami-004b0f60",
+                "AmazonLinux": "ami-31490d51"
             },
             "us-west-2": {
-                "AWSNAT": "ami-a275b1c2"
+                "AWSNAT": "ami-a275b1c2",
+                "AmazonLinux": "ami-7172b611"
             }
         }
     },
@@ -314,6 +392,14 @@
                 {
                     "Condition": "4AZCondition"
                 }
+            ]
+        },
+        "CreateBastion": {
+            "Fn::Equals": [
+                {
+                    "Ref": "CreateBastionInstance"
+                },
+                "true"
             ]
         },
         "NATInstanceCondition": {
@@ -390,6 +476,30 @@
                     "Condition": "4AZCondition"
                 }
             ]
+        },
+        "VPCEndpointCondition": {
+            "Fn::Not": [
+                {
+                    "Fn::Or": [
+                        {
+                            "Fn::Equals": [
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "us-gov-west-1"
+                            ]
+                        },
+                        {
+                            "Fn::Equals": [
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "cn-north-1"
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     },
     "Resources": {
@@ -406,7 +516,17 @@
             "Properties": {
                 "CidrBlock": {
                     "Ref": "VPCCIDR"
-                }
+                },
+                "EnableDnsSupport": "true",
+                "EnableDnsHostnames": "true",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "VPCName"
+                        }
+                    }
+                ]
             }
         },
         "VPCDHCPOptionsAssociation": {
@@ -461,6 +581,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -491,6 +635,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -519,6 +687,30 @@
                     ]
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -550,6 +742,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -579,6 +795,30 @@
                     ]
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -610,6 +850,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -639,6 +903,30 @@
                     ]
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -670,6 +958,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -699,6 +1011,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PublicSubnetNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Public"
                     },
@@ -727,6 +1063,30 @@
                     ]
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PublicSubnetNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Public"
@@ -758,6 +1118,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PublicSubnetNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Public"
                     },
@@ -788,6 +1172,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PublicSubnetNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Public"
                     },
@@ -805,6 +1213,30 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -866,6 +1298,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -926,6 +1382,30 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -990,6 +1470,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetANamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Private"
                     },
@@ -1052,6 +1556,30 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -1116,6 +1644,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "NACL Protected"
                     },
@@ -1174,6 +1726,30 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -1238,6 +1814,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "NACL Protected"
                     },
@@ -1296,6 +1896,30 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -1360,6 +1984,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "NACL Protected"
                     },
@@ -1418,6 +2066,30 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Private"
@@ -1482,6 +2154,30 @@
                 },
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PrivateSubnetBNamePrefix"
+                                    },
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "NACL Protected"
                     },
@@ -1539,6 +2235,22 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    {
+                                        "Ref": "VPCName"
+                                    },
+                                    {
+                                        "Ref": "PublicSubnetNamePrefix"
+                                    }
+                                ]
+                            ]
+                        }
+                    },
                     {
                         "Key": "Network",
                         "Value": "Public"
@@ -1758,7 +2470,22 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "NAT1"
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "NAT",
+                                    {
+                                        "Fn::Select": [
+                                            "0",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
                     }
                 ],
                 "NetworkInterfaces": [
@@ -1810,7 +2537,22 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "NAT2"
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "NAT",
+                                    {
+                                        "Fn::Select": [
+                                            "1",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
                     }
                 ],
                 "NetworkInterfaces": [
@@ -1862,7 +2604,22 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "NAT3"
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "NAT",
+                                    {
+                                        "Fn::Select": [
+                                            "2",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
                     }
                 ],
                 "NetworkInterfaces": [
@@ -1914,7 +2671,22 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "NAT4"
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "NAT",
+                                    {
+                                        "Fn::Select": [
+                                            "3",
+                                            {
+                                                "Ref": "AvailabilityZones"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            ]
+                        }
                     }
                 ],
                 "NetworkInterfaces": [
@@ -1962,6 +2734,238 @@
                         "CidrIp": {
                             "Ref": "VPCCIDR"
                         }
+                    }
+                ]
+            }
+        },
+        "S3Endpoint": {
+            "Condition": "VPCEndpointCondition",
+            "Type": "AWS::EC2::VPCEndpoint",
+            "Properties": {
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": "*",
+                            "Effect": "Allow",
+                            "Resource": "*",
+                            "Principal": "*"
+                        }
+                    ]
+                },
+                "RouteTableIds": [
+                    {
+                        "Ref": "PrivateSubnet1ARouteTable"
+                    },
+                    {
+                        "Ref": "PrivateSubnet2ARouteTable"
+                    },
+                    {
+                        "Fn::If": [
+                            "3AZCondition",
+                            {
+                                "Ref": "PrivateSubnet3ARouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "4AZCondition",
+                            {
+                                "Ref": "PrivateSubnet4ARouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnetsCondition",
+                            {
+                                "Ref": "PrivateSubnet1BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnetsCondition",
+                            {
+                                "Ref": "PrivateSubnet2BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnets&3AZCondition",
+                            {
+                                "Ref": "PrivateSubnet3BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnets&4AZCondition",
+                            {
+                                "Ref": "PrivateSubnet4BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    }
+                ],
+                "ServiceName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "com.amazonaws.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".s3"
+                        ]
+                    ]
+                },
+                "VpcId": {
+                    "Ref": "VPC"
+                }
+            }
+        },
+        "BastionSecurityGroup": {
+            "Condition": "CreateBastion",
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Bastion instance access",
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": {
+                            "Ref": "BastionSSHCIDR"
+                        }
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": "1",
+                        "ToPort": "65535",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Bastion-public-access"
+                    }
+                ]
+            }
+        },
+        "BastionEIP": {
+            "Condition": "CreateBastion",
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc"
+            }
+        },
+        "BastionENI": {
+            "Condition": "CreateBastion",
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "PublicSubnet1"
+                },
+                "GroupSet": [
+                    {
+                        "Ref": "BastionSecurityGroup"
+                    }
+                ],
+                "Description": "Public interface to hold EIP for Bastion instance.",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Bastion-Public"
+                    },
+                    {
+                        "Key": "Network",
+                        "Value": "BastionDevice"
+                    }
+                ]
+            }
+        },
+        "BastionENIEIPAssociation": {
+            "Condition": "CreateBastion",
+            "Type": "AWS::EC2::EIPAssociation",
+            "Properties": {
+                "AllocationId": {
+                    "Fn::GetAtt": [
+                        "BastionEIP",
+                        "AllocationId"
+                    ]
+                },
+                "NetworkInterfaceId": {
+                    "Ref": "BastionENI"
+                }
+            }
+        },
+        "BastionInstance": {
+            "Condition": "CreateBastion",
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "InstanceType": {
+                    "Ref": "BastionInstanceType"
+                },
+                "KeyName": {
+                    "Ref": "KeyPairName"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Bastion",
+                                    {
+                                        "Ref": "VPCName"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ],
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSAMIRegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AmazonLinux"
+                    ]
+                },
+                "NetworkInterfaces": [
+                    {
+                        "NetworkInterfaceId": {
+                            "Ref": "BastionENI"
+                        },
+                        "DeviceIndex": "0"
                     }
                 ]
             }
