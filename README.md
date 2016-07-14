@@ -6,4 +6,4 @@ The Amazon VPC architecture includes public and private subnets. The first set o
 
 Deployment Guide: http://docs.aws.amazon.com/quickstart/latest/vpc/
 
-![Quick Start VPC Design Architecture](https://s3.amazonaws.com/quickstart-reference/aws/vpc/latest/doc/quickstart-vpc-design.png)
+![Quick Start VPC Design Architecture](https://docs.aws.amazon.com/quickstart/latest/vpc/images/quickstart-vpc-design-fullscreen.png)
