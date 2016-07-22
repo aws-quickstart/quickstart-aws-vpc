@@ -5,7 +5,7 @@
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
-        "ParameterValue": "false"
+        "ParameterValue": "true"
     },
     {
         "ParameterKey": "KeyPairName",
@@ -25,47 +25,47 @@
     },
     {
         "ParameterKey": "PrivateSubnet1BCIDR",
-        "ParameterValue": "10.0.48.0/21"
+        "ParameterValue": "10.0.192.0/21"
     },
     {
         "ParameterKey": "PrivateSubnet2ACIDR",
-        "ParameterValue": "10.0.64.0/19"
+        "ParameterValue": "10.0.32.0/19"
     },
     {
         "ParameterKey": "PrivateSubnet2BCIDR",
-        "ParameterValue": "10.0.112.0/21"
+        "ParameterValue": "10.0.200.0/21"
     },
     {
         "ParameterKey": "PrivateSubnet3ACIDR",
-        "ParameterValue": "10.0.128.0/19"
+        "ParameterValue": "10.0.64.0/19"
     },
     {
         "ParameterKey": "PrivateSubnet3BCIDR",
-        "ParameterValue": "10.0.176.0/21"
+        "ParameterValue": "10.0.208.0/21"
     },
     {
         "ParameterKey": "PrivateSubnet4ACIDR",
-        "ParameterValue": "10.0.192.0/19"
+        "ParameterValue": "10.0.96.0/19"
     },
     {
         "ParameterKey": "PrivateSubnet4BCIDR",
-        "ParameterValue": "10.0.240.0/21"
+        "ParameterValue": "10.0.216.0/21"
     },
     {
         "ParameterKey": "PublicSubnet1CIDR",
-        "ParameterValue": "10.0.32.0/21"
+        "ParameterValue": "10.0.128.0/20"
     },
     {
         "ParameterKey": "PublicSubnet2CIDR",
-        "ParameterValue": "10.0.96.0/21"
+        "ParameterValue": "10.0.144.0/20"
     },
     {
         "ParameterKey": "PublicSubnet3CIDR",
-        "ParameterValue": "10.0.160.0/21"
+        "ParameterValue": "10.0.160.0/20"
     },
     {
         "ParameterKey": "PublicSubnet4CIDR",
-        "ParameterValue": "10.0.224.0/21"
+        "ParameterValue": "10.0.176.0/20"
     },
     {
         "ParameterKey": "VPCCIDR",
