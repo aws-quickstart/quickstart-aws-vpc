@@ -1,11 +1,11 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "ap-northeast-1b,ap-northeast-1c"
+        "ParameterValue": "$[alfred_genaz_4]"
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
-        "ParameterValue": "false"
+        "ParameterValue": "true"
     },
     {
         "ParameterKey": "KeyPairName",
@@ -17,7 +17,7 @@
     },
     {
         "ParameterKey": "NumberOfAZs",
-        "ParameterValue": "2"
+        "ParameterValue": "4"
     },
     {
         "ParameterKey": "PrivateSubnet1ACIDR",

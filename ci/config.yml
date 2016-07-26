@@ -21,62 +21,7 @@ tests:
     parameter_input: aws-vpc-defaults.json
     template_file: aws-vpc.template
   complete-us-east-1:
-    parameter_input: aws-vpc-complete-us-east-1.json
+    parameter_input: aws-vpc-complete.json
     regions:
       - us-east-1
-    template_file: aws-vpc.template
-  defaults-ap-northeast-1:
-    parameter_input: aws-vpc-defaults-ap-northeast-1.json
-    regions:
-      - ap-northeast-1
-    template_file: aws-vpc.template
-  defaults-ap-northeast-2:
-    parameter_input: aws-vpc-defaults-ap-northeast-2.json
-    regions:
-      - ap-northeast-2
-    template_file: aws-vpc.template
-  defaults-ap-south-1:
-    parameter_input: aws-vpc-defaults-ap-south-1.json
-    regions:
-      - ap-south-1
-    template_file: aws-vpc.template
-  defaults-ap-southeast-1:
-    parameter_input: aws-vpc-defaults-ap-southeast-1.json
-    regions:
-      - ap-southeast-1
-    template_file: aws-vpc.template
-  defaults-ap-southeast-2:
-    parameter_input: aws-vpc-defaults-ap-southeast-2.json
-    regions:
-      - ap-southeast-2
-    template_file: aws-vpc.template
-  defaults-eu-central-1:
-    parameter_input: aws-vpc-defaults-eu-central-1.json
-    regions:
-      - eu-central-1
-    template_file: aws-vpc.template
-  defaults-eu-west-1:
-    parameter_input: aws-vpc-defaults-eu-west-1.json
-    regions:
-      - eu-west-1
-    template_file: aws-vpc.template
-  defaults-sa-east-1:
-    parameter_input: aws-vpc-defaults-sa-east-1.json
-    regions:
-      - sa-east-1
-    template_file: aws-vpc.template
-  defaults-us-east-1:
-    parameter_input: aws-vpc-defaults-us-east-1.json
-    regions:
-      - us-east-1
-    template_file: aws-vpc.template
-  defaults-us-west-1:
-    parameter_input: aws-vpc-defaults-us-west-1.json
-    regions:
-      - us-west-1
-    template_file: aws-vpc.template
-  defaults-us-west-2:
-    parameter_input: aws-vpc-defaults-us-west-2.json
-    regions:
-      - us-west-2
     template_file: aws-vpc.template
