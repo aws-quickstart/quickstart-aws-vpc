@@ -17,6 +17,9 @@ global:
     - us-west-2
   reporting: true
 tests:
+  defaults:
+    parameter_input: aws-vpc-defaults.json
+    template_file: aws-vpc.template
   complete-us-east-1:
     parameter_input: aws-vpc-complete-us-east-1.json
     regions:
