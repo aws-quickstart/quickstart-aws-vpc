@@ -1551,6 +1551,7 @@
             }
         },
         "PublicSubnetRoute": {
+            "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1609,6 +1610,7 @@
             }
         },
         "NAT1EIP": {
+            "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
                 "Domain": "vpc",
@@ -1626,6 +1628,7 @@
             }
         },
         "NAT2EIP": {
+            "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
                 "Domain": "vpc",
@@ -1644,6 +1647,7 @@
         },
         "NAT3EIP": {
             "Condition": "3AZCondition",
+            "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
                 "Domain": "vpc",
@@ -1662,6 +1666,7 @@
         },
         "NAT4EIP": {
             "Condition": "4AZCondition",
+            "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
                 "Domain": "vpc",
