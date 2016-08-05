@@ -390,6 +390,30 @@
                     "Condition": "4AZCondition"
                 }
             ]
+        },
+        "VPCEndpointCondition": {
+            "Fn::Not": [
+                {
+                    "Fn::Or": [
+                        {
+                            "Fn::Equals": [
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "us-gov-west-1"
+                            ]
+                        },
+                        {
+                            "Fn::Equals": [
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "cn-north-1"
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     },
     "Resources": {
@@ -406,7 +430,17 @@
             "Properties": {
                 "CidrBlock": {
                     "Ref": "VPCCIDR"
-                }
+                },
+                "EnableDnsSupport": "true",
+                "EnableDnsHostnames": "true",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "AWS::StackName"
+                        }
+                    }
+                ]
             }
         },
         "VPCDHCPOptionsAssociation": {
@@ -461,12 +495,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 1A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 1A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -491,12 +525,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 1B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 1B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -520,12 +554,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 2A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 2A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -550,12 +584,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 2B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 2B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -580,12 +614,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 3A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 3A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -610,12 +644,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 3B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 3B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -640,12 +674,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 4A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 4A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -670,12 +704,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 4B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 4B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -699,12 +733,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Key": "Name",
+                        "Value": "Public subnet 1"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Public subnet 1"
+                        "Key": "Network",
+                        "Value": "Public"
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -729,12 +763,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Key": "Name",
+                        "Value": "Public subnet 2"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Public subnet 2"
+                        "Key": "Network",
+                        "Value": "Public"
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -760,12 +794,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Key": "Name",
+                        "Value": "Public subnet 3"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Public subnet 3"
+                        "Key": "Network",
+                        "Value": "Public"
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -791,12 +825,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Key": "Name",
+                        "Value": "Public subnet 4"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Public subnet 4"
+                        "Key": "Network",
+                        "Value": "Public"
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -810,12 +844,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 1A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 1A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -870,12 +904,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 2A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 2A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -931,12 +965,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 3A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 3A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -994,12 +1028,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 4A"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 4A"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -1057,12 +1091,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 1B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 1B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -1120,12 +1154,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "NACL Protected"
+                        "Key": "Name",
+                        "Value": "NACL Protected subnet 1"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "NACL Protected subnet 1"
+                        "Key": "Network",
+                        "Value": "NACL Protected"
                     }
                 ]
             }
@@ -1179,12 +1213,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 2B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 2B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -1242,12 +1276,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "NACL Protected"
+                        "Key": "Name",
+                        "Value": "NACL Protected subnet 2"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "NACL Protected subnet 2"
+                        "Key": "Network",
+                        "Value": "NACL Protected"
                     }
                 ]
             }
@@ -1301,12 +1335,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 3B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 3B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -1364,12 +1398,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "NACL Protected"
+                        "Key": "Name",
+                        "Value": "NACL Protected subnet 3"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "NACL Protected subnet 3"
+                        "Key": "Network",
+                        "Value": "NACL Protected"
                     }
                 ]
             }
@@ -1423,12 +1457,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Key": "Name",
+                        "Value": "Private subnet 4B"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "Private subnet 4B"
+                        "Key": "Network",
+                        "Value": "Private"
                     }
                 ]
             }
@@ -1486,12 +1520,12 @@
                 },
                 "Tags": [
                     {
-                        "Key": "Network",
-                        "Value": "NACL Protected"
+                        "Key": "Name",
+                        "Value": "NACL Protected subnet 4"
                     },
                     {
-                        "Key": "Role",
-                        "Value": "NACL Protected subnet 4"
+                        "Key": "Network",
+                        "Value": "NACL Protected"
                     }
                 ]
             }
@@ -1543,6 +1577,10 @@
                     "Ref": "VPC"
                 },
                 "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Public Subnets"
+                    },
                     {
                         "Key": "Network",
                         "Value": "Public"
@@ -1973,6 +2011,112 @@
                         }
                     }
                 ]
+            }
+        },
+        "S3Endpoint": {
+            "Condition": "VPCEndpointCondition",
+            "Type": "AWS::EC2::VPCEndpoint",
+            "Properties": {
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": "*",
+                            "Effect": "Allow",
+                            "Resource": "*",
+                            "Principal": "*"
+                        }
+                    ]
+                },
+                "RouteTableIds": [
+                    {
+                        "Ref": "PrivateSubnet1ARouteTable"
+                    },
+                    {
+                        "Ref": "PrivateSubnet2ARouteTable"
+                    },
+                    {
+                        "Fn::If": [
+                            "3AZCondition",
+                            {
+                                "Ref": "PrivateSubnet3ARouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "4AZCondition",
+                            {
+                                "Ref": "PrivateSubnet4ARouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnetsCondition",
+                            {
+                                "Ref": "PrivateSubnet1BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnetsCondition",
+                            {
+                                "Ref": "PrivateSubnet2BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnets&3AZCondition",
+                            {
+                                "Ref": "PrivateSubnet3BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "AdditionalPrivateSubnets&4AZCondition",
+                            {
+                                "Ref": "PrivateSubnet4BRouteTable"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    }
+                ],
+                "ServiceName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "com.amazonaws.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".s3"
+                        ]
+                    ]
+                },
+                "VpcId": {
+                    "Ref": "VPC"
+                }
             }
         }
     },
