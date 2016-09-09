@@ -227,40 +227,90 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "AWSNAT": "amzn-ami-vpc-nat-hvm-2016.03.3.x86_64-ebs"
+                "AWSNATHVM": "amzn-ami-vpc-nat-hvm-2016.03.3.x86_64-ebs"
             },
             "ap-northeast-1": {
-                "AWSNAT": "ami-2443b745"
+                "AWSNATHVM": "ami-2443b745"
             },
             "ap-northeast-2": {
-                "AWSNAT": "ami-d14388bf"
+                "AWSNATHVM": "ami-d14388bf"
             },
             "ap-south-1": {
-                "AWSNAT": "ami-e2b9d38d"
+                "AWSNATHVM": "ami-e2b9d38d"
             },
             "ap-southeast-1": {
-                "AWSNAT": "ami-a79b49c4"
+                "AWSNATHVM": "ami-a79b49c4"
             },
             "ap-southeast-2": {
-                "AWSNAT": "ami-53371f30"
+                "AWSNATHVM": "ami-53371f30"
             },
             "eu-central-1": {
-                "AWSNAT": "ami-5825cd37"
+                "AWSNATHVM": "ami-5825cd37"
             },
             "eu-west-1": {
-                "AWSNAT": "ami-a8dd45db"
+                "AWSNATHVM": "ami-a8dd45db"
             },
             "sa-east-1": {
-                "AWSNAT": "ami-9336bcff"
+                "AWSNATHVM": "ami-9336bcff"
             },
             "us-east-1": {
-                "AWSNAT": "ami-4868ab25"
+                "AWSNATHVM": "ami-4868ab25"
             },
             "us-west-1": {
-                "AWSNAT": "ami-004b0f60"
+                "AWSNATHVM": "ami-004b0f60"
             },
             "us-west-2": {
-                "AWSNAT": "ami-a275b1c2"
+                "AWSNATHVM": "ami-a275b1c2"
+            }
+        },
+        "AWSInfoRegionMap": {
+            "ap-northeast-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "ap-northeast-2": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "ap-south-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "ap-southeast-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "ap-southeast-2": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "eu-central-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "eu-west-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "sa-east-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "us-east-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "us-gov-west-1": {
+                "Partition": "aws-us-gov",
+                "QuickStartS3URL": "https://s3-us-gov-west-1.amazonaws.com"
+            },
+            "us-west-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "us-west-2": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
             }
         }
     },
@@ -1796,7 +1846,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "AWSNAT"
+                        "AWSNATHVM"
                     ]
                 },
                 "InstanceType": {
@@ -1848,7 +1898,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "AWSNAT"
+                        "AWSNATHVM"
                     ]
                 },
                 "InstanceType": {
@@ -1900,7 +1950,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "AWSNAT"
+                        "AWSNATHVM"
                     ]
                 },
                 "InstanceType": {
@@ -1952,7 +2002,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "AWSNAT"
+                        "AWSNATHVM"
                     ]
                 },
                 "InstanceType": {
