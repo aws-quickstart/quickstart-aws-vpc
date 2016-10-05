@@ -454,6 +454,14 @@
                 }
             ]
         },
+        "NVirginiaRegionCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "AWS::Region"
+                },
+                "us-east-1"
+            ]
+        },
         "VPCEndpointCondition": {
             "Fn::Not": [
                 {
@@ -484,14 +492,20 @@
             "Type": "AWS::EC2::DHCPOptions",
             "Properties": {
                 "DomainName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::Region"
-                            },
-                            ".compute.internal"
-                        ]
+                    "Fn::If": [
+                        "NVirginiaRegionCondition",
+                        "ec2.internal",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    {
+                                        "Ref": "AWS::Region"
+                                    },
+                                    ".compute.internal"
+                                ]
+                            ]
+                        }
                     ]
                 },
                 "DomainNameServers": [
