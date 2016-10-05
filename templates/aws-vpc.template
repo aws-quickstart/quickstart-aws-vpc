@@ -483,7 +483,16 @@
         "DHCPOptions": {
             "Type": "AWS::EC2::DHCPOptions",
             "Properties": {
-                "DomainNameServers": [
+            "DomainName": {
+                "Fn::Join": [
+                    "", [
+                        {
+                            "Ref": "AWS::Region"
+                        }, ".compute.internal"
+                    ]
+                ]
+            },
+            "DomainNameServers": [
                     "AmazonProvidedDNS"
                 ]
             }
