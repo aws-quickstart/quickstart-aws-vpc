@@ -269,6 +269,9 @@
             "us-east-1": {
                 "AWSNATHVM": "ami-4868ab25"
             },
+            "us-east-2": {
+                "AWSNATHVM": "ami-92a6fef7"
+            },
             "us-west-1": {
                 "AWSNATHVM": "ami-004b0f60"
             },
@@ -310,6 +313,10 @@
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
             "us-east-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "us-east-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
