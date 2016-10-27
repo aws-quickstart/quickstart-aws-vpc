@@ -2208,6 +2208,32 @@
         }
     },
     "Outputs": {
+        "NAT1EIP": {
+            "Description": "NAT Gateway 1 IP address",
+            "Value": {
+                "Ref": "NAT1EIP"
+            }
+        },
+        "NAT2EIP": {
+            "Description": "NAT Gateway 2 IP address",
+            "Value": {
+                "Ref": "NAT2EIP"
+            }
+        },
+        "NAT3EIP": {
+            "Condition": "3AZCondition",
+            "Description": "NAT Gateway 3 IP address",
+            "Value": {
+                "Ref": "NAT3EIP"
+            }
+        },
+        "NAT4EIP": {
+            "Condition": "4AZCondition",
+            "Description": "NAT Gateway 4 IP address",
+            "Value": {
+                "Ref": "NAT4EIP"
+            }
+        },
         "PrivateSubnet1ACIDR": {
             "Description": "Private subnet 1A CIDR in Availability Zone 1",
             "Value": {
