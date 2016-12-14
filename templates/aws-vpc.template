@@ -257,6 +257,9 @@
             "ap-southeast-2": {
                 "AWSNATHVM": "ami-53371f30"
             },
+            "ca-central-1": {
+                "AWSNATHVM": "ami-32f14356"
+            },
             "eu-central-1": {
                 "AWSNATHVM": "ami-5825cd37"
             },
@@ -297,6 +300,10 @@
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
             "ap-southeast-2": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "ca-central-1": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
