@@ -266,6 +266,9 @@
             "eu-west-1": {
                 "AWSNATHVM": "ami-a8dd45db"
             },
+            "eu-west-2": {
+                "AWSNATHVM": "ami-6b4d470f"
+            },
             "sa-east-1": {
                 "AWSNATHVM": "ami-9336bcff"
             },
@@ -312,6 +315,10 @@
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
             "eu-west-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "eu-west-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
