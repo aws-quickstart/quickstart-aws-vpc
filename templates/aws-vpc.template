@@ -2408,6 +2408,13 @@
                 "Ref": "PublicSubnet4"
             }
         },
+        "VPCEndpoint": {
+            "Condition": "VPCEndpointCondition",
+            "Description": "VPC Endpoint",
+            "Value": {
+                "Ref": "S3Endpoint"
+            }
+        },
         "VPCCIDR": {
             "Value": {
                 "Ref": "VPCCIDR"
