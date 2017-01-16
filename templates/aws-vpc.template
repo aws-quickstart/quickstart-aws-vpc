@@ -475,7 +475,7 @@
                 "us-east-1"
             ]
         },
-        "VPCEndpointCondition": {
+        "S3VPCEndpointCondition": {
             "Fn::Not": [
                 {
                     "Fn::Or": [
@@ -2114,8 +2114,8 @@
                 ]
             }
         },
-        "S3Endpoint": {
-            "Condition": "VPCEndpointCondition",
+        "S3VPCEndpoint": {
+            "Condition": "S3VPCEndpointCondition",
             "Type": "AWS::EC2::VPCEndpoint",
             "Properties": {
                 "PolicyDocument": {
@@ -2408,11 +2408,11 @@
                 "Ref": "PublicSubnet4"
             }
         },
-        "VPCEndpoint": {
-            "Condition": "VPCEndpointCondition",
-            "Description": "VPC Endpoint",
+        "S3VPCEndpoint": {
+            "Condition": "S3VPCEndpointCondition",
+            "Description": "S3 VPC Endpoint",
             "Value": {
-                "Ref": "S3Endpoint"
+                "Ref": "S3VPCEndpoint"
             }
         },
         "VPCCIDR": {
