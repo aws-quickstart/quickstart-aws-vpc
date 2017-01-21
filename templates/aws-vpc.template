@@ -240,49 +240,49 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "AWSNATHVM": "amzn-ami-vpc-nat-hvm-2016.03.3.x86_64-ebs"
+                "AWSNATHVM": "amzn-ami-vpc-nat-hvm-2016.09.1.20161221-x86_64-ebs"
             },
             "ap-northeast-1": {
-                "AWSNATHVM": "ami-2443b745"
+                "AWSNATHVM": "ami-2f0f6448"
             },
             "ap-northeast-2": {
-                "AWSNATHVM": "ami-d14388bf"
+                "AWSNATHVM": "ami-9da670f3"
             },
             "ap-south-1": {
-                "AWSNATHVM": "ami-e2b9d38d"
+                "AWSNATHVM": "ami-9bd8aff4"
             },
             "ap-southeast-1": {
-                "AWSNATHVM": "ami-a79b49c4"
+                "AWSNATHVM": "ami-71d57b12"
             },
             "ap-southeast-2": {
-                "AWSNATHVM": "ami-53371f30"
+                "AWSNATHVM": "ami-16c8f375"
             },
             "ca-central-1": {
-                "AWSNATHVM": "ami-32f14356"
+                "AWSNATHVM": "ami-fd209299"
             },
             "eu-central-1": {
-                "AWSNATHVM": "ami-5825cd37"
+                "AWSNATHVM": "ami-ba18d8d5"
             },
             "eu-west-1": {
-                "AWSNATHVM": "ami-a8dd45db"
+                "AWSNATHVM": "ami-d51b3ba6"
             },
             "eu-west-2": {
-                "AWSNATHVM": "ami-6b4d470f"
+                "AWSNATHVM": "ami-a7e2e8c3"
             },
             "sa-east-1": {
-                "AWSNATHVM": "ami-9336bcff"
+                "AWSNATHVM": "ami-d94ed6b5"
             },
             "us-east-1": {
-                "AWSNATHVM": "ami-4868ab25"
+                "AWSNATHVM": "ami-f8e7f2ef"
             },
             "us-east-2": {
-                "AWSNATHVM": "ami-92a6fef7"
+                "AWSNATHVM": "ami-36c29853"
             },
             "us-west-1": {
-                "AWSNATHVM": "ami-004b0f60"
+                "AWSNATHVM": "ami-653d6c05"
             },
             "us-west-2": {
-                "AWSNATHVM": "ami-a275b1c2"
+                "AWSNATHVM": "ami-1c2a9e7c"
             }
         },
         "AWSInfoRegionMap": {
