@@ -422,7 +422,7 @@
             ]
         },
         "CreatePrivateSubnets&3AZCondition": {
-        	"Fn::And": [
+            "Fn::And": [
                 {
                     "Condition": "CreatePrivateSubnetsCondition"
                 },
@@ -430,9 +430,9 @@
                     "Condition": "3AZCondition"
                 }
             ]
-        }, 
+        },
         "CreatePrivateSubnets&4AZCondition": {
-        	"Fn::And": [
+            "Fn::And": [
                 {
                     "Condition": "CreatePrivateSubnetsCondition"
                 },
@@ -440,29 +440,29 @@
                     "Condition": "4AZCondition"
                 }
             ]
-        }, 
+        },
         "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition": {
-        	"Fn::And": [
+            "Fn::And": [
                 {
-                  	"Condition": "CreatePrivateSubnetsCondition"
+                    "Condition": "CreatePrivateSubnetsCondition"
                 },
                 {
                     "Condition": "AdditionalPrivateSubnetsCondition"
                 }
             ]
-        }, 
+        },
         "NATInstanceCondition": {
-          	"Fn::And": [
-             	{
-                	"Condition": "CreatePrivateSubnetsCondition"
-             	}, 
-             	{
-		            "Condition": "NATInstanceRegionCondition"
-              	}
+            "Fn::And": [
+                {
+                    "Condition": "CreatePrivateSubnetsCondition"
+                },
+                {
+                    "Condition": "NATInstanceRegionCondition"
+                }
             ]
         },
         "NATInstanceRegionCondition": {
-          	"Fn::Or": [
+            "Fn::Or": [
                 {
                     "Fn::Equals": [
                         {
@@ -480,20 +480,20 @@
                     ]
                 }
             ]
-        }, 
+        },
         "NATGatewayCondition": {
-          	"Fn::And": [
-             	{
+            "Fn::And": [
+                {
                     "Condition": "CreatePrivateSubnetsCondition"
                 },
-             	{
-		            "Fn::Not": [
-		                {
-		                    "Condition": "NATInstanceRegionCondition"
-		                }
-		            ]
-              	}
-           	]
+                {
+                    "Fn::Not": [
+                        {
+                            "Condition": "NATInstanceRegionCondition"
+                        }
+                    ]
+                }
+            ]
         },
         "NATInstance&3AZCondition": {
             "Fn::And": [
@@ -544,34 +544,34 @@
             ]
         },
         "S3VPCEndpointCondition": {
-          	"Fn::And": [
-             	{
-             		"Condition": "CreatePrivateSubnetsCondition"
-                }, 
-             	{
-		            "Fn::Not": [
-		                {
-		                    "Fn::Or": [
-		                        {
-		                            "Fn::Equals": [
-		                                {
-		                                    "Ref": "AWS::Region"
-		                                },
-		                                "us-gov-west-1"
-		                            ]
-		                        },
-		                        {
-		                            "Fn::Equals": [
-		                                {
-		                                    "Ref": "AWS::Region"
-		                                },
-		                                "cn-north-1"
-		                            ]
-		                        }
-		                    ]
-		                }
-		            ]
-              	}
+            "Fn::And": [
+                {
+                    "Condition": "CreatePrivateSubnetsCondition"
+                },
+                {
+                    "Fn::Not": [
+                        {
+                            "Fn::Or": [
+                                {
+                                    "Fn::Equals": [
+                                        {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        "us-gov-west-1"
+                                    ]
+                                },
+                                {
+                                    "Fn::Equals": [
+                                        {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        "cn-north-1"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
         }
     },
@@ -653,7 +653,7 @@
             }
         },
         "PrivateSubnet1A": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -713,7 +713,7 @@
             }
         },
         "PrivateSubnet2A": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -773,7 +773,7 @@
             }
         },
         "PrivateSubnet3A": {
-          	"Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "CreatePrivateSubnets&3AZCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -1015,7 +1015,7 @@
             }
         },
         "PrivateSubnet1ARouteTable": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1034,8 +1034,8 @@
             }
         },
         "PrivateSubnet1ARoute": {
-          	"Condition": "CreatePrivateSubnetsCondition",
-          	"Type": "AWS::EC2::Route",
+            "Condition": "CreatePrivateSubnetsCondition",
+            "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
                     "Ref": "PrivateSubnet1ARouteTable"
@@ -1066,7 +1066,7 @@
             }
         },
         "PrivateSubnet1ARouteTableAssociation": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1078,7 +1078,7 @@
             }
         },
         "PrivateSubnet2ARouteTable": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1097,7 +1097,7 @@
             }
         },
         "PrivateSubnet2ARoute": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1129,7 +1129,7 @@
             }
         },
         "PrivateSubnet2ARouteTableAssociation": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1832,7 +1832,7 @@
             }
         },
         "NAT1EIP": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
@@ -1851,7 +1851,7 @@
             }
         },
         "NAT2EIP": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
@@ -2308,14 +2308,14 @@
     },
     "Outputs": {
         "NAT1EIP": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Description": "NAT Gateway 1 IP address",
             "Value": {
                 "Ref": "NAT1EIP"
             }
         },
         "NAT2EIP": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Description": "NAT Gateway 2 IP address",
             "Value": {
                 "Ref": "NAT2EIP"
@@ -2336,14 +2336,14 @@
             }
         },
         "PrivateSubnet1ACIDR": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Description": "Private subnet 1A CIDR in Availability Zone 1",
             "Value": {
                 "Ref": "PrivateSubnet1ACIDR"
             }
         },
         "PrivateSubnet1AID": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Description": "Private subnet 1A ID in Availability Zone 1",
             "Value": {
                 "Ref": "PrivateSubnet1A"
@@ -2364,14 +2364,14 @@
             }
         },
         "PrivateSubnet2ACIDR": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Description": "Private subnet 2A CIDR in Availability Zone 2",
             "Value": {
                 "Ref": "PrivateSubnet2ACIDR"
             }
         },
         "PrivateSubnet2AID": {
-          	"Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "CreatePrivateSubnetsCondition",
             "Description": "Private subnet 2A ID in Availability Zone 2",
             "Value": {
                 "Ref": "PrivateSubnet2A"
