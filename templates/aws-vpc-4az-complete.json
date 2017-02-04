@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_genaz_2]"
+        "ParameterValue": "$[alfred_genaz_4]"
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
@@ -21,7 +21,7 @@
     },
     {
         "ParameterKey": "NumberOfAZs",
-        "ParameterValue": "2"
+        "ParameterValue": "4"
     },
     {
         "ParameterKey": "PrivateSubnet1ACIDR",

@@ -8,8 +8,12 @@
         "ParameterValue": "false"
     },
     {
+        "ParameterKey": "CreatePrivateSubnets",
+        "ParameterValue": "true"
+    },
+    {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "cikey"
+        "ParameterValue": "$[alfred_getkeypair]"
     },
     {
         "ParameterKey": "NATInstanceType",
