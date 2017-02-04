@@ -117,7 +117,7 @@
                 "false"
             ],
             "Default": "false",
-            "Description": "Set to true to create a network ACL protected subnet in each Availability Zone. If false, the CIDR parameters for those subnets will be ignored. If true, it also requires that Create Private Subnets is also true to have any effect.",
+            "Description": "Set to true to create a network ACL protected subnet in each Availability Zone. If false, the CIDR parameters for those subnets will be ignored. If true, it also requires that the 'Create private subnets' parameter is also true to have any effect.",
             "Type": "String"
         },
         "CreatePrivateSubnets": {
