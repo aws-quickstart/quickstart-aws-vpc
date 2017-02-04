@@ -5,11 +5,11 @@
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
-        "ParameterValue": "true"
+        "ParameterValue": "false"
     },
     {
         "ParameterKey": "CreatePrivateSubnets",
-        "ParameterValue": "true"
+        "ParameterValue": "false"
     },
     {
         "ParameterKey": "KeyPairName",
