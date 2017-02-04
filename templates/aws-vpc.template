@@ -386,17 +386,29 @@
             ]
         },
         "AdditionalPrivateSubnetsCondition": {
-            "Fn::Equals": [
+            "Fn::And": [
                 {
-                    "Ref": "CreateAdditionalPrivateSubnets"
+                    "Fn::Equals": [
+                        {
+                            "Ref": "CreatePrivateSubnets"
+                        },
+                        "true"
+                    ]
                 },
-                "true"
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "CreateAdditionalPrivateSubnets"
+                        },
+                        "true"
+                    ]
+                }
             ]
         },
         "AdditionalPrivateSubnets&3AZCondition": {
             "Fn::And": [
                 {
-                    "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition"
+                    "Condition": "AdditionalPrivateSubnetsCondition"
                 },
                 {
                     "Condition": "3AZCondition"
@@ -406,55 +418,17 @@
         "AdditionalPrivateSubnets&4AZCondition": {
             "Fn::And": [
                 {
-                    "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition"
-                },
-                {
-                    "Condition": "4AZCondition"
-                }
-            ]
-        },
-        "CreatePrivateSubnetsCondition": {
-            "Fn::Equals": [
-                {
-                    "Ref": "CreatePrivateSubnets"
-                },
-                "true"
-            ]
-        },
-        "CreatePrivateSubnets&3AZCondition": {
-            "Fn::And": [
-                {
-                    "Condition": "CreatePrivateSubnetsCondition"
-                },
-                {
-                    "Condition": "3AZCondition"
-                }
-            ]
-        },
-        "CreatePrivateSubnets&4AZCondition": {
-            "Fn::And": [
-                {
-                    "Condition": "CreatePrivateSubnetsCondition"
-                },
-                {
-                    "Condition": "4AZCondition"
-                }
-            ]
-        },
-        "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition": {
-            "Fn::And": [
-                {
-                    "Condition": "CreatePrivateSubnetsCondition"
-                },
-                {
                     "Condition": "AdditionalPrivateSubnetsCondition"
+                },
+                {
+                    "Condition": "4AZCondition"
                 }
             ]
         },
         "NATInstanceCondition": {
             "Fn::And": [
                 {
-                    "Condition": "CreatePrivateSubnetsCondition"
+                    "Condition": "PrivateSubnetsCondition"
                 },
                 {
                     "Condition": "NATInstanceRegionCondition"
@@ -484,7 +458,7 @@
         "NATGatewayCondition": {
             "Fn::And": [
                 {
-                    "Condition": "CreatePrivateSubnetsCondition"
+                    "Condition": "PrivateSubnetsCondition"
                 },
                 {
                     "Fn::Not": [
@@ -543,10 +517,38 @@
                 "us-east-1"
             ]
         },
+        "PrivateSubnetsCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "CreatePrivateSubnets"
+                },
+                "true"
+            ]
+        },
+        "PrivateSubnets&3AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "PrivateSubnetsCondition"
+                },
+                {
+                    "Condition": "3AZCondition"
+                }
+            ]
+        },
+        "PrivateSubnets&4AZCondition": {
+            "Fn::And": [
+                {
+                    "Condition": "PrivateSubnetsCondition"
+                },
+                {
+                    "Condition": "4AZCondition"
+                }
+            ]
+        },
         "S3VPCEndpointCondition": {
             "Fn::And": [
                 {
-                    "Condition": "CreatePrivateSubnetsCondition"
+                    "Condition": "PrivateSubnetsCondition"
                 },
                 {
                     "Fn::Not": [
@@ -653,7 +655,7 @@
             }
         },
         "PrivateSubnet1A": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -683,7 +685,7 @@
             }
         },
         "PrivateSubnet1B": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -713,7 +715,7 @@
             }
         },
         "PrivateSubnet2A": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -743,7 +745,7 @@
             }
         },
         "PrivateSubnet2B": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -773,7 +775,7 @@
             }
         },
         "PrivateSubnet3A": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -833,7 +835,7 @@
             }
         },
         "PrivateSubnet4A": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "VpcId": {
@@ -1015,7 +1017,7 @@
             }
         },
         "PrivateSubnet1ARouteTable": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1034,7 +1036,7 @@
             }
         },
         "PrivateSubnet1ARoute": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1066,7 +1068,7 @@
             }
         },
         "PrivateSubnet1ARouteTableAssociation": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1078,7 +1080,7 @@
             }
         },
         "PrivateSubnet2ARouteTable": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1097,7 +1099,7 @@
             }
         },
         "PrivateSubnet2ARoute": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1129,7 +1131,7 @@
             }
         },
         "PrivateSubnet2ARouteTableAssociation": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1141,7 +1143,7 @@
             }
         },
         "PrivateSubnet3ARouteTable": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1160,7 +1162,7 @@
             }
         },
         "PrivateSubnet3ARoute": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1192,7 +1194,7 @@
             }
         },
         "PrivateSubnet3ARouteTableAssociation": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1204,7 +1206,7 @@
             }
         },
         "PrivateSubnet4ARouteTable": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1223,7 +1225,7 @@
             }
         },
         "PrivateSubnet4ARoute": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1255,7 +1257,7 @@
             }
         },
         "PrivateSubnet4ARouteTableAssociation": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1267,7 +1269,7 @@
             }
         },
         "PrivateSubnet1BRouteTable": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1286,7 +1288,7 @@
             }
         },
         "PrivateSubnet1BRoute": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1318,7 +1320,7 @@
             }
         },
         "PrivateSubnet1BRouteTableAssociation": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1330,7 +1332,7 @@
             }
         },
         "PrivateSubnet1BNetworkAcl": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::NetworkAcl",
             "Properties": {
                 "VpcId": {
@@ -1349,7 +1351,7 @@
             }
         },
         "PrivateSubnet1BNetworkAclEntryInbound": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
@@ -1363,7 +1365,7 @@
             }
         },
         "PrivateSubnet1BNetworkAclEntryOutbound": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
@@ -1377,7 +1379,7 @@
             }
         },
         "PrivateSubnet1BNetworkAclAssociation": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetNetworkAclAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1389,7 +1391,7 @@
             }
         },
         "PrivateSubnet2BRouteTable": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
@@ -1408,7 +1410,7 @@
             }
         },
         "PrivateSubnet2BRoute": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::Route",
             "Properties": {
                 "RouteTableId": {
@@ -1440,7 +1442,7 @@
             }
         },
         "PrivateSubnet2BRouteTableAssociation": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetRouteTableAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1452,7 +1454,7 @@
             }
         },
         "PrivateSubnet2BNetworkAcl": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::NetworkAcl",
             "Properties": {
                 "VpcId": {
@@ -1471,7 +1473,7 @@
             }
         },
         "PrivateSubnet2BNetworkAclEntryInbound": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
@@ -1485,7 +1487,7 @@
             }
         },
         "PrivateSubnet2BNetworkAclEntryOutbound": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
@@ -1499,7 +1501,7 @@
             }
         },
         "PrivateSubnet2BNetworkAclAssociation": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Type": "AWS::EC2::SubnetNetworkAclAssociation",
             "Properties": {
                 "SubnetId": {
@@ -1832,7 +1834,7 @@
             }
         },
         "NAT1EIP": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
@@ -1851,7 +1853,7 @@
             }
         },
         "NAT2EIP": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
@@ -1870,7 +1872,7 @@
             }
         },
         "NAT3EIP": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
@@ -1889,7 +1891,7 @@
             }
         },
         "NAT4EIP": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "DependsOn": "VPCGatewayAttachment",
             "Type": "AWS::EC2::EIP",
             "Properties": {
@@ -2223,7 +2225,7 @@
                     },
                     {
                         "Fn::If": [
-                            "CreatePrivateSubnets&3AZCondition",
+                            "PrivateSubnets&3AZCondition",
                             {
                                 "Ref": "PrivateSubnet3ARouteTable"
                             },
@@ -2234,7 +2236,7 @@
                     },
                     {
                         "Fn::If": [
-                            "CreatePrivateSubnets&4AZCondition",
+                            "PrivateSubnets&4AZCondition",
                             {
                                 "Ref": "PrivateSubnet4ARouteTable"
                             },
@@ -2245,7 +2247,7 @@
                     },
                     {
                         "Fn::If": [
-                            "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+                            "AdditionalPrivateSubnetsCondition",
                             {
                                 "Ref": "PrivateSubnet1BRouteTable"
                             },
@@ -2256,7 +2258,7 @@
                     },
                     {
                         "Fn::If": [
-                            "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+                            "AdditionalPrivateSubnetsCondition",
                             {
                                 "Ref": "PrivateSubnet2BRouteTable"
                             },
@@ -2308,98 +2310,98 @@
     },
     "Outputs": {
         "NAT1EIP": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Description": "NAT Gateway 1 IP address",
             "Value": {
                 "Ref": "NAT1EIP"
             }
         },
         "NAT2EIP": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Description": "NAT Gateway 2 IP address",
             "Value": {
                 "Ref": "NAT2EIP"
             }
         },
         "NAT3EIP": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Description": "NAT Gateway 3 IP address",
             "Value": {
                 "Ref": "NAT3EIP"
             }
         },
         "NAT4EIP": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Description": "NAT Gateway 4 IP address",
             "Value": {
                 "Ref": "NAT4EIP"
             }
         },
         "PrivateSubnet1ACIDR": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Description": "Private subnet 1A CIDR in Availability Zone 1",
             "Value": {
                 "Ref": "PrivateSubnet1ACIDR"
             }
         },
         "PrivateSubnet1AID": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Description": "Private subnet 1A ID in Availability Zone 1",
             "Value": {
                 "Ref": "PrivateSubnet1A"
             }
         },
         "PrivateSubnet1BCIDR": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Description": "Private subnet 1B CIDR in Availability Zone 1",
             "Value": {
                 "Ref": "PrivateSubnet1BCIDR"
             }
         },
         "PrivateSubnet1BID": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Description": "Private subnet 1B ID in Availability Zone 1",
             "Value": {
                 "Ref": "PrivateSubnet1B"
             }
         },
         "PrivateSubnet2ACIDR": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Description": "Private subnet 2A CIDR in Availability Zone 2",
             "Value": {
                 "Ref": "PrivateSubnet2ACIDR"
             }
         },
         "PrivateSubnet2AID": {
-            "Condition": "CreatePrivateSubnetsCondition",
+            "Condition": "PrivateSubnetsCondition",
             "Description": "Private subnet 2A ID in Availability Zone 2",
             "Value": {
                 "Ref": "PrivateSubnet2A"
             }
         },
         "PrivateSubnet2BCIDR": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Description": "Private subnet 2B CIDR in Availability Zone 2",
             "Value": {
                 "Ref": "PrivateSubnet2BCIDR"
             }
         },
         "PrivateSubnet2BID": {
-            "Condition": "CreatePrivateSubnets&AdditionalPrivateSubnetsCondition",
+            "Condition": "AdditionalPrivateSubnetsCondition",
             "Description": "Private subnet 2B ID in Availability Zone 2",
             "Value": {
                 "Ref": "PrivateSubnet2B"
             }
         },
         "PrivateSubnet3ACIDR": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Description": "Private subnet 3A CIDR in Availability Zone 3",
             "Value": {
                 "Ref": "PrivateSubnet3ACIDR"
             }
         },
         "PrivateSubnet3AID": {
-            "Condition": "CreatePrivateSubnets&3AZCondition",
+            "Condition": "PrivateSubnets&3AZCondition",
             "Description": "Private subnet 3A ID in Availability Zone 3",
             "Value": {
                 "Ref": "PrivateSubnet3A"
@@ -2420,14 +2422,14 @@
             }
         },
         "PrivateSubnet4ACIDR": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Description": "Private subnet 4A CIDR in Availability Zone 4",
             "Value": {
                 "Ref": "PrivateSubnet4ACIDR"
             }
         },
         "PrivateSubnet4AID": {
-            "Condition": "CreatePrivateSubnets&4AZCondition",
+            "Condition": "PrivateSubnets&4AZCondition",
             "Description": "Private subnet 4A ID in Availability Zone 4",
             "Value": {
                 "Ref": "PrivateSubnet4A"
