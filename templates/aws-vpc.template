@@ -2518,7 +2518,8 @@
             "Value": {
                 "Ref": "VPC"
             },
-            "Description": "VPC ID"
+            "Description": "VPC ID",
+	    "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID" }}
         }
     }
 }
