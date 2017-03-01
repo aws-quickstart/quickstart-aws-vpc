@@ -2508,18 +2508,73 @@
                 "Ref": "S3VPCEndpoint"
             }
         },
+     	"PrivateSubnet1ARouteTable": 
+			{
+				"Value" : {"Ref": "PrivateSubnet1ARouteTable" }
+				"Description": Private Subnet 1A Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet1ARouteTable" }}
+			},
+		"PrivateSubnet2ARouteTable": 
+			{
+				"Value" : {"Ref": "PrivateSubnet2ARouteTable" }
+				"Description": Private Subnet 2A Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet2ARouteTable" }}
+			},
+		"PrivateSubnet3ARouteTable": 
+			{
+				"Condition": "PrivateSubnets&3AZCondition",
+				"Value" : {"Ref": "PrivateSubnet3ARouteTable" }
+				"Description": Private Subnet 3A Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet3ARouteTable" }}
+			},
+		"PrivateSubnet4ARouteTable": 
+			{
+				"Condition": "PrivateSubnets&4AZCondition",
+				"Value" : {"Ref": "PrivateSubnet4ARouteTable" }
+				"Description": Private Subnet 4A Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet4ARouteTable" }}
+			},				
+		"PrivateSubnet1BRouteTable": 
+			{
+				"Condition": "AdditionalPrivateSubnetsCondition",
+				"Value" : {"Ref": "PrivateSubnet1BRouteTable" }
+				"Description": Private Subnet 1B Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet1BRouteTable" }}
+			},
+		"PrivateSubnet2BRouteTable": 
+			{
+				"Condition": "AdditionalPrivateSubnetsCondition",
+				"Value" : {"Ref": "PrivateSubnet2BRouteTable" }
+				"Description": Private Subnet 2B Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet2BRouteTable" }}
+			},
+		"PrivateSubnet3BRouteTable": 
+			{
+				"Condition": "AdditionalPrivateSubnets&3AZCondition",
+				"Value" : {"Ref": "PrivateSubnet3BRouteTable" }
+				"Description": Private Subnet 3B Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet3BRouteTable" }}
+			},	
+  		"PrivateSubnet4BRouteTable": 
+			{
+				"Condition": "AdditionalPrivateSubnets&4AZCondition",
+				"Value" : {"Ref": "PrivateSubnet4BRouteTable" }
+				"Description": Private Subnet 4B Route Table",
+				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet4BRouteTable" }}
+			},           
         "VPCCIDR": {
             "Value": {
                 "Ref": "VPCCIDR"
             },
-            "Description": "VPC CIDR"
+            "Description": "VPC CIDR",
+            "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-VPCCIDR" }}
         },
         "VPCID": {
             "Value": {
                 "Ref": "VPC"
             },
             "Description": "VPC ID",
-	    "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID" }}
+	        "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID" }}
         }
     }
 }
