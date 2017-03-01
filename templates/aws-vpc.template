@@ -2562,6 +2562,17 @@
 				"Description": "Private Subnet 4B Route Table",
 				"Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivateSubnet4BRouteTable" }}
 			},           
+                "PublicSubnetRouteTable": {
+                        "Value": {
+                                "Ref": "PublicSubnetRouteTable"
+                        },
+                        "Description": "Public Subnet Route Table",
+                        "Export": {
+                                "Name": {
+                                        "Fn::Sub": "${AWS::StackName}-PublicSubnetRouteTable"
+                                }
+                        }
+                },
         "VPCCIDR": {
             "Value": {
                 "Ref": "VPCCIDR"
