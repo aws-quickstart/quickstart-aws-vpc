@@ -2654,6 +2654,7 @@
             }
         },
         "PrivateSubnet1ARouteTable": {
+            "Condition": "PrivateSubnetsCondition",
             "Value": {
                 "Ref": "PrivateSubnet1ARouteTable"
             },
@@ -2677,6 +2678,7 @@
             }
         },
         "PrivateSubnet2ARouteTable": {
+            "Condition": "PrivateSubnetsCondition",
             "Value": {
                 "Ref": "PrivateSubnet2ARouteTable"
             },
