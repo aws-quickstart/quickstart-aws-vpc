@@ -264,8 +264,8 @@
             "Description": "S3 BucketName where VPC Flow Logs will be put.  Only required if CreateVPCFlowLogs=true",
             "Type": "String"
         },
-        "DeliverLogsPermissionArn": {
-            "Description": "The Amazon Resource Name (ARN) of an AWS Identity and Access Management (IAM) role that permits Amazon EC2 to publish flow logs to a CloudWatch Logs log group in your account. Only required if CreateVPCFlowLogs=true",
+        "FlowLogRole": {
+            "Description": "Name of AWS Identity and Access Management (IAM) role that permits Amazon EC2 to publish flow logs to a CloudWatch Logs log group in your account. Only required if CreateVPCFlowLogs=true",
             "Type": "String"
         }
     },
@@ -2335,7 +2335,7 @@
                         "Arn"
                     ]
                 },
-                "LogGroupName": "",
+                "LogGroupName": {"Ref":"BucketNameVPCFlowLogs"},
                 "ResourceId": {
                     "Ref": "VPC"
                 },
