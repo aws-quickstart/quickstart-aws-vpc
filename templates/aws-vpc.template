@@ -2572,7 +2572,7 @@
             "Value": {
                 "Ref": "PrivateSubnet1ARouteTable"
             },
-            "Description": "Private Subnet 1A Route Table",
+            "Description": "Private subnet 1A Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet1ARouteTable"
@@ -2583,7 +2583,7 @@
             "Value": {
                 "Ref": "PrivateSubnet2ARouteTable"
             },
-            "Description": "Private Subnet 2A Route Table",
+            "Description": "Private subnet 2A Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet2ARouteTable"
@@ -2595,7 +2595,7 @@
             "Value": {
                 "Ref": "PrivateSubnet3ARouteTable"
             },
-            "Description": "Private Subnet 3A Route Table",
+            "Description": "Private subnet 3A Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet3ARouteTable"
@@ -2607,7 +2607,7 @@
             "Value": {
                 "Ref": "PrivateSubnet4ARouteTable"
             },
-            "Description": "Private Subnet 4A Route Table",
+            "Description": "Private subnet 4A Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet4ARouteTable"
@@ -2619,7 +2619,7 @@
             "Value": {
                 "Ref": "PrivateSubnet1BRouteTable"
             },
-            "Description": "Private Subnet 1B Route Table",
+            "Description": "Private subnet 1B Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet1BRouteTable"
@@ -2631,7 +2631,7 @@
             "Value": {
                 "Ref": "PrivateSubnet2BRouteTable"
             },
-            "Description": "Private Subnet 2B Route Table",
+            "Description": "Private subnet 2B Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet2BRouteTable"
@@ -2643,7 +2643,7 @@
             "Value": {
                 "Ref": "PrivateSubnet3BRouteTable"
             },
-            "Description": "Private Subnet 3B Route Table",
+            "Description": "Private subnet 3B Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet3BRouteTable"
@@ -2655,7 +2655,7 @@
             "Value": {
                 "Ref": "PrivateSubnet4BRouteTable"
             },
-            "Description": "Private Subnet 4B Route Table",
+            "Description": "Private subnet 4B Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PrivateSubnet4BRouteTable"
@@ -2666,7 +2666,7 @@
             "Value": {
                 "Ref": "PublicSubnetRouteTable"
             },
-            "Description": "Public Subnet Route Table",
+            "Description": "Public subnet Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PublicSubnetRouteTable"
