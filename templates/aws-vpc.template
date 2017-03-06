@@ -263,12 +263,8 @@
         "BucketNameVPCFlowLogs": {
             "Description": "S3 BucketName where VPC Flow Logs will be put.  Only required if CreateVPCFlowLogs=true",
             "Type": "String",
-            "AllowedPattern": "^[a-zA-Z0-9.\-_]{1,255}$",
-            "ConstraintDescription": "Bucket name must match the regex \"^[a-zA-Z0-9.\-_]{1,255}$\""
-        },
-        "FlowLogRole": {
-            "Description": "Name of AWS Identity and Access Management (IAM) role that permits Amazon EC2 to publish flow logs to a CloudWatch Logs log group in your account. Only required if CreateVPCFlowLogs=true",
-            "Type": "String"
+            "AllowedPattern": "^[a-zA-Z0-9.-_]{1,255}$",
+            "ConstraintDescription": "Bucket name must match the regex \"^[a-zA-Z0-9.-_]{1,255}$\""
         }
     },
     "Mappings": {
@@ -595,6 +591,14 @@
                         }
                     ]
                 }
+            ]
+        },
+        "VPCFlowLogsCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "CreateVPCFlowLogs"
+                },
+                "true"
             ]
         }
     },
@@ -2328,16 +2332,69 @@
                 }
             }
         },
+        "VPCFlowLogsServiceRole": {
+            "Condition": "VPCFlowLogsCondition",
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "vpc-flow-logs.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "VPCRolePolicies": {
+            "Condition": "VPCFlowLogsCondition",
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "CloudWatchLogsServiceWriter",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogGroups",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "VPCFlowLogsServiceRole"
+                    }
+                ]
+            }
+        },
         "VPCFlowLog": {
+            "Condition": "VPCFlowLogsCondition",
             "Type": "AWS::EC2::FlowLog",
             "Properties": {
                 "DeliverLogsPermissionArn": {
                     "Fn::GetAtt": [
-                        { "Ref": "FlowLogRole" },   
+                        "VPCFlowLogsServiceRole",
                         "Arn"
                     ]
                 },
-                "LogGroupName": {"Ref":"BucketNameVPCFlowLogs"},
+                "LogGroupName": {
+                    "Ref": "BucketNameVPCFlowLogs"
+                },
                 "ResourceId": {
                     "Ref": "VPC"
                 },
