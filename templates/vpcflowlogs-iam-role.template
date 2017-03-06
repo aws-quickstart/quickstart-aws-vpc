@@ -62,7 +62,7 @@
             },
             "Export": {
                 "Name": {
-                    "Fn::Sub": "${AWS::StackName}-VPCFlowLogsServiceRoleAn"
+                    "Fn::Sub": "${AWS::StackName}-VPCFlowLogsServiceRoleArn"
                 }
             }
         }
