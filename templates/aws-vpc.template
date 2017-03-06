@@ -262,7 +262,9 @@
         },
         "BucketNameVPCFlowLogs": {
             "Description": "S3 BucketName where VPC Flow Logs will be put.  Only required if CreateVPCFlowLogs=true",
-            "Type": "String"
+            "Type": "String",
+            "AllowedPattern": "^[a-zA-Z0-9.\-_]{1,255}$",
+            "ConstraintDescription": "Bucket name must match the regex \"^[a-zA-Z0-9.\-_]{1,255}$\""
         },
         "FlowLogRole": {
             "Description": "Name of AWS Identity and Access Management (IAM) role that permits Amazon EC2 to publish flow logs to a CloudWatch Logs log group in your account. Only required if CreateVPCFlowLogs=true",
@@ -2331,7 +2333,7 @@
             "Properties": {
                 "DeliverLogsPermissionArn": {
                     "Fn::GetAtt": [
-                        "FlowLogRole",
+                        { "Ref": "FlowLogRole" },   
                         "Arn"
                     ]
                 },
