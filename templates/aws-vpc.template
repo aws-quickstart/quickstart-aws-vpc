@@ -263,7 +263,7 @@
         "BucketNameVPCFlowLogs": {
             "Description": "S3 BucketName where VPC Flow Logs will be put.  Only required if CreateVPCFlowLogs=true",
             "Type": "String",
-            "AllowedPattern": "^[a-zA-Z0-9.-_]{1,255}$",
+            "AllowedPattern": "^[a-zA-Z0-9.\\-_]{1,255}$",
             "ConstraintDescription": "Bucket name must match the regex \"^[a-zA-Z0-9.-_]{1,255}$\""
         }
     },
