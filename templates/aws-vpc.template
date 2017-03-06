@@ -34,7 +34,7 @@
                         "PrivateSubnet3BCIDR",
                         "PrivateSubnet4BCIDR",
                         "CreateVPCFlowLogs",
-                        "BucketNameVPCFlowLogs"
+                        "VPCFlowLogIAMRoleStackName"
                     ]
                 },
                 {
@@ -260,11 +260,13 @@
             "Description": "Set to true to create only create VPC Flow Logs",
             "Type": "String"
         },
-        "BucketNameVPCFlowLogs": {
-            "Description": "S3 BucketName where VPC Flow Logs will be put.  Only required if CreateVPCFlowLogs=true",
+        "LogGroupNameVPCFlowLogs": {
+            "Description": "Name of Log Group for VPC Flow Logs",
+            "Type": "String"
+        }
+        "VPCFlowLogIAMRoleStackName": {
+            "Description": "Name of CloudFormation Stack where vpcflowlogs-iam-role.template was used to create IAM role for VPC Flow Logs Service. Only required if CreateVPCFlowLogs=true",
             "Type": "String",
-            "AllowedPattern": "^[a-zA-Z0-9.\\-_]{1,255}$",
-            "ConstraintDescription": "Bucket name must match the regex \"^[a-zA-Z0-9.-_]{1,255}$\""
         }
     },
     "Mappings": {
@@ -2332,68 +2334,20 @@
                 }
             }
         },
-        "VPCFlowLogsServiceRole": {
-            "Condition": "VPCFlowLogsCondition",
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": [
-                                    "vpc-flow-logs.amazonaws.com"
-                                ]
-                            },
-                            "Action": [
-                                "sts:AssumeRole"
-                            ]
-                        }
-                    ]
-                }
-            }
-        },
-        "VPCRolePolicies": {
-            "Condition": "VPCFlowLogsCondition",
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "CloudWatchLogsServiceWriter",
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "logs:CreateLogGroup",
-                                "logs:CreateLogStream",
-                                "logs:DescribeLogGroups",
-                                "logs:DescribeLogStreams",
-                                "logs:PutLogEvents"
-                            ],
-                            "Resource": "*"
-                        }
-                    ]
-                },
-                "Roles": [
-                    {
-                        "Ref": "VPCFlowLogsServiceRole"
-                    }
-                ]
-            }
-        },
         "VPCFlowLog": {
             "Condition": "VPCFlowLogsCondition",
             "Type": "AWS::EC2::FlowLog",
             "Properties": {
                 "DeliverLogsPermissionArn": {
-                    "Fn::GetAtt": [
-                        "VPCFlowLogsServiceRole",
+                    "Fn::GetAtt": [ {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${VPCFlowLogIAMRoleStackName}-VPCFlowLogsServiceRole"
+                    },
                         "Arn"
                     ]
                 },
                 "LogGroupName": {
-                    "Ref": "BucketNameVPCFlowLogs"
+                    "Ref": "LogGroupNameVPCFlowLogs"
                 },
                 "ResourceId": {
                     "Ref": "VPC"
