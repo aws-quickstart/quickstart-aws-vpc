@@ -52,14 +52,17 @@
         }
     },
     "Outputs": {
-        "VPCFlowLogsServiceRole": {
+        "VPCFlowLogsServiceRoleArn": {
             "Description": "IAM Role for VPC Flow Logs writing to CloudWatch Logs",
             "Value": {
-                "Ref": "VPCFlowLogsServiceRole"
+                "Fn::GetAtt": [
+                    "VPCFlowLogsServiceRole",
+                    "Arn"
+                ]
             },
             "Export": {
                 "Name": {
-                    "Fn::Sub": "${AWS::StackName}-VPCFlowLogsServiceRole"
+                    "Fn::Sub": "${AWS::StackName}-VPCFlowLogsServiceRoleAn"
                 }
             }
         }

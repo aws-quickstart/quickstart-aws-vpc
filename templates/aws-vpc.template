@@ -263,10 +263,10 @@
         "LogGroupNameVPCFlowLogs": {
             "Description": "Name of Log Group for VPC Flow Logs",
             "Type": "String"
-        }
+        },
         "VPCFlowLogIAMRoleStackName": {
             "Description": "Name of CloudFormation Stack where vpcflowlogs-iam-role.template was used to create IAM role for VPC Flow Logs Service. Only required if CreateVPCFlowLogs=true",
-            "Type": "String",
+            "Type": "String"
         }
     },
     "Mappings": {
@@ -2339,12 +2339,9 @@
             "Type": "AWS::EC2::FlowLog",
             "Properties": {
                 "DeliverLogsPermissionArn": {
-                    "Fn::GetAtt": [ {
                     "Fn::ImportValue": {
-                        "Fn::Sub": "${VPCFlowLogIAMRoleStackName}-VPCFlowLogsServiceRole"
-                    },
-                        "Arn"
-                    ]
+                        "Fn::Sub": "${VPCFlowLogIAMRoleStackName}-VPCFlowLogsServiceRoleArn"
+                    }
                 },
                 "LogGroupName": {
                     "Ref": "LogGroupNameVPCFlowLogs"
