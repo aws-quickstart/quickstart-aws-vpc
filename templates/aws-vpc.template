@@ -255,109 +255,8 @@
             "AMI": {
                 "AWSNATHVM": "amzn-ami-vpc-nat-hvm-2017.03.0.20170401-x86_64-ebs"
             },
-            "ap-northeast-1": {
-                "AWSNATHVM": "ami-d599bdb2"
-            },
-            "ap-northeast-2": {
-                "AWSNATHVM": "ami-c96fbca7"
-            },
-            "ap-south-1": {
-                "AWSNATHVM": "ami-9e5b28f1"
-            },
-            "ap-southeast-1": {
-                "AWSNATHVM": "ami-21ba0542"
-            },
-            "ap-southeast-2": {
-                "AWSNATHVM": "ami-5cf4fb3f"
-            },
-            "ca-central-1": {
-                "AWSNATHVM": "ami-2103be45"
-            },
-            "eu-central-1": {
-                "AWSNATHVM": "ami-7604d419"
-            },
-            "eu-west-1": {
-                "AWSNATHVM": "ami-ea08368c"
-            },
-            "eu-west-2": {
-                "AWSNATHVM": "ami-141d0970"
-            },
-            "sa-east-1": {
-                "AWSNATHVM": "ami-2070134c"
-            },
-            "us-east-1": {
-                "AWSNATHVM": "ami-eccf48fa"
-            },
-            "us-east-2": {
-                "AWSNATHVM": "ami-07fdd962"
-            },
-            "us-west-1": {
-                "AWSNATHVM": "ami-d9247eb9"
-            },
-            "us-west-2": {
-                "AWSNATHVM": "ami-8c55c2ec"
-            }
-        },
-        "AWSInfoRegionMap": {
-            "ap-northeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-northeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-south-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-southeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-southeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ca-central-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-central-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "sa-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-east-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
             "us-gov-west-1": {
-                "Partition": "aws-us-gov",
-                "QuickStartS3URL": "https://s3-us-gov-west-1.amazonaws.com"
-            },
-            "us-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+                "AWSNATHVM": "ami-3f0a8f5e"
             }
         }
     },
@@ -425,33 +324,21 @@
                 }
             ]
         },
+        "GovCloudCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "AWS::Region"
+                },
+                "us-gov-west-1"
+            ]
+        },
         "NATInstanceCondition": {
             "Fn::And": [
                 {
                     "Condition": "PrivateSubnetsCondition"
                 },
                 {
-                    "Condition": "NATInstanceRegionCondition"
-                }
-            ]
-        },
-        "NATInstanceRegionCondition": {
-            "Fn::Or": [
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "us-gov-west-1"
-                    ]
-                },
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "cn-north-1"
-                    ]
+                    "Condition": "GovCloudCondition"
                 }
             ]
         },
@@ -463,7 +350,7 @@
                 {
                     "Fn::Not": [
                         {
-                            "Condition": "NATInstanceRegionCondition"
+                            "Condition": "GovCloudCondition"
                         }
                     ]
                 }
