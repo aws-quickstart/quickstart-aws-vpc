@@ -32,7 +32,9 @@
                         "PrivateSubnet1BCIDR",
                         "PrivateSubnet2BCIDR",
                         "PrivateSubnet3BCIDR",
-                        "PrivateSubnet4BCIDR"
+                        "PrivateSubnet4BCIDR",
+                        "CreateVPCFlowLogs",
+                        "VPCFlowLogIAMRoleStackName"
                     ]
                 },
                 {
@@ -248,10 +250,27 @@
             "Default": "10.0.0.0/16",
             "Description": "CIDR block for the VPC",
             "Type": "String"
+        },
+        "CreateVPCFlowLogs": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "false",
+            "Description": "Set to true to create only create VPC Flow Logs",
+            "Type": "String"
+        },
+        "LogGroupNameVPCFlowLogs": {
+            "Description": "Name of Log Group for VPC Flow Logs",
+            "Type": "String"
+        },
+        "VPCFlowLogIAMRoleStackName": {
+            "Description": "Name of CloudFormation Stack where vpcflowlogs-iam-role.template was used to create IAM role for VPC Flow Logs Service. Only required if CreateVPCFlowLogs=true",
+            "Type": "String"
         }
     },
     "Mappings": {
-        "AWSAMIRegionMap": {
+        "WSAMIRegionMap": {
             "AMI": {
                 "AWSNATHVM": "amzn-ami-vpc-nat-hvm-2017.03.0.20170401-x86_64-ebs"
             },
@@ -461,6 +480,14 @@
                         }
                     ]
                 }
+            ]
+        },
+        "VPCFlowLogsCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "CreateVPCFlowLogs"
+                },
+                "true"
             ]
         }
     },
@@ -2193,6 +2220,25 @@
                     "Ref": "VPC"
                 }
             }
+        },
+        "VPCFlowLog": {
+            "Condition": "VPCFlowLogsCondition",
+            "Type": "AWS::EC2::FlowLog",
+            "Properties": {
+                "DeliverLogsPermissionArn": {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${VPCFlowLogIAMRoleStackName}-VPCFlowLogsServiceRoleArn"
+                    }
+                },
+                "LogGroupName": {
+                    "Ref": "LogGroupNameVPCFlowLogs"
+                },
+                "ResourceId": {
+                    "Ref": "VPC"
+                },
+                "ResourceType": "VPC",
+                "TrafficType": "ALL"
+            }
         }
     },
     "Outputs": {
@@ -2641,6 +2687,111 @@
                 "Ref": "PublicSubnetRouteTable"
             },
             "Description": "Public subnet route table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PublicSubnetRouteTable"
+                }
+            }
+        },
+        "PrivateSubnet1ARouteTable": {
+            "Value": {
+                "Ref": "PrivateSubnet1ARouteTable"
+            },
+            "Description": "Private Subnet 1A Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet1ARouteTable"
+                }
+            }
+        },
+        "PrivateSubnet2ARouteTable": {
+            "Value": {
+                "Ref": "PrivateSubnet2ARouteTable"
+            },
+            "Description": "Private Subnet 2A Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet2ARouteTable"
+                }
+            }
+        },
+        "PrivateSubnet3ARouteTable": {
+            "Condition": "PrivateSubnets&3AZCondition",
+            "Value": {
+                "Ref": "PrivateSubnet3ARouteTable"
+            },
+            "Description": "Private Subnet 3A Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet3ARouteTable"
+                }
+            }
+        },
+        "PrivateSubnet4ARouteTable": {
+            "Condition": "PrivateSubnets&4AZCondition",
+            "Value": {
+                "Ref": "PrivateSubnet4ARouteTable"
+            },
+            "Description": "Private Subnet 4A Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet4ARouteTable"
+                }
+            }
+        },
+        "PrivateSubnet1BRouteTable": {
+            "Condition": "AdditionalPrivateSubnetsCondition",
+            "Value": {
+                "Ref": "PrivateSubnet1BRouteTable"
+            },
+            "Description": "Private Subnet 1B Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet1BRouteTable"
+                }
+            }
+        },
+        "PrivateSubnet2BRouteTable": {
+            "Condition": "AdditionalPrivateSubnetsCondition",
+            "Value": {
+                "Ref": "PrivateSubnet2BRouteTable"
+            },
+            "Description": "Private Subnet 2B Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet2BRouteTable"
+                }
+            }
+        },
+        "PrivateSubnet3BRouteTable": {
+            "Condition": "AdditionalPrivateSubnets&3AZCondition",
+            "Value": {
+                "Ref": "PrivateSubnet3BRouteTable"
+            },
+            "Description": "Private Subnet 3B Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet3BRouteTable"
+                }
+            }
+        },
+        "PrivateSubnet4BRouteTable": {
+            "Condition": "AdditionalPrivateSubnets&4AZCondition",
+            "Value": {
+                "Ref": "PrivateSubnet4BRouteTable"
+            },
+            "Description": "Private Subnet 4B Route Table",
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-PrivateSubnet4BRouteTable"
+                }
+            }
+        },
+        "PublicSubnetRouteTable": {
+            "Value": {
+                "Ref": "PublicSubnetRouteTable"
+            },
+            "Description": "Public Subnet Route Table",
             "Export": {
                 "Name": {
                     "Fn::Sub": "${AWS::StackName}-PublicSubnetRouteTable"

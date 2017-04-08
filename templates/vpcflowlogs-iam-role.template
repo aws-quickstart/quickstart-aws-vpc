@@ -1,0 +1,70 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This template creates an IAM role for the VPC Flow Log Service to write to Cloudwatch Logs",
+    "Resources": {
+        "VPCFlowLogsServiceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "vpc-flow-logs.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "VPCRolePolicies": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "CloudWatchLogsServiceWriter",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogGroups",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "VPCFlowLogsServiceRole"
+                    }
+                ]
+            }
+        }
+    },
+    "Outputs": {
+        "VPCFlowLogsServiceRoleArn": {
+            "Description": "IAM Role for VPC Flow Logs writing to CloudWatch Logs",
+            "Value": {
+                "Fn::GetAtt": [
+                    "VPCFlowLogsServiceRole",
+                    "Arn"
+                ]
+            },
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-VPCFlowLogsServiceRoleArn"
+                }
+            }
+        }
+    }
+}
