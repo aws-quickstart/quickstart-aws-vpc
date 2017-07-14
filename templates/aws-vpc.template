@@ -19,6 +19,7 @@
                     },
                     "Parameters": [
                         "VPCCIDR",
+                        "VPCTenancy",
                         "CreatePrivateSubnets",
                         "PrivateSubnet1ACIDR",
                         "PrivateSubnet2ACIDR",
@@ -99,10 +100,13 @@
                 },
                 "PublicSubnet4CIDR": {
                     "default": "Public subnet 4 CIDR"
-                },
+                },                
                 "VPCCIDR": {
                     "default": "VPC CIDR"
-                }
+                },
+                "VPCTenancy": {
+                    "default": "VPC Tenancy"
+                },                
             }
         }
     },
@@ -248,7 +252,14 @@
             "Default": "10.0.0.0/16",
             "Description": "CIDR block for the VPC",
             "Type": "String"
-        }
+        },
+        "VPCTenancy": {
+            "AllowedValues" : ["default","dedicated"],
+            "Default": "default",
+            "Description": "Please select the tenancy you would like to use for your VPC",
+            "Type": "String"
+            
+        }        
     },
     "Mappings": {
         "AWSAMIRegionMap": {
@@ -495,6 +506,9 @@
             "Properties": {
                 "CidrBlock": {
                     "Ref": "VPCCIDR"
+                },
+                "InstanceTenancy" : {
+                               "Ref":"VPCTenancy"
                 },
                 "EnableDnsSupport": "true",
                 "EnableDnsHostnames": "true",
