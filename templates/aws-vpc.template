@@ -19,21 +19,21 @@
                     },
                     "Parameters": [
                         "VPCCIDR",
-                        "VPCTenancy",
+                        "PublicSubnet1CIDR",
+                        "PublicSubnet2CIDR",
+                        "PublicSubnet3CIDR",
+                        "PublicSubnet4CIDR",
                         "CreatePrivateSubnets",
                         "PrivateSubnet1ACIDR",
                         "PrivateSubnet2ACIDR",
                         "PrivateSubnet3ACIDR",
                         "PrivateSubnet4ACIDR",
-                        "PublicSubnet1CIDR",
-                        "PublicSubnet2CIDR",
-                        "PublicSubnet3CIDR",
-                        "PublicSubnet4CIDR",
                         "CreateAdditionalPrivateSubnets",
                         "PrivateSubnet1BCIDR",
                         "PrivateSubnet2BCIDR",
                         "PrivateSubnet3BCIDR",
-                        "PrivateSubnet4BCIDR"
+                        "PrivateSubnet4BCIDR",
+                        "VPCTenancy"
                     ]
                 },
                 {
@@ -100,13 +100,13 @@
                 },
                 "PublicSubnet4CIDR": {
                     "default": "Public subnet 4 CIDR"
-                },                
+                },
                 "VPCCIDR": {
                     "default": "VPC CIDR"
                 },
                 "VPCTenancy": {
                     "default": "VPC Tenancy"
-                },                
+                }
             }
         }
     },
@@ -254,12 +254,14 @@
             "Type": "String"
         },
         "VPCTenancy": {
-            "AllowedValues" : ["default","dedicated"],
+            "AllowedValues": [
+                "default",
+                "dedicated"
+            ],
             "Default": "default",
-            "Description": "Please select the tenancy you would like to use for your VPC",
+            "Description": "The allowed tenancy of instances launched into the VPC",
             "Type": "String"
-            
-        }        
+        }
     },
     "Mappings": {
         "AWSAMIRegionMap": {
@@ -507,8 +509,8 @@
                 "CidrBlock": {
                     "Ref": "VPCCIDR"
                 },
-                "InstanceTenancy" : {
-                               "Ref":"VPCTenancy"
+                "InstanceTenancy": {
+                    "Ref": "VPCTenancy"
                 },
                 "EnableDnsSupport": "true",
                 "EnableDnsHostnames": "true",
