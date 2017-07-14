@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_genaz_3]"
+        "ParameterValue": "$[alfred_getaz_3]"
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
@@ -74,5 +74,9 @@
     {
         "ParameterKey": "VPCCIDR",
         "ParameterValue": "10.0.0.0/16"
+    },
+    {
+        "ParameterKey": "VPCTenancy",
+        "ParameterValue": "default"
     }
 ]

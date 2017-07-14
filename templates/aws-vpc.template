@@ -19,20 +19,21 @@
                     },
                     "Parameters": [
                         "VPCCIDR",
+                        "PublicSubnet1CIDR",
+                        "PublicSubnet2CIDR",
+                        "PublicSubnet3CIDR",
+                        "PublicSubnet4CIDR",
                         "CreatePrivateSubnets",
                         "PrivateSubnet1ACIDR",
                         "PrivateSubnet2ACIDR",
                         "PrivateSubnet3ACIDR",
                         "PrivateSubnet4ACIDR",
-                        "PublicSubnet1CIDR",
-                        "PublicSubnet2CIDR",
-                        "PublicSubnet3CIDR",
-                        "PublicSubnet4CIDR",
                         "CreateAdditionalPrivateSubnets",
                         "PrivateSubnet1BCIDR",
                         "PrivateSubnet2BCIDR",
                         "PrivateSubnet3BCIDR",
-                        "PrivateSubnet4BCIDR"
+                        "PrivateSubnet4BCIDR",
+                        "VPCTenancy"
                     ]
                 },
                 {
@@ -102,6 +103,9 @@
                 },
                 "VPCCIDR": {
                     "default": "VPC CIDR"
+                },
+                "VPCTenancy": {
+                    "default": "VPC Tenancy"
                 }
             }
         }
@@ -247,6 +251,15 @@
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.0.0/16",
             "Description": "CIDR block for the VPC",
+            "Type": "String"
+        },
+        "VPCTenancy": {
+            "AllowedValues": [
+                "default",
+                "dedicated"
+            ],
+            "Default": "default",
+            "Description": "The allowed tenancy of instances launched into the VPC",
             "Type": "String"
         }
     },
@@ -495,6 +508,9 @@
             "Properties": {
                 "CidrBlock": {
                     "Ref": "VPCCIDR"
+                },
+                "InstanceTenancy": {
+                    "Ref": "VPCTenancy"
                 },
                 "EnableDnsSupport": "true",
                 "EnableDnsHostnames": "true",
