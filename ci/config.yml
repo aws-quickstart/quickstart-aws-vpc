@@ -58,3 +58,8 @@ tests:
     regions:
       - us-east-1
     template_file: aws-vpc.template
+  dedicated-us-west-1:
+    parameter_input: aws-vpc-dedicated.json
+    regions:
+      - us-west-1
+    template_file: aws-vpc.template
