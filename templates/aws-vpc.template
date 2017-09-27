@@ -540,6 +540,12 @@
             "Properties": {
                 "Tags": [
                     {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "AWS::StackName"
+                        }
+                    },
+                    {
                         "Key": "Network",
                         "Value": "Public"
                     }
