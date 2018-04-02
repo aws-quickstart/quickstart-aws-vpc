@@ -1,4 +1,5 @@
 global:
+  govcloud: true
   marketplace-ami: false
   owner: quickstart@amazon.com
   qsname: quickstart-aws-vpc
