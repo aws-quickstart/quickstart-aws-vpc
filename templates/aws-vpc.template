@@ -347,15 +347,7 @@
                         "NVirginiaRegionCondition",
                         "ec2.internal",
                         {
-                            "Fn::Join": [
-                                "",
-                                [
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    ".compute.internal"
-                                ]
-                            ]
+                            "Fn::Sub": "${AWS::Region}.compute.internal"
                         }
                     ]
                 },
