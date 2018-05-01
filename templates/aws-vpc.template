@@ -336,32 +336,6 @@
                     "Condition": "4AZCondition"
                 }
             ]
-        },
-        "S3VPCEndpointCondition": {
-            "Fn::And": [
-                {
-                    "Condition": "PrivateSubnetsCondition"
-                },
-                {
-                    "Fn::Not": [
-                        {
-                            "Fn::Or": [
-                                {
-                                    "Condition": "GovCloudCondition"
-                                },
-                                {
-                                    "Fn::Equals": [
-                                        {
-                                            "Ref": "AWS::Region"
-                                        },
-                                        "cn-north-1"
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
         }
     },
     "Resources": {
@@ -1574,7 +1548,6 @@
             }
         },
         "S3VPCEndpoint": {
-            "Condition": "S3VPCEndpointCondition",
             "Type": "AWS::EC2::VPCEndpoint",
             "Properties": {
                 "PolicyDocument": {
@@ -1663,16 +1636,7 @@
                     }
                 ],
                 "ServiceName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "com.amazonaws.",
-                            {
-                                "Ref": "AWS::Region"
-                            },
-                            ".s3"
-                        ]
-                    ]
+                    "Fn::Sub": "com.amazonaws.${AWS::Region}.s3"
                 },
                 "VpcId": {
                     "Ref": "VPC"
