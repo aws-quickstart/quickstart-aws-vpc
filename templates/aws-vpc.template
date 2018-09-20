@@ -172,15 +172,9 @@
         "KeyPairName": {
             "Description": "Deprecated. NAT gateways are now supported in all regions.",
             "Type": "String",
-            "AllowedValues": [
-                "deprecated"
-            ],
             "Default": "deprecated"
         },
         "NATInstanceType": {
-            "AllowedValues": [
-                "deprecated"
-            ],
             "Default": "deprecated",
             "Description": "Deprecated. NAT gateways are now supported in all regions.",
             "Type": "String"
