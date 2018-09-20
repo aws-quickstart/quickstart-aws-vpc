@@ -70,5 +70,9 @@
     {
         "ParameterKey": "VPCTenancy",
         "ParameterValue": "dedicated"
+    },
+    {
+        "ParameterKey":"QSS3BucketName",
+        "ParameterValue":"$[taskcat_autobucket]"
     }
 ]
