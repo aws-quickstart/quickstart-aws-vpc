@@ -23,17 +23,35 @@
                         "PublicSubnet2CIDR",
                         "PublicSubnet3CIDR",
                         "PublicSubnet4CIDR",
+                        "PublicSubnetTag1",
+                        "PublicSubnetTag2",
+                        "PublicSubnetTag3",
                         "CreatePrivateSubnets",
                         "PrivateSubnet1ACIDR",
                         "PrivateSubnet2ACIDR",
                         "PrivateSubnet3ACIDR",
                         "PrivateSubnet4ACIDR",
+                        "PrivateSubnetATag1",
+                        "PrivateSubnetATag2",
+                        "PrivateSubnetATag3",
                         "CreateAdditionalPrivateSubnets",
                         "PrivateSubnet1BCIDR",
                         "PrivateSubnet2BCIDR",
                         "PrivateSubnet3BCIDR",
                         "PrivateSubnet4BCIDR",
+                        "PrivateSubnetBTag1",
+                        "PrivateSubnetBTag2",
+                        "PrivateSubnetBTag3",
                         "VPCTenancy"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Deprecated: NAT Instance Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName",
+                        "NATInstanceType"
                     ]
                 }
             ],
@@ -46,6 +64,12 @@
                 },
                 "CreatePrivateSubnets": {
                     "default": "Create private subnets"
+                },
+                "KeyPairName": {
+                    "default": "Deprecated: Key pair name"
+                },
+                "NATInstanceType": {
+                    "default": "Deprecated: NAT instance type"
                 },
                 "NumberOfAZs": {
                     "default": "Number of Availability Zones"
@@ -74,6 +98,24 @@
                 "PrivateSubnet4BCIDR": {
                     "default": "Private subnet 4B with dedicated network ACL CIDR"
                 },
+                "PrivateSubnetATag1": {
+                    "default": "Tag for Private A Subnets"
+                },
+                "PrivateSubnetATag2": {
+                    "default": "Tag for Private A Subnets"
+                },
+                "PrivateSubnetATag3": {
+                    "default": "Tag for Private A Subnets"
+                },
+                "PrivateSubnetBTag1": {
+                    "default": "Tag for Private B Subnets"
+                },
+                "PrivateSubnetBTag2": {
+                    "default": "Tag for Private B Subnets"
+                },
+                "PrivateSubnetBTag3": {
+                    "default": "Tag for Private B Subnets"
+                },
                 "PublicSubnet1CIDR": {
                     "default": "Public subnet 1 CIDR"
                 },
@@ -85,6 +127,15 @@
                 },
                 "PublicSubnet4CIDR": {
                     "default": "Public subnet 4 CIDR"
+                },
+                "PublicSubnetTag1": {
+                    "default": "Tag for Public Subnets"
+                },
+                "PublicSubnetTag2": {
+                    "default": "Tag for Public Subnets"
+                },
+                "PublicSubnetTag3": {
+                    "default": "Tag for Public Subnets"
                 },
                 "VPCCIDR": {
                     "default": "VPC CIDR"
@@ -116,6 +167,22 @@
             ],
             "Default": "true",
             "Description": "Set to false to create only public subnets. If false, the CIDR parameters for ALL private subnets will be ignored.",
+            "Type": "String"
+        },
+        "KeyPairName": {
+            "Description": "Deprecated. NAT gateways are now supported in all regions.",
+            "Type": "String",
+            "AllowedValues": [
+                "deprecated"
+            ],
+            "Default": "deprecated"
+        },
+        "NATInstanceType": {
+            "AllowedValues": [
+                "deprecated"
+            ],
+            "Default": "deprecated",
+            "Description": "Deprecated. NAT gateways are now supported in all regions.",
             "Type": "String"
         },
         "NumberOfAZs": {
@@ -184,6 +251,48 @@
             "Description": "CIDR block for private subnet 4B with dedicated network ACL located in Availability Zone 4",
             "Type": "String"
         },
+        "PrivateSubnetATag1": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "Network=Private",
+            "Description": "tag to add to private subnets A, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PrivateSubnetATag2": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "",
+            "Description": "tag to add to private subnets A, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PrivateSubnetATag3": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "",
+            "Description": "tag to add to private subnets A, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PrivateSubnetBTag1": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "Network=Private",
+            "Description": "tag to add to private subnets B, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PrivateSubnetBTag2": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "",
+            "Description": "tag to add to private subnets B, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PrivateSubnetBTag3": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "",
+            "Description": "tag to add to private subnets B, in format Key=Value (Optional)",
+            "Type": "String"
+        },
         "PublicSubnet1CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
@@ -210,6 +319,27 @@
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.176.0/20",
             "Description": "CIDR block for the public DMZ subnet 4 located in Availability Zone 4",
+            "Type": "String"
+        },
+        "PublicSubnetTag1": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "Network=Public",
+            "Description": "tag to add to public subnets, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PublicSubnetTag2": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "",
+            "Description": "tag to add to public subnets, in format Key=Value (Optional)",
+            "Type": "String"
+        },
+        "PublicSubnetTag3": {
+            "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
+            "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
+            "Default": "",
+            "Description": "tag to add to public subnets, in format Key=Value (Optional)",
             "Type": "String"
         },
         "VPCCIDR": {
@@ -336,6 +466,114 @@
                     "Condition": "4AZCondition"
                 }
             ]
+        },
+        "PrivateSubnetATag1Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PrivateSubnetATag1"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PrivateSubnetATag2Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PrivateSubnetATag2"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PrivateSubnetATag3Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PrivateSubnetATag3"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PrivateSubnetBTag1Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PrivateSubnetBTag1"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PrivateSubnetBTag2Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PrivateSubnetBTag2"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PrivateSubnetBTag3Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PrivateSubnetBTag3"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PublicSubnetTag1Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PublicSubnetTag1"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PublicSubnetTag2Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PublicSubnetTag2"
+                        },
+                        ""
+                    ]
+                }
+            ]
+        },
+        "PublicSubnetTag3Condition": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PublicSubnetTag3"
+                        },
+                        ""
+                    ]
+                }
+            ]
         }
     },
     "Resources": {
@@ -397,10 +635,6 @@
                         "Value": {
                             "Ref": "AWS::StackName"
                         }
-                    },
-                    {
-                        "Key": "Network",
-                        "Value": "Public"
                     }
                 ]
             }
@@ -440,8 +674,112 @@
                         "Value": "Private subnet 1A"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetATag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -470,8 +808,112 @@
                         "Value": "Private subnet 1B"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetBTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -500,8 +942,112 @@
                         "Value": "Private subnet 2A"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetATag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -530,8 +1076,112 @@
                         "Value": "Private subnet 2B"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetBTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -560,8 +1210,112 @@
                         "Value": "Private subnet 3A"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetATag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -590,8 +1344,112 @@
                         "Value": "Private subnet 3B"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetBTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -620,8 +1478,112 @@
                         "Value": "Private subnet 4A"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetATag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetATag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetATag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -650,8 +1612,112 @@
                         "Value": "Private subnet 4B"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Private"
+                        "Fn::If": [
+                            "PrivateSubnetBTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PrivateSubnetBTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PrivateSubnetBTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -679,8 +1745,112 @@
                         "Value": "Public subnet 1"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Fn::If": [
+                            "PublicSubnetTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -709,8 +1879,112 @@
                         "Value": "Public subnet 2"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Fn::If": [
+                            "PublicSubnetTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -740,8 +2014,112 @@
                         "Value": "Public subnet 3"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Fn::If": [
+                            "PublicSubnetTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ],
                 "MapPublicIpOnLaunch": true
@@ -771,8 +2149,112 @@
                         "Value": "Public subnet 4"
                     },
                     {
-                        "Key": "Network",
-                        "Value": "Public"
+                        "Fn::If": [
+                            "PublicSubnetTag1Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag2Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
+                        "Fn::If": [
+                            "PublicSubnetTag3Condition",
+                            {
+                                "Key": {
+                                    "Fn::Select": [
+                                        "0",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Value": {
+                                    "Fn::Select": [
+                                        "1",
+                                        {
+                                            "Fn::Split": [
+                                                "=",
+                                                {
+                                                    "Ref": "PublicSubnetTag3"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ],
                 "MapPublicIpOnLaunch": true
