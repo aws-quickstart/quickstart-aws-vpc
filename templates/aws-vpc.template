@@ -3446,7 +3446,6 @@
             }
         },
         "S3VPCEndpoint": {
-            "Condition": "S3VPCEndpointCondition",
             "Description": "S3 VPC Endpoint",
             "Value": {
                 "Ref": "S3VPCEndpoint"
