@@ -12,14 +12,6 @@
         "ParameterValue": "true"
     },
     {
-        "ParameterKey": "KeyPairName",
-        "ParameterValue": "$[alfred_getkeypair]"
-    },
-    {
-        "ParameterKey": "NATInstanceType",
-        "ParameterValue": "t2.small"
-    },
-    {
         "ParameterKey": "NumberOfAZs",
         "ParameterValue": "2"
     },
