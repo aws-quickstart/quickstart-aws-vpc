@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_getaz_2]"
+        "ParameterValue": "$[taskcat_getaz_2]"
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
@@ -70,9 +70,5 @@
     {
         "ParameterKey": "VPCTenancy",
         "ParameterValue": "default"
-    },
-    {
-        "ParameterKey":"QSS3BucketName",
-        "ParameterValue":"$[taskcat_autobucket]"
     }
 ]
