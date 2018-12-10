@@ -44,15 +44,6 @@
                         "PrivateSubnetBTag3",
                         "VPCTenancy"
                     ]
-                },
-                {
-                    "Label": {
-                        "default": "Deprecated: NAT Instance Configuration"
-                    },
-                    "Parameters": [
-                        "KeyPairName",
-                        "NATInstanceType"
-                    ]
                 }
             ],
             "ParameterLabels": {
@@ -64,12 +55,6 @@
                 },
                 "CreatePrivateSubnets": {
                     "default": "Create private subnets"
-                },
-                "KeyPairName": {
-                    "default": "Deprecated: Key pair name"
-                },
-                "NATInstanceType": {
-                    "default": "Deprecated: NAT instance type"
                 },
                 "NumberOfAZs": {
                     "default": "Number of Availability Zones"
@@ -167,16 +152,6 @@
             ],
             "Default": "true",
             "Description": "Set to false to create only public subnets. If false, the CIDR parameters for ALL private subnets will be ignored.",
-            "Type": "String"
-        },
-        "KeyPairName": {
-            "Description": "Deprecated. NAT gateways are now supported in all regions.",
-            "Type": "String",
-            "Default": "deprecated"
-        },
-        "NATInstanceType": {
-            "Default": "deprecated",
-            "Description": "Deprecated. NAT gateways are now supported in all regions.",
             "Type": "String"
         },
         "NumberOfAZs": {
@@ -597,8 +572,8 @@
                 "InstanceTenancy": {
                     "Ref": "VPCTenancy"
                 },
-                "EnableDnsSupport": "true",
-                "EnableDnsHostnames": "true",
+                "EnableDnsSupport": true,
+                "EnableDnsHostnames": true,
                 "Tags": [
                     {
                         "Key": "Name",
@@ -2498,13 +2473,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "false",
+                "Egress": false,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet1BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet1BNetworkAclEntryOutbound": {
@@ -2512,13 +2487,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "true",
+                "Egress": true,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet1BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet1BNetworkAclAssociation": {
@@ -2601,13 +2576,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "false",
+                "Egress": false,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet2BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet2BNetworkAclEntryOutbound": {
@@ -2615,13 +2590,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "true",
+                "Egress": true,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet2BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet2BNetworkAclAssociation": {
@@ -2704,13 +2679,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "false",
+                "Egress": false,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet3BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet3BNetworkAclEntryOutbound": {
@@ -2718,13 +2693,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "true",
+                "Egress": true,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet3BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet3BNetworkAclAssociation": {
@@ -2807,13 +2782,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "false",
+                "Egress": false,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet4BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet4BNetworkAclEntryOutbound": {
@@ -2821,13 +2796,13 @@
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "CidrBlock": "0.0.0.0/0",
-                "Egress": "true",
+                "Egress": true,
                 "NetworkAclId": {
                     "Ref": "PrivateSubnet4BNetworkAcl"
                 },
-                "Protocol": "-1",
+                "Protocol": -1,
                 "RuleAction": "allow",
-                "RuleNumber": "100"
+                "RuleNumber": 100
             }
         },
         "PrivateSubnet4BNetworkAclAssociation": {
@@ -3016,6 +2991,7 @@
             }
         },
         "S3VPCEndpoint": {
+            "Condition": "PrivateSubnetsCondition",
             "Type": "AWS::EC2::VPCEndpoint",
             "Properties": {
                 "PolicyDocument": {
@@ -3446,6 +3422,7 @@
             }
         },
         "S3VPCEndpoint": {
+            "Condition": "PrivateSubnetsCondition",
             "Description": "S3 VPC Endpoint",
             "Value": {
                 "Ref": "S3VPCEndpoint"
