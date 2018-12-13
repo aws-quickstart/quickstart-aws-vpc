@@ -20,13 +20,13 @@ global:
     - us-west-2
   reporting: true
 tests:
-  defaults:
+  vpc-defaults:
     parameter_input: aws-vpc-defaults.json
     template_file: aws-vpc.template
-  complete:
+  vpc-complete:
     parameter_input: aws-vpc-complete.json
     template_file: aws-vpc.template
-  public:
+  vpc-public:
     parameter_input: aws-vpc-public.json
     template_file: aws-vpc.template
   3az-eu-west-1:
