@@ -44,6 +44,15 @@
                         "PrivateSubnetBTag3",
                         "VPCTenancy"
                     ]
+                },
+                {
+                    "Label": {
+                        "default": "Deprecated: NAT Instance Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName",
+                        "NATInstanceType"
+                    ]
                 }
             ],
             "ParameterLabels": {
@@ -55,6 +64,12 @@
                 },
                 "CreatePrivateSubnets": {
                     "default": "Create private subnets"
+                },
+                "KeyPairName": {
+                    "default": "Deprecated": "Key pair name"
+                },
+                "NATInstanceType": {
+                    "default": "Deprecated": "NAT instance type"
                 },
                 "NumberOfAZs": {
                     "default": "Number of Availability Zones"
@@ -152,6 +167,16 @@
             ],
             "Default": "true",
             "Description": "Set to false to create only public subnets. If false, the CIDR parameters for ALL private subnets will be ignored.",
+            "Type": "String"
+        },
+        "KeyPairName": {
+            "Description": "Deprecated. NAT gateways are now supported in all regions.",
+            "Type": "String",
+            "Default": "deprecated"
+        },
+        "NATInstanceType": {
+            "Default": "deprecated",
+            "Description": "Deprecated. NAT gateways are now supported in all regions.",
             "Type": "String"
         },
         "NumberOfAZs": {
