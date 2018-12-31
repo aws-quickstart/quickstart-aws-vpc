@@ -66,10 +66,10 @@
                     "default": "Create private subnets"
                 },
                 "KeyPairName": {
-                    "default": "Deprecated": "Key pair name"
+                    "default": "Deprecated: Key pair name"
                 },
                 "NATInstanceType": {
-                    "default": "Deprecated": "NAT instance type"
+                    "default": "Deprecated: NAT instance type"
                 },
                 "NumberOfAZs": {
                     "default": "Number of Availability Zones"
