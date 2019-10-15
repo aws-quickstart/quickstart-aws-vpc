@@ -6,7 +6,7 @@
             "ParameterGroups": [
                 {
                     "Label": {
-                        "default": "Availability Zone Configuration"
+                        "default": "Availability Zone configuration"
                     },
                     "Parameters": [
                         "AvailabilityZones",
@@ -15,7 +15,7 @@
                 },
                 {
                     "Label": {
-                        "default": "Network Configuration"
+                        "default": "Network configuration"
                     },
                     "Parameters": [
                         "VPCCIDR",
@@ -47,7 +47,7 @@
                 },
                 {
                     "Label": {
-                        "default": "Deprecated: NAT Instance Configuration"
+                        "default": "Deprecated: NAT instance configuration"
                     },
                     "Parameters": [
                         "KeyPairName",
@@ -60,7 +60,7 @@
                     "default": "Availability Zones"
                 },
                 "CreateAdditionalPrivateSubnets": {
-                    "default": "Create additional private subnets with dedicated network ACLs"
+                    "default": "Create additional private subnets"
                 },
                 "CreatePrivateSubnets": {
                     "default": "Create private subnets"
@@ -78,25 +78,25 @@
                     "default": "Private subnet 1A CIDR"
                 },
                 "PrivateSubnet1BCIDR": {
-                    "default": "Private subnet 1B with dedicated network ACL CIDR"
+                    "default": "Private subnet 1B CIDR"
                 },
                 "PrivateSubnet2ACIDR": {
                     "default": "Private subnet 2A CIDR"
                 },
                 "PrivateSubnet2BCIDR": {
-                    "default": "Private subnet 2B with dedicated network ACL CIDR"
+                    "default": "Private subnet 2B CIDR"
                 },
                 "PrivateSubnet3ACIDR": {
                     "default": "Private subnet 3A CIDR"
                 },
                 "PrivateSubnet3BCIDR": {
-                    "default": "Private subnet 3B with dedicated network ACL CIDR"
+                    "default": "Private subnet 3B CIDR"
                 },
                 "PrivateSubnet4ACIDR": {
                     "default": "Private subnet 4A CIDR"
                 },
                 "PrivateSubnet4BCIDR": {
-                    "default": "Private subnet 4B with dedicated network ACL CIDR"
+                    "default": "Private subnet 4B CIDR"
                 },
                 "PrivateSubnetATag1": {
                     "default": "Tag for Private A Subnets"
@@ -129,19 +129,19 @@
                     "default": "Public subnet 4 CIDR"
                 },
                 "PublicSubnetTag1": {
-                    "default": "Tag for Public Subnets"
+                    "default": "Tag for public subnets"
                 },
                 "PublicSubnetTag2": {
-                    "default": "Tag for Public Subnets"
+                    "default": "Tag for public subnets"
                 },
                 "PublicSubnetTag3": {
-                    "default": "Tag for Public Subnets"
+                    "default": "Tag for public subnets"
                 },
                 "VPCCIDR": {
                     "default": "VPC CIDR"
                 },
                 "VPCTenancy": {
-                    "default": "VPC Tenancy"
+                    "default": "VPC tenancy"
                 }
             }
         }
@@ -157,7 +157,7 @@
                 "false"
             ],
             "Default": "false",
-            "Description": "Set to true to create a network ACL protected subnet in each Availability Zone. If false, the CIDR parameters for those subnets will be ignored. If true, it also requires that the 'Create private subnets' parameter is also true to have any effect.",
+            "Description": "Choose true to create a network ACL protected subnet in each Availability Zone. If true, you must also set the 'Create private subnets' parameter to true. If false, the CIDR parameters for those subnets will be ignored.",
             "Type": "String"
         },
         "CreatePrivateSubnets": {
@@ -166,17 +166,17 @@
                 "false"
             ],
             "Default": "true",
-            "Description": "Set to false to create only public subnets. If false, the CIDR parameters for ALL private subnets will be ignored.",
+            "Description": "Choose false to create only public subnets. If false, the CIDR parameters for ALL private subnets will be ignored.",
             "Type": "String"
         },
         "KeyPairName": {
-            "Description": "Deprecated. NAT gateways are now supported in all regions.",
+            "Description": "Deprecated. NAT gateways are now supported in all Regions.",
             "Type": "String",
             "Default": "deprecated"
         },
         "NATInstanceType": {
             "Default": "deprecated",
-            "Description": "Deprecated. NAT gateways are now supported in all regions.",
+            "Description": "Deprecated. NAT gateways are now supported in all Regions.",
             "Type": "String"
         },
         "NumberOfAZs": {
@@ -193,154 +193,154 @@
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.0.0/19",
-            "Description": "CIDR block for private subnet 1A located in Availability Zone 1",
+            "Description": "CIDR block for private subnet 1A located in Availability Zone 1.",
             "Type": "String"
         },
         "PrivateSubnet1BCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.192.0/21",
-            "Description": "CIDR block for private subnet 1B with dedicated network ACL located in Availability Zone 1",
+            "Description": "CIDR block for private subnet 1B with dedicated network ACL located in Availability Zone 1.",
             "Type": "String"
         },
         "PrivateSubnet2ACIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.32.0/19",
-            "Description": "CIDR block for private subnet 2A located in Availability Zone 2",
+            "Description": "CIDR block for private subnet 2A located in Availability Zone 2.",
             "Type": "String"
         },
         "PrivateSubnet2BCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.200.0/21",
-            "Description": "CIDR block for private subnet 2B with dedicated network ACL located in Availability Zone 2",
+            "Description": "CIDR block for private subnet 2B with dedicated network ACL located in Availability Zone 2.",
             "Type": "String"
         },
         "PrivateSubnet3ACIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.64.0/19",
-            "Description": "CIDR block for private subnet 3A located in Availability Zone 3",
+            "Description": "CIDR block for private subnet 3A located in Availability Zone 3.",
             "Type": "String"
         },
         "PrivateSubnet3BCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.208.0/21",
-            "Description": "CIDR block for private subnet 3B with dedicated network ACL located in Availability Zone 3",
+            "Description": "CIDR block for private subnet 3B with dedicated network ACL located in Availability Zone 3.",
             "Type": "String"
         },
         "PrivateSubnet4ACIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.96.0/19",
-            "Description": "CIDR block for private subnet 4A located in Availability Zone 4",
+            "Description": "CIDR block for private subnet 4A located in Availability Zone 4.",
             "Type": "String"
         },
         "PrivateSubnet4BCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.216.0/21",
-            "Description": "CIDR block for private subnet 4B with dedicated network ACL located in Availability Zone 4",
+            "Description": "CIDR block for private subnet 4B with dedicated network ACL located in Availability Zone 4.",
             "Type": "String"
         },
         "PrivateSubnetATag1": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "Network=Private",
-            "Description": "tag to add to private subnets A, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to private subnets A, in format Key=Value.",
             "Type": "String"
         },
         "PrivateSubnetATag2": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "",
-            "Description": "tag to add to private subnets A, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to private subnets A, in format Key=Value.",
             "Type": "String"
         },
         "PrivateSubnetATag3": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "",
-            "Description": "tag to add to private subnets A, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to private subnets A, in format Key=Value.",
             "Type": "String"
         },
         "PrivateSubnetBTag1": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "Network=Private",
-            "Description": "tag to add to private subnets B, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to private subnets B, in format Key=Value.",
             "Type": "String"
         },
         "PrivateSubnetBTag2": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "",
-            "Description": "tag to add to private subnets B, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to private subnets B, in format Key=Value.",
             "Type": "String"
         },
         "PrivateSubnetBTag3": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "",
-            "Description": "tag to add to private subnets B, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to private subnets B, in format Key=Value.",
             "Type": "String"
         },
         "PublicSubnet1CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.128.0/20",
-            "Description": "CIDR block for the public DMZ subnet 1 located in Availability Zone 1",
+            "Description": "CIDR block for the public DMZ subnet 1 located in Availability Zone 1.",
             "Type": "String"
         },
         "PublicSubnet2CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.144.0/20",
-            "Description": "CIDR block for the public DMZ subnet 2 located in Availability Zone 2",
+            "Description": "CIDR block for the public DMZ subnet 2 located in Availability Zone 2.",
             "Type": "String"
         },
         "PublicSubnet3CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.160.0/20",
-            "Description": "CIDR block for the public DMZ subnet 3 located in Availability Zone 3",
+            "Description": "CIDR block for the public DMZ subnet 3 located in Availability Zone 3.",
             "Type": "String"
         },
         "PublicSubnet4CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.176.0/20",
-            "Description": "CIDR block for the public DMZ subnet 4 located in Availability Zone 4",
+            "Description": "CIDR block for the public DMZ subnet 4 located in Availability Zone 4.",
             "Type": "String"
         },
         "PublicSubnetTag1": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "Network=Public",
-            "Description": "tag to add to public subnets, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to public subnets, in format Key=Value.",
             "Type": "String"
         },
         "PublicSubnetTag2": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "",
-            "Description": "tag to add to public subnets, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to public subnets, in format Key=Value.",
             "Type": "String"
         },
         "PublicSubnetTag3": {
             "AllowedPattern": "^([a-zA-Z0-9+\\-._:/@]+=[a-zA-Z0-9+\\-.,_:/@ *\\\\\"'\\[\\]\\{\\}]*)?$",
             "ConstraintDescription": "tags must be in format \"Key=Value\" keys can only contain [a-zA-Z0-9+\\-._:/@], values can contain [a-zA-Z0-9+\\-._:/@ *\\\\\"'\\[\\]\\{\\}]",
             "Default": "",
-            "Description": "tag to add to public subnets, in format Key=Value (Optional)",
+            "Description": "(Optional) Tag to add to public subnets, in format Key=Value.",
             "Type": "String"
         },
         "VPCCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.0.0/16",
-            "Description": "CIDR block for the VPC",
+            "Description": "CIDR block for the VPC.",
             "Type": "String"
         },
         "VPCTenancy": {
@@ -349,7 +349,7 @@
                 "dedicated"
             ],
             "Default": "default",
-            "Description": "The allowed tenancy of instances launched into the VPC",
+            "Description": "The allowed tenancy of instances launched into the VPC.",
             "Type": "String"
         }
     },
