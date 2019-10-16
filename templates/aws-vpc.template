@@ -99,22 +99,22 @@
                     "default": "Private subnet 4B CIDR"
                 },
                 "PrivateSubnetATag1": {
-                    "default": "Tag for Private A Subnets"
+                    "default": "Tag 1 for Private A Subnets"
                 },
                 "PrivateSubnetATag2": {
-                    "default": "Tag for Private A Subnets"
+                    "default": "Tag 2 for Private A Subnets"
                 },
                 "PrivateSubnetATag3": {
-                    "default": "Tag for Private A Subnets"
+                    "default": "Tag 3 for Private A Subnets"
                 },
                 "PrivateSubnetBTag1": {
-                    "default": "Tag for Private B Subnets"
+                    "default": "Tag 1 for Private B Subnets"
                 },
                 "PrivateSubnetBTag2": {
-                    "default": "Tag for Private B Subnets"
+                    "default": "Tag 2 for Private B Subnets"
                 },
                 "PrivateSubnetBTag3": {
-                    "default": "Tag for Private B Subnets"
+                    "default": "Tag 3 for Private B Subnets"
                 },
                 "PublicSubnet1CIDR": {
                     "default": "Public subnet 1 CIDR"
@@ -129,13 +129,13 @@
                     "default": "Public subnet 4 CIDR"
                 },
                 "PublicSubnetTag1": {
-                    "default": "Tag for public subnets"
+                    "default": "Tag 1 for public subnets"
                 },
                 "PublicSubnetTag2": {
-                    "default": "Tag for public subnets"
+                    "default": "Tag 2 for public subnets"
                 },
                 "PublicSubnetTag3": {
-                    "default": "Tag for public subnets"
+                    "default": "Tag 3 for public subnets"
                 },
                 "VPCCIDR": {
                     "default": "VPC CIDR"
