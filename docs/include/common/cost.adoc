@@ -1,0 +1,17 @@
+
+You are responsible for the cost of the AWS services used while running
+this Quick Start reference deployment. There is no additional cost for
+using the Quick Start.
+
+The AWS CloudFormation template for this Quick Start includes
+configuration parameters that you can customize. Some of the settings,
+such as the instance type, number of Availability Zones, use of NAT
+gateways or NAT instances (depending on the AWS Region you choose), and
+amount of data that flows through the NAT device, will determine the
+cost of deployment. To get an estimate, you can use the
+http://calculator.s3.amazonaws.com/index.html[AWS Simple Monthly
+Calculator].
+
+For pricing details, see the https://aws.amazon.com/ec2/pricing/[Amazon
+EC2 pricing] and https://aws.amazon.com/vpc/pricing/[Amazon VPC pricing]
+pages.

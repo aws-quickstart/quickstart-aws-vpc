@@ -1,0 +1,39 @@
+Deploying this Quick Start with the *default parameters* builds the
+following virtual networking environment in the AWS Cloud.
+
+image::architecture.png[Architecture,640,480]
+
+* Note that the IP addresses exclude five addresses from each subnet
+that are reserved and unavailable for use.
+
+Figure 1: Modular Amazon VPC architecture on AWS
+(https://docs.aws.amazon.com/quickstart/latest/vpc/images/quickstart-vpc-design-fullscreen.png[full-screen view])
+
+The AWS CloudFormation template sets up the virtual network and creates
+networking resources.
+
+The template creates a Multi-AZ, multi-subnet VPC infrastructure with
+managed NAT gateways in the public subnet for each Availability Zone.
+You can also create additional private subnets with dedicated custom
+network access control lists (ACLs). If you deploy the Quick Start in a
+region that doesn’t support NAT gateways, NAT instances are deployed
+instead. Default subnet sizes are based on a typical deployment but can
+be reconfigured, as discussed in the link:#subnet-sizing[Subnet Sizing]
+section.
+
+The Quick Start also includes VPC endpoints, which provide a secure,
+reliable connection to Amazon S3 without requiring an Internet gateway,
+a NAT device, or a virtual private gateway. With these endpoints, you
+can access S3 resources from within the VPC created by the Quick Start.
+These endpoints are valid only for the AWS Region in which you launch
+the Quick Start.
+
+The Quick Start uses the default endpoint policy, which gives any user
+or service within the VPC full access to Amazon S3 resources. This
+policy supplements any IAM user policies or S3 bucket policies that you
+may have in place.
+
+The Quick Start also enables Domain Name System (DNS) resolution in the
+VPC. For more information about VPC endpoints, see the
+http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-endpoints-s3.html[AWS
+documentation].

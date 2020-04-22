@@ -1,0 +1,114 @@
+IMPORTANT: Updated on 2020-02-29 02:28:49
+
+== Availability Zone Configuration
+
+[width="100%",cols="27%,11%,62%",options="header",]
+|===
+|Parameter label (name) |Default |Description
+|**Availability Zones**(`AvailabilityZones`) |**Requires Input** |List
+of Availability Zones to use for the subnets in the VPC. Note: The
+logical order is preserved.
+
+|**Number of Availability Zones**(`NumberOfAZs`) |2 |Number of
+Availability Zones to use in the VPC. This must match your selections in
+the list of Availability Zones parameter.
+|===
+== Network Configuration
+
+[width="100%",cols="29%,4%,67%",options="header",]
+|===
+|Parameter label (name) |Default |Description
+|**VPC CIDR**(`VPCCIDR`) |10.0.0.0/16 |CIDR block for the VPC
+
+|**Public subnet 1 CIDR**(`PublicSubnet1CIDR`) |10.0.128.0/20 |CIDR
+block for the public DMZ subnet 1 located in Availability Zone 1
+
+|**Public subnet 2 CIDR**(`PublicSubnet2CIDR`) |10.0.144.0/20 |CIDR
+block for the public DMZ subnet 2 located in Availability Zone 2
+
+|**Public subnet 3 CIDR**(`PublicSubnet3CIDR`) |10.0.160.0/20 |CIDR
+block for the public DMZ subnet 3 located in Availability Zone 3
+
+|**Public subnet 4 CIDR**(`PublicSubnet4CIDR`) |10.0.176.0/20 |CIDR
+block for the public DMZ subnet 4 located in Availability Zone 4
+
+|**Tag for Public Subnets**(`PublicSubnetTag1`) |Network=Public |tag to
+add to public subnets, in format Key=Value (Optional)
+
+|**Tag for Public Subnets**(`PublicSubnetTag2`) | |tag to add to public
+subnets, in format Key=Value (Optional)
+
+|**Tag for Public Subnets**(`PublicSubnetTag3`) | |tag to add to public
+subnets, in format Key=Value (Optional)
+
+|**Create private subnets**(`CreatePrivateSubnets`) |true |Set to false
+to create only public subnets. If false, the CIDR parameters for ALL
+private subnets will be ignored.
+
+|**Private subnet 1A CIDR**(`PrivateSubnet1ACIDR`) |10.0.0.0/19 |CIDR
+block for private subnet 1A located in Availability Zone 1
+
+|**Private subnet 2A CIDR**(`PrivateSubnet2ACIDR`) |10.0.32.0/19 |CIDR
+block for private subnet 2A located in Availability Zone 2
+
+|**Private subnet 3A CIDR**(`PrivateSubnet3ACIDR`) |10.0.64.0/19 |CIDR
+block for private subnet 3A located in Availability Zone 3
+
+|**Private subnet 4A CIDR**(`PrivateSubnet4ACIDR`) |10.0.96.0/19 |CIDR
+block for private subnet 4A located in Availability Zone 4
+
+|**Tag for Private A Subnets**(`PrivateSubnetATag1`) |Network=Private
+|tag to add to private subnets A, in format Key=Value (Optional)
+
+|**Tag for Private A Subnets**(`PrivateSubnetATag2`) | |tag to add to
+private subnets A, in format Key=Value (Optional)
+
+|**Tag for Private A Subnets**(`PrivateSubnetATag3`) | |tag to add to
+private subnets A, in format Key=Value (Optional)
+
+|**Create additional private subnets with dedicated network
+ACLs**(`CreateAdditionalPrivateSubnets`) |false |Set to true to create a
+network ACL protected subnet in each Availability Zone. If false, the
+CIDR parameters for those subnets will be ignored. If true, it also
+requires that the `Create private subnets' parameter is also true to
+have any effect.
+
+|**Private subnet 1B with dedicated network ACL
+CIDR**(`PrivateSubnet1BCIDR`) |10.0.192.0/21 |CIDR block for private
+subnet 1B with dedicated network ACL located in Availability Zone 1
+
+|**Private subnet 2B with dedicated network ACL
+CIDR**(`PrivateSubnet2BCIDR`) |10.0.200.0/21 |CIDR block for private
+subnet 2B with dedicated network ACL located in Availability Zone 2
+
+|**Private subnet 3B with dedicated network ACL
+CIDR**(`PrivateSubnet3BCIDR`) |10.0.208.0/21 |CIDR block for private
+subnet 3B with dedicated network ACL located in Availability Zone 3
+
+|**Private subnet 4B with dedicated network ACL
+CIDR**(`PrivateSubnet4BCIDR`) |10.0.216.0/21 |CIDR block for private
+subnet 4B with dedicated network ACL located in Availability Zone 4
+
+|**Tag for Private B Subnets**(`PrivateSubnetBTag1`) |Network=Private
+|tag to add to private subnets B, in format Key=Value (Optional)
+
+|**Tag for Private B Subnets**(`PrivateSubnetBTag2`) | |tag to add to
+private subnets B, in format Key=Value (Optional)
+
+|**Tag for Private B Subnets**(`PrivateSubnetBTag3`) | |tag to add to
+private subnets B, in format Key=Value (Optional)
+
+|**VPC Tenancy**(`VPCTenancy`) |default |The allowed tenancy of
+instances launched into the VPC
+|===
+== DEPRECATED: NAT Instance Configuration
+
+[width="100%",cols="46%,8%,46%",options="header",]
+|===
+|Parameter label (name) |Default |Description
+|**DEPRECATED: Key pair name**(`KeyPairName`) |deprecated |DEPRECATED.
+NAT gateways are now supported in all regions.
+
+|**DEPRECATED: NAT instance type**(`NATInstanceType`) |deprecated
+|DEPRECATED. NAT gateways are now supported in all regions.
+|===

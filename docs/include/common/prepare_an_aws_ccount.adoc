@@ -1,0 +1,40 @@
+[arabic]
+. If you don’t already have an AWS account, create one at
+https://aws.amazon.com by following the on-screen instructions. Part of
+the sign-up process involves receiving a phone call and entering a PIN
+using the phone keypad.
+. Use the region selector in the navigation bar to choose the AWS Region
+where you want to deploy the Quick Start on AWS.
+
+image:media/image3.png[image,width=138,height=282]
+
+Figure 2: Choosing an AWS Region
+
+*Tip* Consider choosing a region closest to your data center or
+corporate network to reduce network latency between systems running on
+AWS and the systems and users on your corporate network.
+
+Also, note that your choice of region will determine whether the Quick
+Start deploys NAT gateways or NAT instances for network connections. For
+a list of regions that support NAT gateways, see
+http://aws.amazon.com/vpc/pricing/[Amazon VPC pricing].
+
+[arabic, start=3]
+. Create a
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[key
+pair] in your preferred region. To do this, in the navigation pane of
+the Amazon EC2 console, choose *Key Pairs*, *Create Key Pair*, type a
+name, and then choose *Create*.
+
+image:media/image4.png[image,width=634,height=307]
+
+Figure 3: Creating a key pair
+
+Amazon EC2 uses public-key cryptography to encrypt and decrypt login
+information. To be able to log in to your instances, you must create a
+key pair. With Windows instances, we use the key pair to obtain the
+administrator password via the Amazon EC2 console and then log in using
+Remote Desktop Protocol (RDP) as explained in the
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair[step-by-step
+instructions] in the _Amazon Elastic Compute Cloud User Guide_. On
+Linux, we use the key pair to authenticate SSH login.

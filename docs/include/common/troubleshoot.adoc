@@ -1,0 +1,66 @@
+
+When you deploy this Quick Start, if you encounter a *CREATE_FAILED*
+error instead of the *CREATE_COMPLETE* status code, we recommend that
+you relaunch the template with *Rollback on failure* set to *No*. (This
+setting is under *Advanced* in the AWS CloudFormation console, *Options*
+page.) With this setting, the stack’s state will be retained and the
+instance will be left running, so you can troubleshoot the issue.
+(You’ll want to look at the log files in
+%ProgramFiles%\Amazon\EC2ConfigService and in the C:\cfn\log folder.)
+
+____
+*Important* When you set *Rollback on failure* to *No*, you’ll continue
+to incur AWS charges for this stack. Please make sure to delete the
+stack when you’ve finished troubleshooting.
+____
+
+The following table lists specific *CREATE_FAILED* error messages you
+might encounter.
+
+[cols=",,",options="header",]
+|===
+|Error message |Possible cause |What to do
+|API: ec2: RunInstances Not authorized for images:
+https://forums.aws.amazon.com/[_ami-ID_] |The template is referencing an
+AMI that has expired. a|
+We refresh AMIs on a regular basis, but our schedule isn’t always
+synchronized with AWS AMI updates. If you get this error message, notify
+us, and we’ll update the template with the new AMI ID.
+
+If you’d like to fix the template yourself, you can
+https://fwd.aws/px53q[download it] and update the Mappings section with
+the latest AMI ID for your region.
+
+|We currently do not have sufficient t2.small capacity in the AZ you
+requested |The NAT instance requires a larger or different instance
+type. |Switch to an instance type that supports higher capacity. If a
+higher-capacity instance type isn’t available, try a different
+Availability Zone or region. Or you can complete the
+https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&limitType=service-code-[request
+form] in the AWS Support Center to increase the Amazon EC2 limit for the
+instance type or region. Limit increases are tied to the region they
+were requested for.
+
+|Instance _ID_ did not stabilize |You have exceeded your IOPS for the
+region.
+|https://aws.amazon.com/support/createCase?serviceLimitIncreaseType=ebs-volumes&type=service_limit_increase[Request
+a limit increase] by completing the
+https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&limitType=service-code-[request
+form] in the AWS Support Center.
+|===
+
+If you encounter a template validation error during deployment, check
+for a mismatch in the values of the *Availability Zones* and *Number of
+Availability Zones* parameters. If you select more Availability Zones
+than you request, the AWS CloudFormation template won’t validate.
+Correct the parameters so that they’re in sync, and redeploy the Quick
+Start.
+
+For additional information, see
+http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting
+AWS CloudFormation] on the AWS website. If the problem you encounter
+isn’t covered on that page or in the table, please visit the
+https://console.aws.amazon.com/support/[AWS Support Center]. If you’re
+filing a support ticket, please attach the install.log file from the
+master instance (this is the log file that is located in the
+/root/install folder) to the ticket.
