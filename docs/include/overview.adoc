@@ -1,0 +1,24 @@
+This Quick Start provides a networking foundation for AWS Cloud
+infrastructures. It deploys an Amazon Virtual Private Cloud (Amazon VPC)
+according to AWS best practices and guidelines. Amazon VPC is the
+networking layer for Amazon Elastic Compute Cloud (Amazon EC2) and
+provides a private, isolated section of the AWS Cloud where you can
+launch AWS services and other resources in a virtual network. For a
+discussion of best design practices for Amazon VPC environments, see the
+documentation and articles listed in the
+link:#additional-resources[Additional Resources] section.
+
+The Amazon VPC architecture includes public and private subnets. The
+first set of private subnets share the default network access control
+list (ACL) from the Amazon VPC, and a second, optional set of private
+subnets includes dedicated custom network ACLs per subnet. The Quick
+Start divides the Amazon VPC address space in a predictable manner
+across multiple Availability Zones, and deploys either NAT instances or
+NAT gateways for outbound Internet access, depending on the AWS Region
+you deploy the Quick Start in.
+
+You can use this Quick Start as a building block for your own
+deployments. You can scale it up or down by adding or removing subnets
+and Availability Zones according to your needs, and add other
+infrastructure components and software layers to complete your AWS
+environment.

@@ -1,0 +1,55 @@
+
+The architecture built by this Quick Start supports AWS best practices
+for high availability and security. The Quick Start provides:
+
+* Up to four Availability Zones for high availability and disaster
+recovery. (AWS recommends maximizing your use of Availability Zones to
+isolate a data center outage.) Availability Zones are geographically
+distributed within a region and spaced for best insulation and stability
+in the event of a natural disaster.
+* Separate subnets for unique routing requirements. AWS recommends using
+public subnets for external-facing resources and private subnets for
+internal resources. For each Availability Zone, this Quick Start
+provisions one public subnet and one private subnet by default. (If you
+need public subnets only, you can disable the creation of the private
+subnets.) For subnet sizing strategies, see the next section.
+* Additional layer of security. AWS recommends using network ACLs as
+firewalls to control inbound and outbound traffic at the subnet level.
+This Quick Start provides an option to create a network ACL protected
+subnet in each Availability Zone. These network ACLs provide individual
+controls that you can customize as a second layer of defense.
+
+We recommend that you use network ACLs sparingly for the following
+reasons: they can be complex to manage, they are stateless, every IP
+address must be explicitly opened in each (inbound/outbound) direction,
+and they affect a complete subnet. We recommend that you use security
+groups more often than network ACLs, and create and apply these based on
+a schema that works for your organization. Some examples are server
+roles and application roles. For more information about security groups
+and network ACLs, see the link:#security[Security] section later in this
+guide.
+
+* Independent route tables configured for every private subnet to
+control the flow of traffic within and outside the Amazon VPC. The
+public subnets share a single routing table, because they all use the
+same Internet gateway as the sole route to communicate with the
+Internet.
+* Highly available NAT gateways, where supported, instead of NAT
+instances. NAT gateways offer major advantages in terms of deployment,
+availability, and maintenance. For more information see the
+http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-comparison.html[comparison]
+provided in the Amazon VPC documentation.
+* Spare capacity for additional subnets, to support your environment as
+it grows or changes over time.
+
+For additional information about these best practices, see the following
+documentation:
+
+* http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf[AWS
+Single VPC Design] from the AWS Answers website
+* http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html[Your
+VPC and Subnets] in the Amazon VPC documentation
+* https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc[Practical
+VPC Design] in the AWS Startups blog
+* http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Network
+ACLs] in the Amazon VPC documentation

@@ -1,0 +1,17 @@
+
+This Quick Start reference deployment guide discusses architectural
+considerations and configuration steps for deploying a modular Amazon
+Virtual Private Cloud (Amazon VPC) environment on the Amazon Web
+Services (AWS) Cloud. It also provides links for viewing and launching
+http://aws.amazon.com/cloudformation/[AWS CloudFormation] templates that
+automate the deployment.
+
+The guide is for IT infrastructure architects, DevOps engineers, and
+administrators who would like to build a flexible, modular AWS
+networking infrastructure as a baseline for their deployments.
+
+http://aws.amazon.com/quickstart/[Quick Starts] are automated reference
+deployments for AWS Cloud infrastructure components and key enterprise
+workloads on the AWS Cloud. Each Quick Start launches, configures, and
+runs AWS compute, network, storage, and other services, using AWS best
+practices for security and availability.

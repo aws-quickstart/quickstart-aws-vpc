@@ -1,0 +1,16 @@
+
+
+The links in this section are for your convenience. Before you launch
+the Quick Start, please review the architecture, configuration, and
+other considerations discussed in this guide.
+
+* If you have an AWS account and you’re already familiar with AWS
+services, you can https://fwd.aws/mm853[launch the Quick Start] to build
+the architecture shown in link:#figure1[Figure 1] in your AWS account.
+The deployment takes approximately 5 minutes. If you’re new to AWS,
+please follow the link:#subnet-sizing[step-by-step instructions]
+provided later in this guide.
+* If you want to take a look under the covers, you can
+https://fwd.aws/px53q[view the AWS CloudFormation template] that
+automates the deployment. The template includes default settings that
+you can customize by following the instructions in this guide.

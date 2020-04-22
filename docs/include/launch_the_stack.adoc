@@ -1,0 +1,23 @@
+[arabic]
+. https://fwd.aws/mm853[Launch the Quick Start] into your AWS account.
+
+The template is launched in the US West (Oregon) region by default. You
+can change the region by using the region selector in the navigation
+bar.
+
+This stack takes approximately 5 minutes to create.
+
+*Note* You are responsible for the cost of the AWS services used while
+running this Quick Start reference deployment. There is no additional
+cost for using this Quick Start. See the pricing pages for each AWS
+service you will be using in this Quick Start for full details.
+
+[arabic, start=4]
+. On the *Select Template* page, keep the default setting for the Amazon
+S3 template URL, and then choose *Next*.
+. On the *Specify Details* page, review the following parameters for the
+template, provide values for parameters that require your input, and
+customize the default settings as necessary. For example, you can change
+the network configuration parameters if you want to reconfigure the
+subnet segmentation used for the VPC, as discussed earlier in the
+link:#subnet_sizing[Subnet Sizing] section.
