@@ -6,8 +6,6 @@
 :toc-title: Quick Start Reference Deployment
 :toclevels: 2
 
-include::{includedir}/css-switch.script[]
-
 
 == About this guide
 include::{includedir}/common/about_this_guide.adoc[]
@@ -74,8 +72,6 @@ You can visit our [GitHub repository] to download
 the templates and scripts for this Quick Start, to post your comments,
 and to share your customizations with others.
 
-_Autogenerate GitHub Info_
-
 == Document Revisions
 
-TIP: See releases in git https://github.com/tonynv/doc_demo/releases/
+TIP: See releases in git https://github.com/aws-quickstart/quickstart-aws-vpc/releases
