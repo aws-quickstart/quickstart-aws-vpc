@@ -39,7 +39,7 @@ Follow the step-by-step instructions in this section to build the
 virtual network environment illustrated in link:#figure1[Figure 1] in
 your AWS account. The AWS CloudFormation template provided with this
 Quick Start bootstraps the AWS networking infrastructure on the AWS
-Cloud from scratch.
+Cloud from Scratch.
 
 === Step 1 Prepare An AWS Account
 
