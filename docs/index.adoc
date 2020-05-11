@@ -1,0 +1,77 @@
+= Building a Modular and Scalable Virtual Network Architecture with Amazon VPC
+:imagesdir: images
+:includedir: include
+:icons: font
+:toc2: left
+:toc-title: Quick Start Reference Deployment
+:toclevels: 2
+
+
+== About this guide
+include::{includedir}/common/about_this_guide.adoc[]
+
+== Overview
+include::{includedir}/overview.adoc[]
+
+== Quick Links
+include::{includedir}/quicklink.adoc[]
+
+== Cost
+include::{includedir}/common/cost.adoc[]
+
+== Architecture
+include::{includedir}/architecture.adoc[]
+
+=== AWS Services
+include::{includedir}/generated/services.adoc[]
+
+=== Best Practices
+include::{includedir}/best_practice.adoc[]
+
+[subnet-sizing]
+=== Subnet Sizing
+include::{includedir}/subnet_sizing.adoc[]
+
+
+== Deployment Steps
+
+Follow the step-by-step instructions in this section to build the
+virtual network environment illustrated in link:#figure1[Figure 1] in
+your AWS account. The AWS CloudFormation template provided with this
+Quick Start bootstraps the AWS networking infrastructure on the AWS
+Cloud from scratch.
+
+=== Step 1 Prepare An AWS Account
+
+include::{includedir}/common/prepare_an_aws_ccount.adoc[]
+
+=== Step 2 Launch the stack
+include::{includedir}/launch_the_stack.adoc[]
+
+==== Parameters
+include::{includedir}/params.adoc[]
+
+=== Step 3. Add AWS Services or Other Applications
+include::{includedir}/other_applications.adoc[]
+
+=== Troubleshoot
+include::{includedir}/common/troubleshoot.adoc[]
+
+=== Security
+include::{includedir}/common/security.adoc[]
+
+
+*Quick Start reference deployments*
+
+* AWS Quick Start home page +
+https://aws.amazon.com/quickstart/
+
+== GitHub Repository
+
+You can visit our [GitHub repository] to download
+the templates and scripts for this Quick Start, to post your comments,
+and to share your customizations with others.
+
+== Document Revisions
+
+TIP: See releases in git https://github.com/aws-quickstart/quickstart-aws-vpc/releases

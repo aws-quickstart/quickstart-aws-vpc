@@ -1,0 +1,6 @@
+requests
+cfn-lint
+pypandoc
+pytablewriter
+pathlib
+datetime

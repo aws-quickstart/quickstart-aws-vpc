@@ -1,0 +1,63 @@
+
+The core AWS components used by this Quick Start include the following
+AWS services. (If you are new to AWS, see the
+http://docs.aws.amazon.com/gettingstarted/latest/awsgsg-intro/intro.html[Getting
+Started section] of the AWS documentation.)
+
+* http://aws.amazon.com/documentation/vpc/[Amazon VPC] – The Amazon
+Virtual Private Cloud (Amazon VPC) service lets you provision a private,
+isolated section of the AWS Cloud where you can launch AWS services and
+other resources in a virtual network that you define. You have complete
+control over your virtual networking environment, including selection of
+an IP address range, creation of subnets, and configuration of route
+tables and network gateways.
+* http://aws.amazon.com/documentation/ec2/[Amazon EC2] – The Amazon
+Elastic Compute Cloud (Amazon EC2) service enables you to launch virtual
+machine instances with a variety of operating systems. You can choose
+from existing Amazon Machine Images (AMIs) or import your own virtual
+machine images.
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html[Amazon
+EBS] – Amazon Elastic Block Store (Amazon EBS) provides persistent
+block-level storage volumes for use with Amazon EC2 instances in the AWS
+Cloud. Each Amazon EBS volume is automatically replicated within its
+Availability Zone to protect you from component failure, offering high
+availability and durability. Amazon EBS volumes provide consistent and
+low-latency performance to run your workloads.
+* http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html[NAT
+Gateway] – NAT gateways are network address translation (NAT) devices,
+which provide outbound Internet access to instances in a private
+subnets, but prevent the Internet from accessing those instances. NAT
+gateways provide better availability and bandwidth than NAT instances.
+The NAT Gateway service is a managed service that takes care of
+administering NAT gateways for you. NAT gateways aren’t supported in all
+AWS Regions. This Quick Start deploys NAT instances in regions where NAT
+gateways aren’t available.
+
+
+* AWS CloudFormation +
+http://aws.amazon.com/documentation/cloudformation/
+* Amazon EC2
+
+* User guide for Microsoft Windows:
+http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/
+* User guide for Linux: +
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/
+
+* Amazon VPC +
+http://aws.amazon.com/documentation/vpc/
+
+* Security groups +
+https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html
+* Network ACLs +
+https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html
+* NAT gateways +
+http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html
+
+* Best practices for implementing VPCs
+
+* AWS Single VPC Design +
+http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf
+* Your VPC and Subnets +
+http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html
+* Practical VPC Design +
+https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc

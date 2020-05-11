@@ -1,0 +1,45 @@
+name: update_docs
+
+on:
+  push:
+    branches:
+    - master
+jobs:
+  build-adocs:
+    runs-on: ubuntu-18.04
+    name: asciidoc builder
+    steps:
+    - name: Checkout (master)
+      uses: actions/checkout@v2
+    - name: Get new doc updates 
+      run: |
+           git remote update
+           git fetch
+           git checkout --track origin/gh-pages
+           rm -rf docs/*
+           git restore -s master docs
+    - name: Setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7.6
+    - name: install dependencies
+      run: |
+           sudo apt-get install pandoc -y
+           pip3 install -r docs/utils/requirements.txt
+           docs/utils/generate_parms.py
+    - name: Build documentation
+      id: adoc
+      uses: avattathil/asciidoctor-action@master
+      with:
+          program: "asciidoctor --backend=html5 -o index.html -a toc2 docs/index.adoc"
+    - name: Stage changes gh-pages
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git commit -a -m "Update documentation"
+    - name: Push updates to gh-pages
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+        branch: gh-pages

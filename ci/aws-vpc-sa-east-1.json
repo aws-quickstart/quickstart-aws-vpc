@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[taskcat_getaz_2]"
+        "ParameterValue": "sa-east-1b,sa-east-1c"
     },
     {
         "ParameterKey": "CreateAdditionalPrivateSubnets",
@@ -9,7 +9,7 @@
     },
     {
         "ParameterKey": "CreatePrivateSubnets",
-        "ParameterValue": "false"
+        "ParameterValue": "true"
     },
     {
         "ParameterKey": "NumberOfAZs",
@@ -69,6 +69,6 @@
     },
     {
         "ParameterKey": "VPCTenancy",
-        "ParameterValue": "dedicated"
+        "ParameterValue": "default"
     }
 ]

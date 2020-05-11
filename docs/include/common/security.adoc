@@ -1,0 +1,20 @@
+
+=== Public and Private Subnets
+
+This Quick Start provisions one public and one private subnet in each
+Availability Zone by default. You can also choose to add additional
+private subnets with dedicated network ACLs.
+
+A public subnet is directly routable to the Internet via a route in the
+route table that points to the Internet gateway. This type of subnet
+allows the use of Elastic IPs and public IPs, and (if the security group
+and network ACLs permit) a public subnet is reachable from the Internet.
+A public subnet is useful as a DMZ infrastructure for web servers and
+for Internet-facing Elastic Load Balancing (ELB) load balancers.
+
+Private subnets can indirectly route to the Internet via a NAT instance
+or NAT gateway. These NAT devices reside in a public subnet in order to
+route directly to the Internet. Instances in a private subnet are not
+externally reachable from outside the Amazon VPC, regardless of whether
+they have a public or Elastic IP address attached. A private subnet is
+useful for application servers and databases.

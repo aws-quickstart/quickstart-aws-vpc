@@ -13,20 +13,24 @@ global:
     - eu-central-1
     - eu-west-1
     - eu-west-2
-    - sa-east-1
     - us-east-1
     - us-east-2
     - us-west-1
     - us-west-2
   reporting: true
 tests:
-  defaults:
+  vpc-defaults:
     parameter_input: aws-vpc-defaults.json
     template_file: aws-vpc.template
-  complete:
+  vpc-complete:
     parameter_input: aws-vpc-complete.json
     template_file: aws-vpc.template
-  public:
+  vpc-defaults-sa-east-1:
+    parameter_input: aws-vpc-sa-east-1.json
+    template_file: aws-vpc.template
+    regions:
+      - sa-east-1
+  vpc-public:
     parameter_input: aws-vpc-public.json
     template_file: aws-vpc.template
   3az-eu-west-1:
