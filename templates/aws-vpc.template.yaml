@@ -1,11 +1,11 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: >-
   This template creates a Multi-AZ, multi-subnet VPC infrastructure with managed NAT
   gateways in the public subnet for each Availability Zone. You can also create additional
   private subnets with dedicated custom network access control lists (ACLs). If you
   deploy the Quick Start in a region that doesn't support NAT gateways, NAT instances
   are deployed instead. **WARNING** This template creates AWS resources. You will
-  be billed for the AWS resources used if you create a stack from this template. QS(0027)
+  be billed for the AWS resources used if you create a stack from this template. (qs-1qnnspaap)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -18,6 +18,7 @@ Metadata:
           default: Network Configuration
         Parameters:
           - VPCCIDR
+          - CreatePublicSubnets
           - PublicSubnet1CIDR
           - PublicSubnet2CIDR
           - PublicSubnet3CIDR
@@ -26,6 +27,7 @@ Metadata:
           - PublicSubnetTag2
           - PublicSubnetTag3
           - CreatePrivateSubnets
+          - CreateNATGateways
           - PrivateSubnet1ACIDR
           - PrivateSubnet2ACIDR
           - PrivateSubnet3ACIDR
@@ -43,7 +45,7 @@ Metadata:
           - PrivateSubnetBTag3
           - VPCTenancy
       - Label:
-          default: 'Deprecated: NAT Instance Configuration'
+          default: "Deprecated: NAT Instance Configuration"
         Parameters:
           - KeyPairName
           - NATInstanceType
@@ -52,12 +54,16 @@ Metadata:
         default: Availability Zones
       CreateAdditionalPrivateSubnets:
         default: Create additional private subnets with dedicated network ACLs
+      CreateNATGateways:
+        default: Create NAT Gateways
+      CreatePublicSubnets:
+        default: Create public subnets
       CreatePrivateSubnets:
         default: Create private subnets
       KeyPairName:
-        default: 'Deprecated: Key pair name'
+        default: "Deprecated: Key pair name"
       NATInstanceType:
-        default: 'Deprecated: NAT instance type'
+        default: "Deprecated: NAT instance type"
       NumberOfAZs:
         default: Number of Availability Zones
       PrivateSubnet1ACIDR:
@@ -108,26 +114,44 @@ Metadata:
         default: VPC Tenancy
 Parameters:
   AvailabilityZones:
-    Description: 'List of Availability Zones to use for the subnets in the VPC. Note:
-      The logical order is preserved.'
+    Description:
+      "List of Availability Zones to use for the subnets in the VPC. Note:
+      The logical order is preserved."
     Type: List<AWS::EC2::AvailabilityZone::Name>
   CreateAdditionalPrivateSubnets:
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'false'
+      - "true"
+      - "false"
+    Default: "false"
     Description: >-
       Set to true to create a network ACL protected subnet in each Availability Zone.
       If false, the CIDR parameters for those subnets will be ignored. If true, it
       also requires that the 'Create private subnets' parameter is also true to have
       any effect.
     Type: String
+  CreateNATGateways:
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "true"
+    Description: Set to false when creating only private subnets. If True, both CreatePublicSubnets and CreatePrivateSubnets must also be true.
+    Type: String
+  CreatePublicSubnets:
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "true"
+    Description:
+      Set to false to create only private subnets. If false, CreatePrivateSubnets must be True and the CIDR parameters
+      for ALL public subnets will be ignored
+    Type: String
   CreatePrivateSubnets:
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'true'
-    Description: Set to false to create only public subnets. If false, the CIDR parameters
+      - "true"
+      - "false"
+    Default: "true"
+    Description:
+      Set to false to create only public subnets. If false, the CIDR parameters
       for ALL private subnets will be ignored.
     Type: String
   KeyPairName:
@@ -140,11 +164,12 @@ Parameters:
     Type: String
   NumberOfAZs:
     AllowedValues:
-      - '2'
-      - '3'
-      - '4'
-    Default: '2'
-    Description: Number of Availability Zones to use in the VPC. This must match your
+      - "2"
+      - "3"
+      - "4"
+    Default: "2"
+    Description:
+      Number of Availability Zones to use in the VPC. This must match your
       selections in the list of Availability Zones parameter.
     Type: String
   PrivateSubnet1ACIDR:
@@ -157,7 +182,8 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.192.0/21
-    Description: CIDR block for private subnet 1B with dedicated network ACL located
+    Description:
+      CIDR block for private subnet 1B with dedicated network ACL located
       in Availability Zone 1
     Type: String
   PrivateSubnet2ACIDR:
@@ -170,7 +196,8 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.200.0/21
-    Description: CIDR block for private subnet 2B with dedicated network ACL located
+    Description:
+      CIDR block for private subnet 2B with dedicated network ACL located
       in Availability Zone 2
     Type: String
   PrivateSubnet3ACIDR:
@@ -183,7 +210,8 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.208.0/21
-    Description: CIDR block for private subnet 3B with dedicated network ACL located
+    Description:
+      CIDR block for private subnet 3B with dedicated network ACL located
       in Availability Zone 3
     Type: String
   PrivateSubnet4ACIDR:
@@ -196,98 +224,112 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.216.0/21
-    Description: CIDR block for private subnet 4B with dedicated network ACL located
+    Description:
+      CIDR block for private subnet 4B with dedicated network ACL located
       in Availability Zone 4
     Type: String
   PrivateSubnetATag1:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Private
     Description: tag to add to private subnets A, in format Key=Value (Optional)
     Type: String
   PrivateSubnetATag2:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
-    Default: ''
+    Default: ""
     Description: tag to add to private subnets A, in format Key=Value (Optional)
     Type: String
   PrivateSubnetATag3:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
-    Default: ''
+    Default: ""
     Description: tag to add to private subnets A, in format Key=Value (Optional)
     Type: String
   PrivateSubnetBTag1:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Private
     Description: tag to add to private subnets B, in format Key=Value (Optional)
     Type: String
   PrivateSubnetBTag2:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
-    Default: ''
+    Default: ""
     Description: tag to add to private subnets B, in format Key=Value (Optional)
     Type: String
   PrivateSubnetBTag3:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
-    Default: ''
+    Default: ""
     Description: tag to add to private subnets B, in format Key=Value (Optional)
     Type: String
   PublicSubnet1CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.128.0/20
-    Description: CIDR block for the public DMZ subnet 1 located in Availability Zone
+    Description:
+      CIDR block for the public DMZ subnet 1 located in Availability Zone
       1
     Type: String
   PublicSubnet2CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.144.0/20
-    Description: CIDR block for the public DMZ subnet 2 located in Availability Zone
+    Description:
+      CIDR block for the public DMZ subnet 2 located in Availability Zone
       2
     Type: String
   PublicSubnet3CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.160.0/20
-    Description: CIDR block for the public DMZ subnet 3 located in Availability Zone
+    Description:
+      CIDR block for the public DMZ subnet 3 located in Availability Zone
       3
     Type: String
   PublicSubnet4CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.176.0/20
-    Description: CIDR block for the public DMZ subnet 4 located in Availability Zone
+    Description:
+      CIDR block for the public DMZ subnet 4 located in Availability Zone
       4
     Type: String
   PublicSubnetTag1:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Public
     Description: tag to add to public subnets, in format Key=Value (Optional)
     Type: String
   PublicSubnetTag2:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
-    Default: ''
+    Default: ""
     Description: tag to add to public subnets, in format Key=Value (Optional)
     Type: String
   PublicSubnetTag3:
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
-    ConstraintDescription: tags must be in format "Key=Value" keys can only contain
+    ConstraintDescription:
+      tags must be in format "Key=Value" keys can only contain
       [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
-    Default: ''
+    Default: ""
     Description: tag to add to public subnets, in format Key=Value (Optional)
     Type: String
   VPCCIDR:
@@ -303,79 +345,116 @@ Parameters:
     Default: default
     Description: The allowed tenancy of instances launched into the VPC
     Type: String
+Rules:
+  NAT:
+    RuleCondition: !Equals [!Ref CreateNATGateways, "true"]
+    Assertions:
+      - Assert: !And
+          - !Equals [!Ref CreatePrivateSubnets, "true"]
+          - !Equals [!Ref CreatePublicSubnets, "true"]
+        AssertDescription: To enable NAT gateways you must have both CreatePrivateSubnets and CreatePublicSubnets set to 'true'
+  Subnets:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref CreatePrivateSubnets, "true"]
+          - !Equals [!Ref CreatePublicSubnets, "true"]
+        AssertDescription: At least one of CreatePublicSubnets or CreatePrivateSubnets must be set to 'true'
 Conditions:
   3AZCondition: !Or
     - !Equals
-      - !Ref 'NumberOfAZs'
-      - '3'
-    - !Condition '4AZCondition'
+      - !Ref "NumberOfAZs"
+      - "3"
+    - !Condition "4AZCondition"
   4AZCondition: !Equals
-    - !Ref 'NumberOfAZs'
-    - '4'
+    - !Ref "NumberOfAZs"
+    - "4"
   AdditionalPrivateSubnetsCondition: !And
     - !Equals
-      - !Ref 'CreatePrivateSubnets'
-      - 'true'
+      - !Ref "CreatePrivateSubnets"
+      - "true"
     - !Equals
-      - !Ref 'CreateAdditionalPrivateSubnets'
-      - 'true'
+      - !Ref "CreateAdditionalPrivateSubnets"
+      - "true"
   AdditionalPrivateSubnets&3AZCondition: !And
-    - !Condition 'AdditionalPrivateSubnetsCondition'
-    - !Condition '3AZCondition'
+    - !Condition "AdditionalPrivateSubnetsCondition"
+    - !Condition "3AZCondition"
   AdditionalPrivateSubnets&4AZCondition: !And
-    - !Condition 'AdditionalPrivateSubnetsCondition'
-    - !Condition '4AZCondition'
+    - !Condition "AdditionalPrivateSubnetsCondition"
+    - !Condition "4AZCondition"
   GovCloudCondition: !Equals
-    - !Ref 'AWS::Region'
+    - !Ref "AWS::Region"
     - us-gov-west-1
+  NATGatewaysCondition: !Equals
+    - !Ref "CreateNATGateways"
+    - "true"
   NVirginiaRegionCondition: !Equals
-    - !Ref 'AWS::Region'
+    - !Ref "AWS::Region"
     - us-east-1
   PrivateSubnetsCondition: !Equals
-    - !Ref 'CreatePrivateSubnets'
-    - 'true'
+    - !Ref "CreatePrivateSubnets"
+    - "true"
   PrivateSubnets&3AZCondition: !And
-    - !Condition 'PrivateSubnetsCondition'
-    - !Condition '3AZCondition'
+    - !Condition "PrivateSubnetsCondition"
+    - !Condition "3AZCondition"
   PrivateSubnets&4AZCondition: !And
-    - !Condition 'PrivateSubnetsCondition'
-    - !Condition '4AZCondition'
+    - !Condition "PrivateSubnetsCondition"
+    - !Condition "4AZCondition"
+  PrivateSubnets&NatGatewaysCondition: !And
+    - !Condition "PrivateSubnetsCondition"
+    - !Condition "NATGatewaysCondition"
+  PrivateSubnets&NatGateways&3AZCondition: !And
+    - !Condition "PrivateSubnetsCondition"
+    - !Condition "NATGatewaysCondition"
+    - !Condition "3AZCondition"
+  PrivateSubnets&NatGateways&4AZCondition: !And
+    - !Condition "PrivateSubnetsCondition"
+    - !Condition "NATGatewaysCondition"
+    - !Condition "4AZCondition"
+  PublicSubnetsCondition: !Equals
+    - !Ref "CreatePublicSubnets"
+    - "true"
+  PublicSubnets&3AZCondition: !And
+    - !Condition "PublicSubnetsCondition"
+    - !Condition "3AZCondition"
+  PublicSubnets&4AZCondition: !And
+    - !Condition "PublicSubnetsCondition"
+    - !Condition "4AZCondition"
   PrivateSubnetATag1Condition: !Not
     - !Equals
-      - !Ref 'PrivateSubnetATag1'
-      - ''
+      - !Ref "PrivateSubnetATag1"
+      - ""
   PrivateSubnetATag2Condition: !Not
     - !Equals
-      - !Ref 'PrivateSubnetATag2'
-      - ''
+      - !Ref "PrivateSubnetATag2"
+      - ""
   PrivateSubnetATag3Condition: !Not
     - !Equals
-      - !Ref 'PrivateSubnetATag3'
-      - ''
+      - !Ref "PrivateSubnetATag3"
+      - ""
   PrivateSubnetBTag1Condition: !Not
     - !Equals
-      - !Ref 'PrivateSubnetBTag1'
-      - ''
+      - !Ref "PrivateSubnetBTag1"
+      - ""
   PrivateSubnetBTag2Condition: !Not
     - !Equals
-      - !Ref 'PrivateSubnetBTag2'
-      - ''
+      - !Ref "PrivateSubnetBTag2"
+      - ""
   PrivateSubnetBTag3Condition: !Not
     - !Equals
-      - !Ref 'PrivateSubnetBTag3'
-      - ''
+      - !Ref "PrivateSubnetBTag3"
+      - ""
   PublicSubnetTag1Condition: !Not
     - !Equals
-      - !Ref 'PublicSubnetTag1'
-      - ''
+      - !Ref "PublicSubnetTag1"
+      - ""
   PublicSubnetTag2Condition: !Not
     - !Equals
-      - !Ref 'PublicSubnetTag2'
-      - ''
+      - !Ref "PublicSubnetTag2"
+      - ""
   PublicSubnetTag3Condition: !Not
     - !Equals
-      - !Ref 'PublicSubnetTag3'
-      - ''
+      - !Ref "PublicSubnetTag3"
+      - ""
 Resources:
   DHCPOptions:
     Type: AWS::EC2::DHCPOptions
@@ -383,654 +462,656 @@ Resources:
       DomainName: !If
         - NVirginiaRegionCondition
         - ec2.internal
-        - !Sub '${AWS::Region}.compute.internal'
+        - !Sub "${AWS::Region}.compute.internal"
       DomainNameServers:
         - AmazonProvidedDNS
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref 'VPCCIDR'
-      InstanceTenancy: !Ref 'VPCTenancy'
+      CidrBlock: !Ref "VPCCIDR"
+      InstanceTenancy: !Ref "VPCTenancy"
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: !Ref 'AWS::StackName'
+          Value: !Ref "AWS::StackName"
   VPCDHCPOptionsAssociation:
     Type: AWS::EC2::VPCDHCPOptionsAssociation
     Properties:
-      VpcId: !Ref 'VPC'
-      DhcpOptionsId: !Ref 'DHCPOptions'
+      VpcId: !Ref "VPC"
+      DhcpOptionsId: !Ref "DHCPOptions"
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
-          Value: !Ref 'AWS::StackName'
+          Value: !Ref "AWS::StackName"
   VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      VpcId: !Ref 'VPC'
-      InternetGatewayId: !Ref 'InternetGateway'
+      VpcId: !Ref "VPC"
+      InternetGatewayId: !Ref "InternetGateway"
   PrivateSubnet1A:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet1ACIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet1ACIDR"
       AvailabilityZone: !Select
-        - '0'
-        - !Ref 'AvailabilityZones'
+        - "0"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 1A
         - !If
           - PrivateSubnetATag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
+                - "="
+                - !Ref "PrivateSubnetATag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
+                - "="
+                - !Ref "PrivateSubnetATag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
+                - "="
+                - !Ref "PrivateSubnetATag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet1B:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet1BCIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet1BCIDR"
       AvailabilityZone: !Select
-        - '0'
-        - !Ref 'AvailabilityZones'
+        - "0"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 1B
         - !If
           - PrivateSubnetBTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet2A:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet2ACIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet2ACIDR"
       AvailabilityZone: !Select
-        - '1'
-        - !Ref 'AvailabilityZones'
+        - "1"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 2A
         - !If
           - PrivateSubnetATag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
+                - "="
+                - !Ref "PrivateSubnetATag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
+                - "="
+                - !Ref "PrivateSubnetATag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
+                - "="
+                - !Ref "PrivateSubnetATag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet2B:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet2BCIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet2BCIDR"
       AvailabilityZone: !Select
-        - '1'
-        - !Ref 'AvailabilityZones'
+        - "1"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 2B
         - !If
           - PrivateSubnetBTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet3A:
     Condition: PrivateSubnets&3AZCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet3ACIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet3ACIDR"
       AvailabilityZone: !Select
-        - '2'
-        - !Ref 'AvailabilityZones'
+        - "2"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 3A
         - !If
           - PrivateSubnetATag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
+                - "="
+                - !Ref "PrivateSubnetATag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
+                - "="
+                - !Ref "PrivateSubnetATag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
+                - "="
+                - !Ref "PrivateSubnetATag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet3B:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet3BCIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet3BCIDR"
       AvailabilityZone: !Select
-        - '2'
-        - !Ref 'AvailabilityZones'
+        - "2"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 3B
         - !If
           - PrivateSubnetBTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet4A:
     Condition: PrivateSubnets&4AZCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet4ACIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet4ACIDR"
       AvailabilityZone: !Select
-        - '3'
-        - !Ref 'AvailabilityZones'
+        - "3"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 4A
         - !If
           - PrivateSubnetATag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
+                - "="
+                - !Ref "PrivateSubnetATag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
+                - "="
+                - !Ref "PrivateSubnetATag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetATag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
+                - "="
+                - !Ref "PrivateSubnetATag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetATag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetATag3"
+          - !Ref "AWS::NoValue"
   PrivateSubnet4B:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PrivateSubnet4BCIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PrivateSubnet4BCIDR"
       AvailabilityZone: !Select
-        - '3'
-        - !Ref 'AvailabilityZones'
+        - "3"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Private subnet 4B
         - !If
           - PrivateSubnetBTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnetBTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PrivateSubnetBTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PrivateSubnetBTag3"
+          - !Ref "AWS::NoValue"
   PublicSubnet1:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PublicSubnet1CIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PublicSubnet1CIDR"
       AvailabilityZone: !Select
-        - '0'
-        - !Ref 'AvailabilityZones'
+        - "0"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Public subnet 1
         - !If
           - PublicSubnetTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
+                - "="
+                - !Ref "PublicSubnetTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
+                - "="
+                - !Ref "PublicSubnetTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
+                - "="
+                - !Ref "PublicSubnetTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag3"
+          - !Ref "AWS::NoValue"
       MapPublicIpOnLaunch: true
   PublicSubnet2:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PublicSubnet2CIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PublicSubnet2CIDR"
       AvailabilityZone: !Select
-        - '1'
-        - !Ref 'AvailabilityZones'
+        - "1"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Public subnet 2
         - !If
           - PublicSubnetTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
+                - "="
+                - !Ref "PublicSubnetTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
+                - "="
+                - !Ref "PublicSubnetTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
+                - "="
+                - !Ref "PublicSubnetTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag3"
+          - !Ref "AWS::NoValue"
       MapPublicIpOnLaunch: true
   PublicSubnet3:
-    Condition: 3AZCondition
+    Condition: PublicSubnets&3AZCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PublicSubnet3CIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PublicSubnet3CIDR"
       AvailabilityZone: !Select
-        - '2'
-        - !Ref 'AvailabilityZones'
+        - "2"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Public subnet 3
         - !If
           - PublicSubnetTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
+                - "="
+                - !Ref "PublicSubnetTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
+                - "="
+                - !Ref "PublicSubnetTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
+                - "="
+                - !Ref "PublicSubnetTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag3"
+          - !Ref "AWS::NoValue"
       MapPublicIpOnLaunch: true
   PublicSubnet4:
-    Condition: 4AZCondition
+    Condition: PublicSubnets&4AZCondition
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
-      CidrBlock: !Ref 'PublicSubnet4CIDR'
+      VpcId: !Ref "VPC"
+      CidrBlock: !Ref "PublicSubnet4CIDR"
       AvailabilityZone: !Select
-        - '3'
-        - !Ref 'AvailabilityZones'
+        - "3"
+        - !Ref "AvailabilityZones"
       Tags:
         - Key: Name
           Value: Public subnet 4
         - !If
           - PublicSubnetTag1Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
+                - "="
+                - !Ref "PublicSubnetTag1"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag1'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag1"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag2Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
+                - "="
+                - !Ref "PublicSubnetTag2"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag2'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag2"
+          - !Ref "AWS::NoValue"
         - !If
           - PublicSubnetTag3Condition
           - Key: !Select
-              - '0'
+              - "0"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
+                - "="
+                - !Ref "PublicSubnetTag3"
             Value: !Select
-              - '1'
+              - "1"
               - !Split
-                - '='
-                - !Ref 'PublicSubnetTag3'
-          - !Ref 'AWS::NoValue'
+                - "="
+                - !Ref "PublicSubnetTag3"
+          - !Ref "AWS::NoValue"
       MapPublicIpOnLaunch: true
   PrivateSubnet1ARouteTable:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 1A
@@ -1040,20 +1121,20 @@ Resources:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet1ARouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway1'
+      RouteTableId: !Ref "PrivateSubnet1ARouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway1"
   PrivateSubnet1ARouteTableAssociation:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet1A'
-      RouteTableId: !Ref 'PrivateSubnet1ARouteTable'
+      SubnetId: !Ref "PrivateSubnet1A"
+      RouteTableId: !Ref "PrivateSubnet1ARouteTable"
   PrivateSubnet2ARouteTable:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 2A
@@ -1063,20 +1144,20 @@ Resources:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet2ARouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway2'
+      RouteTableId: !Ref "PrivateSubnet2ARouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway2"
   PrivateSubnet2ARouteTableAssociation:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet2A'
-      RouteTableId: !Ref 'PrivateSubnet2ARouteTable'
+      SubnetId: !Ref "PrivateSubnet2A"
+      RouteTableId: !Ref "PrivateSubnet2ARouteTable"
   PrivateSubnet3ARouteTable:
     Condition: PrivateSubnets&3AZCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 3A
@@ -1086,20 +1167,20 @@ Resources:
     Condition: PrivateSubnets&3AZCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet3ARouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway3'
+      RouteTableId: !Ref "PrivateSubnet3ARouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway3"
   PrivateSubnet3ARouteTableAssociation:
     Condition: PrivateSubnets&3AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet3A'
-      RouteTableId: !Ref 'PrivateSubnet3ARouteTable'
+      SubnetId: !Ref "PrivateSubnet3A"
+      RouteTableId: !Ref "PrivateSubnet3ARouteTable"
   PrivateSubnet4ARouteTable:
     Condition: PrivateSubnets&4AZCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 4A
@@ -1109,20 +1190,20 @@ Resources:
     Condition: PrivateSubnets&4AZCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet4ARouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway4'
+      RouteTableId: !Ref "PrivateSubnet4ARouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway4"
   PrivateSubnet4ARouteTableAssociation:
     Condition: PrivateSubnets&4AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet4A'
-      RouteTableId: !Ref 'PrivateSubnet4ARouteTable'
+      SubnetId: !Ref "PrivateSubnet4A"
+      RouteTableId: !Ref "PrivateSubnet4ARouteTable"
   PrivateSubnet1BRouteTable:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 1B
@@ -1132,20 +1213,20 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet1BRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway1'
+      RouteTableId: !Ref "PrivateSubnet1BRouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway1"
   PrivateSubnet1BRouteTableAssociation:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet1B'
-      RouteTableId: !Ref 'PrivateSubnet1BRouteTable'
+      SubnetId: !Ref "PrivateSubnet1B"
+      RouteTableId: !Ref "PrivateSubnet1BRouteTable"
   PrivateSubnet1BNetworkAcl:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAcl
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: NACL Protected subnet 1
@@ -1155,9 +1236,9 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: false
-      NetworkAclId: !Ref 'PrivateSubnet1BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet1BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1165,9 +1246,9 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: true
-      NetworkAclId: !Ref 'PrivateSubnet1BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet1BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1175,13 +1256,13 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::SubnetNetworkAclAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet1B'
-      NetworkAclId: !Ref 'PrivateSubnet1BNetworkAcl'
+      SubnetId: !Ref "PrivateSubnet1B"
+      NetworkAclId: !Ref "PrivateSubnet1BNetworkAcl"
   PrivateSubnet2BRouteTable:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 2B
@@ -1191,20 +1272,20 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet2BRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway2'
+      RouteTableId: !Ref "PrivateSubnet2BRouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway2"
   PrivateSubnet2BRouteTableAssociation:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet2B'
-      RouteTableId: !Ref 'PrivateSubnet2BRouteTable'
+      SubnetId: !Ref "PrivateSubnet2B"
+      RouteTableId: !Ref "PrivateSubnet2BRouteTable"
   PrivateSubnet2BNetworkAcl:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAcl
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: NACL Protected subnet 2
@@ -1214,9 +1295,9 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: false
-      NetworkAclId: !Ref 'PrivateSubnet2BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet2BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1224,9 +1305,9 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: true
-      NetworkAclId: !Ref 'PrivateSubnet2BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet2BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1234,13 +1315,13 @@ Resources:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::SubnetNetworkAclAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet2B'
-      NetworkAclId: !Ref 'PrivateSubnet2BNetworkAcl'
+      SubnetId: !Ref "PrivateSubnet2B"
+      NetworkAclId: !Ref "PrivateSubnet2BNetworkAcl"
   PrivateSubnet3BRouteTable:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 3B
@@ -1250,20 +1331,20 @@ Resources:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet3BRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway3'
+      RouteTableId: !Ref "PrivateSubnet3BRouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway3"
   PrivateSubnet3BRouteTableAssociation:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet3B'
-      RouteTableId: !Ref 'PrivateSubnet3BRouteTable'
+      SubnetId: !Ref "PrivateSubnet3B"
+      RouteTableId: !Ref "PrivateSubnet3BRouteTable"
   PrivateSubnet3BNetworkAcl:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::NetworkAcl
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: NACL Protected subnet 3
@@ -1273,9 +1354,9 @@ Resources:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: false
-      NetworkAclId: !Ref 'PrivateSubnet3BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet3BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1283,9 +1364,9 @@ Resources:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: true
-      NetworkAclId: !Ref 'PrivateSubnet3BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet3BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1293,13 +1374,13 @@ Resources:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::SubnetNetworkAclAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet3B'
-      NetworkAclId: !Ref 'PrivateSubnet3BNetworkAcl'
+      SubnetId: !Ref "PrivateSubnet3B"
+      NetworkAclId: !Ref "PrivateSubnet3BNetworkAcl"
   PrivateSubnet4BRouteTable:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Private subnet 4B
@@ -1309,20 +1390,20 @@ Resources:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PrivateSubnet4BRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref 'NATGateway4'
+      RouteTableId: !Ref "PrivateSubnet4BRouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      NatGatewayId: !Ref "NATGateway4"
   PrivateSubnet4BRouteTableAssociation:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet4B'
-      RouteTableId: !Ref 'PrivateSubnet4BRouteTable'
+      SubnetId: !Ref "PrivateSubnet4B"
+      RouteTableId: !Ref "PrivateSubnet4BRouteTable"
   PrivateSubnet4BNetworkAcl:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::NetworkAcl
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: NACL Protected subnet 4
@@ -1332,9 +1413,9 @@ Resources:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: false
-      NetworkAclId: !Ref 'PrivateSubnet4BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet4BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1342,9 +1423,9 @@ Resources:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::NetworkAclEntry
     Properties:
-      CidrBlock: '0.0.0.0/0'
+      CidrBlock: "0.0.0.0/0"
       Egress: true
-      NetworkAclId: !Ref 'PrivateSubnet4BNetworkAcl'
+      NetworkAclId: !Ref "PrivateSubnet4BNetworkAcl"
       Protocol: -1
       RuleAction: allow
       RuleNumber: 100
@@ -1352,46 +1433,50 @@ Resources:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::SubnetNetworkAclAssociation
     Properties:
-      SubnetId: !Ref 'PrivateSubnet4B'
-      NetworkAclId: !Ref 'PrivateSubnet4BNetworkAcl'
+      SubnetId: !Ref "PrivateSubnet4B"
+      NetworkAclId: !Ref "PrivateSubnet4BNetworkAcl"
   PublicSubnetRouteTable:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref "VPC"
       Tags:
         - Key: Name
           Value: Public Subnets
         - Key: Network
           Value: Public
   PublicSubnetRoute:
+    Condition: PublicSubnetsCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref 'PublicSubnetRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: !Ref 'InternetGateway'
+      RouteTableId: !Ref "PublicSubnetRouteTable"
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref "InternetGateway"
   PublicSubnet1RouteTableAssociation:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PublicSubnet1'
-      RouteTableId: !Ref 'PublicSubnetRouteTable'
+      SubnetId: !Ref "PublicSubnet1"
+      RouteTableId: !Ref "PublicSubnetRouteTable"
   PublicSubnet2RouteTableAssociation:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PublicSubnet2'
-      RouteTableId: !Ref 'PublicSubnetRouteTable'
+      SubnetId: !Ref "PublicSubnet2"
+      RouteTableId: !Ref "PublicSubnetRouteTable"
   PublicSubnet3RouteTableAssociation:
-    Condition: 3AZCondition
+    Condition: PublicSubnets&3AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PublicSubnet3'
-      RouteTableId: !Ref 'PublicSubnetRouteTable'
+      SubnetId: !Ref "PublicSubnet3"
+      RouteTableId: !Ref "PublicSubnetRouteTable"
   PublicSubnet4RouteTableAssociation:
-    Condition: 4AZCondition
+    Condition: PublicSubnets&4AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'PublicSubnet4'
-      RouteTableId: !Ref 'PublicSubnetRouteTable'
+      SubnetId: !Ref "PublicSubnet4"
+      RouteTableId: !Ref "PublicSubnetRouteTable"
   NAT1EIP:
     Condition: PrivateSubnetsCondition
     DependsOn: VPCGatewayAttachment
@@ -1417,304 +1502,304 @@ Resources:
     Properties:
       Domain: vpc
   NATGateway1:
-    Condition: PrivateSubnetsCondition
+    Condition: PrivateSubnets&NatGatewaysCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'NAT1EIP.AllocationId'
-      SubnetId: !Ref 'PublicSubnet1'
+      AllocationId: !GetAtt "NAT1EIP.AllocationId"
+      SubnetId: !Ref "PublicSubnet1"
   NATGateway2:
-    Condition: PrivateSubnetsCondition
+    Condition: PrivateSubnets&NatGatewaysCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'NAT2EIP.AllocationId'
-      SubnetId: !Ref 'PublicSubnet2'
+      AllocationId: !GetAtt "NAT2EIP.AllocationId"
+      SubnetId: !Ref "PublicSubnet2"
   NATGateway3:
-    Condition: PrivateSubnets&3AZCondition
+    Condition: PrivateSubnets&NatGateways&3AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'NAT3EIP.AllocationId'
-      SubnetId: !Ref 'PublicSubnet3'
+      AllocationId: !GetAtt "NAT3EIP.AllocationId"
+      SubnetId: !Ref "PublicSubnet3"
   NATGateway4:
-    Condition: PrivateSubnets&4AZCondition
+    Condition: PPrivateSubnets&NatGateways&4AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'NAT4EIP.AllocationId'
-      SubnetId: !Ref 'PublicSubnet4'
+      AllocationId: !GetAtt "NAT4EIP.AllocationId"
+      SubnetId: !Ref "PublicSubnet4"
   S3VPCEndpoint:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::VPCEndpoint
     Properties:
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-          - Action: '*'
+          - Action: "*"
             Effect: Allow
-            Resource: '*'
-            Principal: '*'
+            Resource: "*"
+            Principal: "*"
       RouteTableIds:
-        - !Ref 'PrivateSubnet1ARouteTable'
-        - !Ref 'PrivateSubnet2ARouteTable'
+        - !Ref "PrivateSubnet1ARouteTable"
+        - !Ref "PrivateSubnet2ARouteTable"
         - !If
           - PrivateSubnets&3AZCondition
-          - !Ref 'PrivateSubnet3ARouteTable'
-          - !Ref 'AWS::NoValue'
+          - !Ref "PrivateSubnet3ARouteTable"
+          - !Ref "AWS::NoValue"
         - !If
           - PrivateSubnets&4AZCondition
-          - !Ref 'PrivateSubnet4ARouteTable'
-          - !Ref 'AWS::NoValue'
+          - !Ref "PrivateSubnet4ARouteTable"
+          - !Ref "AWS::NoValue"
         - !If
           - AdditionalPrivateSubnetsCondition
-          - !Ref 'PrivateSubnet1BRouteTable'
-          - !Ref 'AWS::NoValue'
+          - !Ref "PrivateSubnet1BRouteTable"
+          - !Ref "AWS::NoValue"
         - !If
           - AdditionalPrivateSubnetsCondition
-          - !Ref 'PrivateSubnet2BRouteTable'
-          - !Ref 'AWS::NoValue'
+          - !Ref "PrivateSubnet2BRouteTable"
+          - !Ref "AWS::NoValue"
         - !If
           - AdditionalPrivateSubnets&3AZCondition
-          - !Ref 'PrivateSubnet3BRouteTable'
-          - !Ref 'AWS::NoValue'
+          - !Ref "PrivateSubnet3BRouteTable"
+          - !Ref "AWS::NoValue"
         - !If
           - AdditionalPrivateSubnets&4AZCondition
-          - !Ref 'PrivateSubnet4BRouteTable'
-          - !Ref 'AWS::NoValue'
-      ServiceName: !Sub 'com.amazonaws.${AWS::Region}.s3'
-      VpcId: !Ref 'VPC'
+          - !Ref "PrivateSubnet4BRouteTable"
+          - !Ref "AWS::NoValue"
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
+      VpcId: !Ref "VPC"
 Outputs:
   NAT1EIP:
     Condition: PrivateSubnetsCondition
     Description: NAT 1 IP address
-    Value: !Ref 'NAT1EIP'
+    Value: !Ref "NAT1EIP"
     Export:
-      Name: !Sub '${AWS::StackName}-NAT1EIP'
+      Name: !Sub "${AWS::StackName}-NAT1EIP"
   NAT2EIP:
     Condition: PrivateSubnetsCondition
     Description: NAT 2 IP address
-    Value: !Ref 'NAT2EIP'
+    Value: !Ref "NAT2EIP"
     Export:
-      Name: !Sub '${AWS::StackName}-NAT2EIP'
+      Name: !Sub "${AWS::StackName}-NAT2EIP"
   NAT3EIP:
     Condition: PrivateSubnets&3AZCondition
     Description: NAT 3 IP address
-    Value: !Ref 'NAT3EIP'
+    Value: !Ref "NAT3EIP"
     Export:
-      Name: !Sub '${AWS::StackName}-NAT3EIP'
+      Name: !Sub "${AWS::StackName}-NAT3EIP"
   NAT4EIP:
     Condition: PrivateSubnets&4AZCondition
     Description: NAT 4 IP address
-    Value: !Ref 'NAT4EIP'
+    Value: !Ref "NAT4EIP"
     Export:
-      Name: !Sub '${AWS::StackName}-NAT4EIP'
+      Name: !Sub "${AWS::StackName}-NAT4EIP"
   PrivateSubnet1ACIDR:
     Condition: PrivateSubnetsCondition
     Description: Private subnet 1A CIDR in Availability Zone 1
-    Value: !Ref 'PrivateSubnet1ACIDR'
+    Value: !Ref "PrivateSubnet1ACIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet1ACIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1ACIDR"
   PrivateSubnet1AID:
     Condition: PrivateSubnetsCondition
     Description: Private subnet 1A ID in Availability Zone 1
-    Value: !Ref 'PrivateSubnet1A'
+    Value: !Ref "PrivateSubnet1A"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet1AID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1AID"
   PrivateSubnet1BCIDR:
     Condition: AdditionalPrivateSubnetsCondition
     Description: Private subnet 1B CIDR in Availability Zone 1
-    Value: !Ref 'PrivateSubnet1BCIDR'
+    Value: !Ref "PrivateSubnet1BCIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet1BCIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1BCIDR"
   PrivateSubnet1BID:
     Condition: AdditionalPrivateSubnetsCondition
     Description: Private subnet 1B ID in Availability Zone 1
-    Value: !Ref 'PrivateSubnet1B'
+    Value: !Ref "PrivateSubnet1B"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet1BID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1BID"
   PrivateSubnet2ACIDR:
     Condition: PrivateSubnetsCondition
     Description: Private subnet 2A CIDR in Availability Zone 2
-    Value: !Ref 'PrivateSubnet2ACIDR'
+    Value: !Ref "PrivateSubnet2ACIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet2ACIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2ACIDR"
   PrivateSubnet2AID:
     Condition: PrivateSubnetsCondition
     Description: Private subnet 2A ID in Availability Zone 2
-    Value: !Ref 'PrivateSubnet2A'
+    Value: !Ref "PrivateSubnet2A"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet2AID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2AID"
   PrivateSubnet2BCIDR:
     Condition: AdditionalPrivateSubnetsCondition
     Description: Private subnet 2B CIDR in Availability Zone 2
-    Value: !Ref 'PrivateSubnet2BCIDR'
+    Value: !Ref "PrivateSubnet2BCIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet2BCIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2BCIDR"
   PrivateSubnet2BID:
     Condition: AdditionalPrivateSubnetsCondition
     Description: Private subnet 2B ID in Availability Zone 2
-    Value: !Ref 'PrivateSubnet2B'
+    Value: !Ref "PrivateSubnet2B"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet2BID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2BID"
   PrivateSubnet3ACIDR:
     Condition: PrivateSubnets&3AZCondition
     Description: Private subnet 3A CIDR in Availability Zone 3
-    Value: !Ref 'PrivateSubnet3ACIDR'
+    Value: !Ref "PrivateSubnet3ACIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet3ACIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet3ACIDR"
   PrivateSubnet3AID:
     Condition: PrivateSubnets&3AZCondition
     Description: Private subnet 3A ID in Availability Zone 3
-    Value: !Ref 'PrivateSubnet3A'
+    Value: !Ref "PrivateSubnet3A"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet3AID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet3AID"
   PrivateSubnet3BCIDR:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Description: Private subnet 3B CIDR in Availability Zone 3
-    Value: !Ref 'PrivateSubnet3BCIDR'
+    Value: !Ref "PrivateSubnet3BCIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet3BCIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet3BCIDR"
   PrivateSubnet3BID:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Description: Private subnet 3B ID in Availability Zone 3
-    Value: !Ref 'PrivateSubnet3B'
+    Value: !Ref "PrivateSubnet3B"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet3BID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet3BID"
   PrivateSubnet4ACIDR:
     Condition: PrivateSubnets&4AZCondition
     Description: Private subnet 4A CIDR in Availability Zone 4
-    Value: !Ref 'PrivateSubnet4ACIDR'
+    Value: !Ref "PrivateSubnet4ACIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet4ACIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet4ACIDR"
   PrivateSubnet4AID:
     Condition: PrivateSubnets&4AZCondition
     Description: Private subnet 4A ID in Availability Zone 4
-    Value: !Ref 'PrivateSubnet4A'
+    Value: !Ref "PrivateSubnet4A"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet4AID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet4AID"
   PrivateSubnet4BCIDR:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Description: Private subnet 4B CIDR in Availability Zone 4
-    Value: !Ref 'PrivateSubnet4BCIDR'
+    Value: !Ref "PrivateSubnet4BCIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet4BCIDR'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet4BCIDR"
   PrivateSubnet4BID:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Description: Private subnet 4B ID in Availability Zone 4
-    Value: !Ref 'PrivateSubnet4B'
+    Value: !Ref "PrivateSubnet4B"
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet4BID'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet4BID"
   PublicSubnet1CIDR:
     Description: Public subnet 1 CIDR in Availability Zone 1
-    Value: !Ref 'PublicSubnet1CIDR'
+    Value: !Ref "PublicSubnet1CIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet1CIDR'
+      Name: !Sub "${AWS::StackName}-PublicSubnet1CIDR"
   PublicSubnet1ID:
     Description: Public subnet 1 ID in Availability Zone 1
-    Value: !Ref 'PublicSubnet1'
+    Value: !Ref "PublicSubnet1"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet1ID'
+      Name: !Sub "${AWS::StackName}-PublicSubnet1ID"
   PublicSubnet2CIDR:
     Description: Public subnet 2 CIDR in Availability Zone 2
-    Value: !Ref 'PublicSubnet2CIDR'
+    Value: !Ref "PublicSubnet2CIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet2CIDR'
+      Name: !Sub "${AWS::StackName}-PublicSubnet2CIDR"
   PublicSubnet2ID:
     Description: Public subnet 2 ID in Availability Zone 2
-    Value: !Ref 'PublicSubnet2'
+    Value: !Ref "PublicSubnet2"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet2ID'
+      Name: !Sub "${AWS::StackName}-PublicSubnet2ID"
   PublicSubnet3CIDR:
     Condition: 3AZCondition
     Description: Public subnet 3 CIDR in Availability Zone 3
-    Value: !Ref 'PublicSubnet3CIDR'
+    Value: !Ref "PublicSubnet3CIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet3CIDR'
+      Name: !Sub "${AWS::StackName}-PublicSubnet3CIDR"
   PublicSubnet3ID:
     Condition: 3AZCondition
     Description: Public subnet 3 ID in Availability Zone 3
-    Value: !Ref 'PublicSubnet3'
+    Value: !Ref "PublicSubnet3"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet3ID'
+      Name: !Sub "${AWS::StackName}-PublicSubnet3ID"
   PublicSubnet4CIDR:
     Condition: 4AZCondition
     Description: Public subnet 4 CIDR in Availability Zone 4
-    Value: !Ref 'PublicSubnet4CIDR'
+    Value: !Ref "PublicSubnet4CIDR"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet4CIDR'
+      Name: !Sub "${AWS::StackName}-PublicSubnet4CIDR"
   PublicSubnet4ID:
     Condition: 4AZCondition
     Description: Public subnet 4 ID in Availability Zone 4
-    Value: !Ref 'PublicSubnet4'
+    Value: !Ref "PublicSubnet4"
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnet4ID'
+      Name: !Sub "${AWS::StackName}-PublicSubnet4ID"
   S3VPCEndpoint:
     Condition: PrivateSubnetsCondition
     Description: S3 VPC Endpoint
-    Value: !Ref 'S3VPCEndpoint'
+    Value: !Ref "S3VPCEndpoint"
     Export:
-      Name: !Sub '${AWS::StackName}-S3VPCEndpoint'
+      Name: !Sub "${AWS::StackName}-S3VPCEndpoint"
   PrivateSubnet1ARouteTable:
     Condition: PrivateSubnetsCondition
-    Value: !Ref 'PrivateSubnet1ARouteTable'
+    Value: !Ref "PrivateSubnet1ARouteTable"
     Description: Private subnet 1A route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet1ARouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1ARouteTable"
   PrivateSubnet1BRouteTable:
     Condition: AdditionalPrivateSubnetsCondition
-    Value: !Ref 'PrivateSubnet1BRouteTable'
+    Value: !Ref "PrivateSubnet1BRouteTable"
     Description: Private subnet 1B route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet1BRouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet1BRouteTable"
   PrivateSubnet2ARouteTable:
     Condition: PrivateSubnetsCondition
-    Value: !Ref 'PrivateSubnet2ARouteTable'
+    Value: !Ref "PrivateSubnet2ARouteTable"
     Description: Private subnet 2A route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet2ARouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2ARouteTable"
   PrivateSubnet2BRouteTable:
     Condition: AdditionalPrivateSubnetsCondition
-    Value: !Ref 'PrivateSubnet2BRouteTable'
+    Value: !Ref "PrivateSubnet2BRouteTable"
     Description: Private subnet 2B route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet2BRouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet2BRouteTable"
   PrivateSubnet3ARouteTable:
     Condition: PrivateSubnets&3AZCondition
-    Value: !Ref 'PrivateSubnet3ARouteTable'
+    Value: !Ref "PrivateSubnet3ARouteTable"
     Description: Private subnet 3A route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet3ARouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet3ARouteTable"
   PrivateSubnet3BRouteTable:
     Condition: AdditionalPrivateSubnets&3AZCondition
-    Value: !Ref 'PrivateSubnet3BRouteTable'
+    Value: !Ref "PrivateSubnet3BRouteTable"
     Description: Private subnet 3B route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet3BRouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet3BRouteTable"
   PrivateSubnet4ARouteTable:
     Condition: PrivateSubnets&4AZCondition
-    Value: !Ref 'PrivateSubnet4ARouteTable'
+    Value: !Ref "PrivateSubnet4ARouteTable"
     Description: Private subnet 4A route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet4ARouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet4ARouteTable"
   PrivateSubnet4BRouteTable:
     Condition: AdditionalPrivateSubnets&4AZCondition
-    Value: !Ref 'PrivateSubnet4BRouteTable'
+    Value: !Ref "PrivateSubnet4BRouteTable"
     Description: Private subnet 4B route table
     Export:
-      Name: !Sub '${AWS::StackName}-PrivateSubnet4BRouteTable'
+      Name: !Sub "${AWS::StackName}-PrivateSubnet4BRouteTable"
   PublicSubnetRouteTable:
-    Value: !Ref 'PublicSubnetRouteTable'
+    Value: !Ref "PublicSubnetRouteTable"
     Description: Public subnet route table
     Export:
-      Name: !Sub '${AWS::StackName}-PublicSubnetRouteTable'
+      Name: !Sub "${AWS::StackName}-PublicSubnetRouteTable"
   VPCCIDR:
-    Value: !Ref 'VPCCIDR'
+    Value: !Ref "VPCCIDR"
     Description: VPC CIDR
     Export:
-      Name: !Sub '${AWS::StackName}-VPCCIDR'
+      Name: !Sub "${AWS::StackName}-VPCCIDR"
   VPCID:
-    Value: !Ref 'VPC'
+    Value: !Ref "VPC"
     Description: VPC ID
     Export:
-      Name: !Sub '${AWS::StackName}-VPCID'
+      Name: !Sub "${AWS::StackName}-VPCID"
