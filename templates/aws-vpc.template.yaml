@@ -1149,7 +1149,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet3ARoute:
-    Condition: Nategtway&3AZCondition
+    Condition: NATGateways&3AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet3ARouteTable'
@@ -1172,7 +1172,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet4ARoute:
-    Condition: Nategtway&4AZCondition
+    Condition: NATGateways&4AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet4ARouteTable'
@@ -1313,7 +1313,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet3BRoute:
-    Condition: AdditionalNategtway&3AZCondition
+    Condition: AdditionalNATGateways&3AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet3BRouteTable'
@@ -1372,7 +1372,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet4BRoute:
-    Condition: AdditionalNategtway&4AZCondition
+    Condition: AdditionalNATGateways&4AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet4BRouteTable'
@@ -1501,14 +1501,14 @@ Resources:
       AllocationId: !GetAtt 'NAT2EIP.AllocationId'
       SubnetId: !Ref 'PublicSubnet2'
   NATGateway3:
-    Condition: Nategtway&3AZCondition
+    Condition: NATGateways&3AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt 'NAT3EIP.AllocationId'
       SubnetId: !Ref 'PublicSubnet3'
   NATGateway4:
-    Condition: Nategtway&4AZCondition
+    Condition: NATGateways&4AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
