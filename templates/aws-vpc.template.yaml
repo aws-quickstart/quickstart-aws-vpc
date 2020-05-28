@@ -466,12 +466,14 @@ Resources:
       VpcId: !Ref 'VPC'
       DhcpOptionsId: !Ref 'DHCPOptions'
   InternetGateway:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
           Value: !Ref 'AWS::StackName'
   VPCGatewayAttachment:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref 'VPC'
@@ -1195,7 +1197,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet1BRoute:
-    Condition: AdditionalNATGatewaysCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGatewaysCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet1BRouteTable'
@@ -1254,7 +1256,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet2BRoute:
-    Condition: AdditionalNATGatewaysCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGatewaysCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet2BRouteTable'
@@ -1313,7 +1315,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet3BRoute:
-    Condition: AdditionalNATGateways&3AZCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGateways&3AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet3BRouteTable'
@@ -1372,7 +1374,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet4BRoute:
-    Condition: AdditionalNATGateways&4AZCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGateways&4AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet4BRouteTable'
