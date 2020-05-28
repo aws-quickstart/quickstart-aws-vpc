@@ -395,20 +395,6 @@ Conditions:
   PrivateSubnets&4AZCondition: !And
     - !Condition 'PrivateSubnetsCondition'
     - !Condition '4AZCondition'
-  # PrivateSubnets&PublicSubnets&NatGatewaysCondition: !And
-  #   - !Condition 'PrivateSubnetsCondition'
-  #   - !Condition 'PublicSubnetsCondition'
-  #   - !Condition 'NATGatewaysCondition'
-  # PrivateSubnets&PublicSubnets&NatGateways&3AZCondition: !And
-  #   - !Condition 'PrivateSubnetsCondition'
-  #   - !Condition 'PublicSubnetsCondition'
-  #   - !Condition 'NATGatewaysCondition'
-  #   - !Condition '3AZCondition'
-  # PrivateSubnets&PublicSubnets&NatGateways&4AZCondition: !And
-  #   - !Condition 'PrivateSubnetsCondition'
-  #   - !Condition 'PublicSubnetsCondition'
-  #   - !Condition 'NATGatewaysCondition'
-  #   - !Condition '4AZCondition'
   PublicSubnetsCondition: !Equals
     - !Ref 'CreatePublicSubnets'
     - 'true'
