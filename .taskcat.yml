@@ -1,0 +1,354 @@
+project:
+  name: quickstart-aws-vpc
+  owner: quickstart@amazon.com
+  package_lambda: false
+  regions:
+    - af-south-1
+    - ap-east-1
+    - ap-south-1
+    - ap-northeast-3
+    - ap-northeast-2
+    - ap-southeast-1
+    - ap-southeast-2
+    - ap-northeast-1
+    - ca-central-1
+    - cn-north-1
+    - cn-northwest-1
+    - eu-central-1
+    - eu-west-1
+    - eu-west-2
+    - eu-south-1
+    - eu-west-3
+    - eu-north-1
+    - me-south-1
+    - sa-east-1
+    - us-east-1
+    - us-east-2
+    - us-west-1
+    - us-west-2
+  s3_bucket: ''
+tests:
+  vpc-complete-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_2]
+      CreateAdditionalPrivateSubnets: 'true'
+      CreatePrivateSubnets: 'true'
+      NumberOfAZs: '2'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      - af-south-1
+      - ap-east-1
+      - ap-south-1
+      ## - ap-northeast-3
+      - ap-northeast-2
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-northeast-1
+      - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      - eu-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-south-1
+      - eu-west-3
+      - eu-north-1
+      - me-south-1
+      - sa-east-1
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template.yaml
+  vpc-defaults-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_2]
+      CreateAdditionalPrivateSubnets: 'false'
+      CreatePrivateSubnets: 'true'
+      NumberOfAZs: '2'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      - af-south-1
+      - ap-east-1
+      - ap-south-1
+      ## - ap-northeast-3
+      - ap-northeast-2
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-northeast-1
+      - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      - eu-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-south-1
+      - eu-west-3
+      - eu-north-1
+      - me-south-1
+      - sa-east-1
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template.yaml
+  vpc-public-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_2]
+      CreateAdditionalPrivateSubnets: 'false'
+      CreateNATGateways: 'false'
+      CreatePrivateSubnets: 'false'
+      NumberOfAZs: '2'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      - af-south-1
+      - ap-east-1
+      - ap-south-1
+      ## - ap-northeast-3
+      - ap-northeast-2
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-northeast-1
+      - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      - eu-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-south-1
+      - eu-west-3
+      - eu-north-1
+      - me-south-1
+      - sa-east-1
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template.yaml
+  vpc-private-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_2]
+      CreateAdditionalPrivateSubnets: 'false'
+      CreatePublicSubnets: 'false'
+      CreateNATGateways: 'false'
+      NumberOfAZs: '2'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      - af-south-1
+      - ap-east-1
+      - ap-south-1
+      ## - ap-northeast-3
+      - ap-northeast-2
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-northeast-1
+      - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      - eu-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-south-1
+      - eu-west-3
+      - eu-north-1
+      - me-south-1
+      - sa-east-1
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template.yaml
+  3az-complete-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_3]
+      CreateAdditionalPrivateSubnets: 'true'
+      CreatePrivateSubnets: 'true'
+      NumberOfAZs: '3'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      - af-south-1
+      - ap-east-1
+      - ap-south-1
+      ## - ap-northeast-3
+      - ap-northeast-2
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-northeast-1
+      ## - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      - eu-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-south-1
+      - eu-west-3
+      - eu-north-1
+      - me-south-1
+      - sa-east-1
+      - us-east-1
+      - us-east-2
+      ## - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template
+  4az-complete-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_4]
+      CreateAdditionalPrivateSubnets: 'true'
+      CreatePrivateSubnets: 'true'
+      NumberOfAZs: '4'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      ## - af-south-1
+      ## - ap-east-1
+      ## - ap-south-1
+      ## - ap-northeast-3
+      ## - ap-northeast-2
+      ## - ap-southeast-1
+      ## - ap-southeast-2
+      ## - ap-northeast-1
+      ## - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      ## - eu-central-1
+      ## - eu-west-1
+      ## - eu-west-2
+      ## - eu-south-1
+      ## - eu-west-3
+      ## - eu-north-1
+      ## - me-south-1
+      ## - sa-east-1
+      - us-east-1
+      ## - us-east-2
+      ## - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template
+  4az-public-all-possible-regions:
+    parameters:
+      AvailabilityZones: $[taskcat_getaz_4]
+      CreateAdditionalPrivateSubnets: 'false'
+      CreatePrivateSubnets: 'false'
+      NumberOfAZs: '4'
+      PrivateSubnet1ACIDR: 10.0.0.0/19
+      PrivateSubnet1BCIDR: 10.0.192.0/21
+      PrivateSubnet2ACIDR: 10.0.32.0/19
+      PrivateSubnet2BCIDR: 10.0.200.0/21
+      PrivateSubnet3ACIDR: 10.0.64.0/19
+      PrivateSubnet3BCIDR: 10.0.208.0/21
+      PrivateSubnet4ACIDR: 10.0.96.0/19
+      PrivateSubnet4BCIDR: 10.0.216.0/21
+      PublicSubnet1CIDR: 10.0.128.0/20
+      PublicSubnet2CIDR: 10.0.144.0/20
+      PublicSubnet3CIDR: 10.0.160.0/20
+      PublicSubnet4CIDR: 10.0.176.0/20
+      VPCCIDR: 10.0.0.0/16
+      VPCTenancy: default
+    regions:
+      ## - af-south-1
+      ## - ap-east-1
+      ## - ap-south-1
+      ## - ap-northeast-3
+      ## - ap-northeast-2
+      ## - ap-southeast-1
+      ## - ap-southeast-2
+      ## - ap-northeast-1
+      ## - ca-central-1
+      ## - cn-north-1
+      ## - cn-northwest-1
+      ## - eu-central-1
+      ## - eu-west-1
+      ## - eu-west-2
+      ## - eu-south-1
+      ## - eu-west-3
+      ## - eu-north-1
+      ## - me-south-1
+      ## - sa-east-1
+      - us-east-1
+      ## - us-east-2
+      ## - us-west-1
+      - us-west-2
+    s3_bucket: ''
+    template: templates/aws-vpc.template

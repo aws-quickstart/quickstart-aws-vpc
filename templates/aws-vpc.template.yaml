@@ -5,7 +5,7 @@ Description: >-
   private subnets with dedicated custom network access control lists (ACLs). If you
   deploy the Quick Start in a region that doesn't support NAT gateways, NAT instances
   are deployed instead. **WARNING** This template creates AWS resources. You will
-  be billed for the AWS resources used if you create a stack from this template. QS(0027)
+  be billed for the AWS resources used if you create a stack from this template. (qs-1qnnspaap)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -18,6 +18,7 @@ Metadata:
           default: Network Configuration
         Parameters:
           - VPCCIDR
+          - CreatePublicSubnets
           - PublicSubnet1CIDR
           - PublicSubnet2CIDR
           - PublicSubnet3CIDR
@@ -26,6 +27,7 @@ Metadata:
           - PublicSubnetTag2
           - PublicSubnetTag3
           - CreatePrivateSubnets
+          - CreateNATGateways
           - PrivateSubnet1ACIDR
           - PrivateSubnet2ACIDR
           - PrivateSubnet3ACIDR
@@ -52,6 +54,10 @@ Metadata:
         default: Availability Zones
       CreateAdditionalPrivateSubnets:
         default: Create additional private subnets with dedicated network ACLs
+      CreateNATGateways:
+        default: Create NAT Gateways
+      CreatePublicSubnets:
+        default: Create public subnets
       CreatePrivateSubnets:
         default: Create private subnets
       KeyPairName:
@@ -121,6 +127,20 @@ Parameters:
       If false, the CIDR parameters for those subnets will be ignored. If true, it
       also requires that the 'Create private subnets' parameter is also true to have
       any effect.
+    Type: String
+  CreateNATGateways:
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+    Description: Set to false when creating only private subnets. If True, both CreatePublicSubnets and CreatePrivateSubnets must also be true.
+    Type: String
+  CreatePublicSubnets:
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+    Description: Set to false to create only private subnets. If false, CreatePrivateSubnets must be True and the CIDR parameters for ALL public subnets will be ignored
     Type: String
   CreatePrivateSubnets:
     AllowedValues:
@@ -303,6 +323,20 @@ Parameters:
     Default: default
     Description: The allowed tenancy of instances launched into the VPC
     Type: String
+Rules:
+  NAT:
+    RuleCondition: !Equals [!Ref CreateNATGateways, 'true']
+    Assertions:
+      - Assert: !And
+          - !Equals [!Ref CreatePrivateSubnets, 'true']
+          - !Equals [!Ref CreatePublicSubnets, 'true']
+        AssertDescription: To enable NAT gateways you must have both CreatePrivateSubnets and CreatePublicSubnets set to 'true'
+  Subnets:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref CreatePrivateSubnets, 'true']
+          - !Equals [!Ref CreatePublicSubnets, 'true']
+        AssertDescription: At least one of CreatePublicSubnets or CreatePrivateSubnets must be set to 'true'
 Conditions:
   3AZCondition: !Or
     - !Equals
@@ -325,9 +359,30 @@ Conditions:
   AdditionalPrivateSubnets&4AZCondition: !And
     - !Condition 'AdditionalPrivateSubnetsCondition'
     - !Condition '4AZCondition'
+  AdditionalPrivateSubnets&PublicSubnets&NatGatewaysCondition: !And
+    - !Condition 'AdditionalPrivateSubnetsCondition'
+    - !Condition 'PublicSubnetsCondition'
+    - !Condition 'NATGatewaysCondition'
+  AdditionalPrivateSubnets&PublicSubnets&NatGateways&3AZCondition: !And
+    - !Condition 'AdditionalPrivateSubnets&3AZCondition'
+    - !Condition 'PublicSubnetsCondition'
+    - !Condition 'NATGatewaysCondition'
+  AdditionalPrivateSubnets&PublicSubnets&NatGateways&4AZCondition: !And
+    - !Condition 'AdditionalPrivateSubnets&4AZCondition'
+    - !Condition 'PublicSubnetsCondition'
+    - !Condition 'NATGatewaysCondition'
   GovCloudCondition: !Equals
     - !Ref 'AWS::Region'
     - us-gov-west-1
+  NATGatewaysCondition: !Equals
+    - !Ref 'CreateNATGateways'
+    - 'true'
+  NATGateways&3AZCondition: !And
+    - !Condition 'NATGatewaysCondition'
+    - !Condition '3AZCondition'
+  NATGateways&4AZCondition: !And
+    - !Condition 'NATGatewaysCondition'
+    - !Condition '4AZCondition'
   NVirginiaRegionCondition: !Equals
     - !Ref 'AWS::Region'
     - us-east-1
@@ -339,6 +394,15 @@ Conditions:
     - !Condition '3AZCondition'
   PrivateSubnets&4AZCondition: !And
     - !Condition 'PrivateSubnetsCondition'
+    - !Condition '4AZCondition'
+  PublicSubnetsCondition: !Equals
+    - !Ref 'CreatePublicSubnets'
+    - 'true'
+  PublicSubnets&3AZCondition: !And
+    - !Condition 'PublicSubnetsCondition'
+    - !Condition '3AZCondition'
+  PublicSubnets&4AZCondition: !And
+    - !Condition 'PublicSubnetsCondition'
     - !Condition '4AZCondition'
   PrivateSubnetATag1Condition: !Not
     - !Equals
@@ -402,12 +466,14 @@ Resources:
       VpcId: !Ref 'VPC'
       DhcpOptionsId: !Ref 'DHCPOptions'
   InternetGateway:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
           Value: !Ref 'AWS::StackName'
   VPCGatewayAttachment:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref 'VPC'
@@ -821,6 +887,7 @@ Resources:
                 - !Ref 'PrivateSubnetBTag3'
           - !Ref 'AWS::NoValue'
   PublicSubnet1:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref 'VPC'
@@ -872,6 +939,7 @@ Resources:
           - !Ref 'AWS::NoValue'
       MapPublicIpOnLaunch: true
   PublicSubnet2:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref 'VPC'
@@ -923,7 +991,7 @@ Resources:
           - !Ref 'AWS::NoValue'
       MapPublicIpOnLaunch: true
   PublicSubnet3:
-    Condition: 3AZCondition
+    Condition: PublicSubnets&3AZCondition
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref 'VPC'
@@ -975,7 +1043,7 @@ Resources:
           - !Ref 'AWS::NoValue'
       MapPublicIpOnLaunch: true
   PublicSubnet4:
-    Condition: 4AZCondition
+    Condition: PublicSubnets&4AZCondition
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref 'VPC'
@@ -1037,7 +1105,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet1ARoute:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet1ARouteTable'
@@ -1060,7 +1128,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet2ARoute:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet2ARouteTable'
@@ -1083,7 +1151,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet3ARoute:
-    Condition: PrivateSubnets&3AZCondition
+    Condition: NATGateways&3AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet3ARouteTable'
@@ -1106,7 +1174,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet4ARoute:
-    Condition: PrivateSubnets&4AZCondition
+    Condition: NATGateways&4AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet4ARouteTable'
@@ -1129,7 +1197,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet1BRoute:
-    Condition: AdditionalPrivateSubnetsCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGatewaysCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet1BRouteTable'
@@ -1188,7 +1256,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet2BRoute:
-    Condition: AdditionalPrivateSubnetsCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGatewaysCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet2BRouteTable'
@@ -1247,7 +1315,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet3BRoute:
-    Condition: AdditionalPrivateSubnets&3AZCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGateways&3AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet3BRouteTable'
@@ -1306,7 +1374,7 @@ Resources:
         - Key: Network
           Value: Private
   PrivateSubnet4BRoute:
-    Condition: AdditionalPrivateSubnets&4AZCondition
+    Condition: AdditionalPrivateSubnets&PublicSubnets&NatGateways&4AZCondition
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateSubnet4BRouteTable'
@@ -1355,6 +1423,7 @@ Resources:
       SubnetId: !Ref 'PrivateSubnet4B'
       NetworkAclId: !Ref 'PrivateSubnet4BNetworkAcl'
   PublicSubnetRouteTable:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref 'VPC'
@@ -1364,6 +1433,7 @@ Resources:
         - Key: Network
           Value: Public
   PublicSubnetRoute:
+    Condition: PublicSubnetsCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::Route
     Properties:
@@ -1371,74 +1441,76 @@ Resources:
       DestinationCidrBlock: '0.0.0.0/0'
       GatewayId: !Ref 'InternetGateway'
   PublicSubnet1RouteTableAssociation:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref 'PublicSubnet1'
       RouteTableId: !Ref 'PublicSubnetRouteTable'
   PublicSubnet2RouteTableAssociation:
+    Condition: PublicSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref 'PublicSubnet2'
       RouteTableId: !Ref 'PublicSubnetRouteTable'
   PublicSubnet3RouteTableAssociation:
-    Condition: 3AZCondition
+    Condition: PublicSubnets&3AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref 'PublicSubnet3'
       RouteTableId: !Ref 'PublicSubnetRouteTable'
   PublicSubnet4RouteTableAssociation:
-    Condition: 4AZCondition
+    Condition: PublicSubnets&4AZCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref 'PublicSubnet4'
       RouteTableId: !Ref 'PublicSubnetRouteTable'
   NAT1EIP:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
   NAT2EIP:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
   NAT3EIP:
-    Condition: PrivateSubnets&3AZCondition
+    Condition: NATGateways&3AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
   NAT4EIP:
-    Condition: PrivateSubnets&4AZCondition
+    Condition: NATGateways&4AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
   NATGateway1:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt 'NAT1EIP.AllocationId'
       SubnetId: !Ref 'PublicSubnet1'
   NATGateway2:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt 'NAT2EIP.AllocationId'
       SubnetId: !Ref 'PublicSubnet2'
   NATGateway3:
-    Condition: PrivateSubnets&3AZCondition
+    Condition: NATGateways&3AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt 'NAT3EIP.AllocationId'
       SubnetId: !Ref 'PublicSubnet3'
   NATGateway4:
-    Condition: PrivateSubnets&4AZCondition
+    Condition: NATGateways&4AZCondition
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
@@ -1486,25 +1558,25 @@ Resources:
       VpcId: !Ref 'VPC'
 Outputs:
   NAT1EIP:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     Description: NAT 1 IP address
     Value: !Ref 'NAT1EIP'
     Export:
       Name: !Sub '${AWS::StackName}-NAT1EIP'
   NAT2EIP:
-    Condition: PrivateSubnetsCondition
+    Condition: NATGatewaysCondition
     Description: NAT 2 IP address
     Value: !Ref 'NAT2EIP'
     Export:
       Name: !Sub '${AWS::StackName}-NAT2EIP'
   NAT3EIP:
-    Condition: PrivateSubnets&3AZCondition
+    Condition: NATGateways&3AZCondition
     Description: NAT 3 IP address
     Value: !Ref 'NAT3EIP'
     Export:
       Name: !Sub '${AWS::StackName}-NAT3EIP'
   NAT4EIP:
-    Condition: PrivateSubnets&4AZCondition
+    Condition: NATGateways&4AZCondition
     Description: NAT 4 IP address
     Value: !Ref 'NAT4EIP'
     Export:
@@ -1606,45 +1678,49 @@ Outputs:
     Export:
       Name: !Sub '${AWS::StackName}-PrivateSubnet4BID'
   PublicSubnet1CIDR:
+    Condition: PublicSubnetsCondition
     Description: Public subnet 1 CIDR in Availability Zone 1
     Value: !Ref 'PublicSubnet1CIDR'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet1CIDR'
   PublicSubnet1ID:
+    Condition: PublicSubnetsCondition
     Description: Public subnet 1 ID in Availability Zone 1
     Value: !Ref 'PublicSubnet1'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet1ID'
   PublicSubnet2CIDR:
+    Condition: PublicSubnetsCondition
     Description: Public subnet 2 CIDR in Availability Zone 2
     Value: !Ref 'PublicSubnet2CIDR'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet2CIDR'
   PublicSubnet2ID:
+    Condition: PublicSubnetsCondition
     Description: Public subnet 2 ID in Availability Zone 2
     Value: !Ref 'PublicSubnet2'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet2ID'
   PublicSubnet3CIDR:
-    Condition: 3AZCondition
+    Condition: PublicSubnets&3AZCondition
     Description: Public subnet 3 CIDR in Availability Zone 3
     Value: !Ref 'PublicSubnet3CIDR'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet3CIDR'
   PublicSubnet3ID:
-    Condition: 3AZCondition
+    Condition: PublicSubnets&3AZCondition
     Description: Public subnet 3 ID in Availability Zone 3
     Value: !Ref 'PublicSubnet3'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet3ID'
   PublicSubnet4CIDR:
-    Condition: 4AZCondition
+    Condition: PublicSubnets&4AZCondition
     Description: Public subnet 4 CIDR in Availability Zone 4
     Value: !Ref 'PublicSubnet4CIDR'
     Export:
       Name: !Sub '${AWS::StackName}-PublicSubnet4CIDR'
   PublicSubnet4ID:
-    Condition: 4AZCondition
+    Condition: PublicSubnets&4AZCondition
     Description: Public subnet 4 ID in Availability Zone 4
     Value: !Ref 'PublicSubnet4'
     Export:
@@ -1704,6 +1780,7 @@ Outputs:
     Export:
       Name: !Sub '${AWS::StackName}-PrivateSubnet4BRouteTable'
   PublicSubnetRouteTable:
+    Condition: PublicSubnetsCondition
     Value: !Ref 'PublicSubnetRouteTable'
     Description: Public subnet route table
     Export:
