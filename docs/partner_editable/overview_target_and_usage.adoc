@@ -10,7 +10,7 @@ and guidelines. Amazon VPC is the networking layer for Amazon Elastic Compute Cl
 (Amazon EC2) and provides a private, isolated section of the AWS Cloud where you can
 launch AWS services and other resources in a virtual network. For a discussion of best
 design practices for Amazon VPC environments, see the documentation and articles listed
-in the _other_useful_information[Other useful information] section.
+in the link:#_other_useful_information[Other useful information] section.
 
 The Amazon VPC architecture includes public and private subnets. The first set of private
 subnets share the default network access control list (ACL) from the Amazon VPC, and a
