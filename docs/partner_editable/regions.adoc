@@ -26,3 +26,4 @@
 |eu-north-1	|Europe (Stockholm)	|Not required	
 |me-south-1	|Middle East (Bahrain)	|Required	
 |sa-east-1	|South America (São Paulo)	|Not required	
+|===
