@@ -74,7 +74,7 @@ following default CIDR block sizes to maximize capacity:
 ^|10.0.0.0/17
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
 ^! 10.0.0.0/19
