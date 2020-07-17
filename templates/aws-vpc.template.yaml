@@ -7,6 +7,18 @@ Description: >-
   are deployed instead. **WARNING** This template creates AWS resources. You will
   be billed for the AWS resources used if you create a stack from this template. (qs-1qnnspaap)
 Metadata:
+  QuickStartDocumentation:
+    EntrypointName: "Launch a New VPC"
+    OptionalParameters:
+      - PrivateSubnetATag1
+      - PrivateSubnetATag2
+      - PrivateSubnetATag3
+      - PrivateSubnetBTag1
+      - PrivateSubnetBTag2
+      - PrivateSubnetBTag3
+      - PublicSubnetTag1
+      - PublicSubnetTag2
+      - PublicSubnetTag3
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
