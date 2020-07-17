@@ -33,7 +33,7 @@ each (inbound/outbound) direction, and they affect a complete subnet. We recomme
 that you use security groups more often than network ACLs, and create and apply these
 based on a schema that works for your organization. Some examples are server roles and
 application roles. For more information about security groups and network ACLs, see
-the // TODO Need Link[Security] section later in this guide.
+the _security[Security] section later in this guide.
 
 * Independent route tables configured for every private subnet to control the flow of
 traffic within and outside the Amazon VPC. The public subnets share a single routing
