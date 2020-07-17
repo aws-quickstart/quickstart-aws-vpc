@@ -19,7 +19,7 @@ gateways in the public subnet for each Availability Zone. You can also create ad
 private subnets with dedicated custom network access control lists (ACLs). If you deploy
 the Quick Start in a region that doesn’t support NAT gateways, NAT instances are deployed
 instead. Default subnet sizes are based on a typical deployment but can be reconfigured, as
-discussed in the Subnet Sizing section.
+discussed in the link:#_subnet_sizing[Subnet Sizing] section.
 
 The Quick Start also includes VPC endpoints, which provide a secure, reliable connection to
 Amazon S3 without requiring an Internet gateway, a NAT device, or a virtual private
@@ -32,4 +32,4 @@ VPC full access to Amazon S3 resources. This policy supplements any IAM user pol
 S3 bucket policies that you may have in place. 
 
 The Quick Start also enables Domain Name System (DNS) resolution in the VPC. For more
-information about VPC endpoints, see the AWS documentation.
+information about VPC endpoints, see the https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-s3.html[AWS documentation].
