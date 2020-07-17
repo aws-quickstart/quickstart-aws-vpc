@@ -65,7 +65,7 @@ In the default subnet allocation, the VPC is divided into subnet types and then 
 segmented per Availability Zone, as illustrated in // TODO Need Link[Figure 1]. The Quick Start provides the
 following default CIDR block sizes to maximize capacity:
 
-[cols="60,40a", options="header",grid=rows]
+[cols="60,40a", options="header",grid=rows, frame=topbot]
 |===
 | VPC 
 ^| 10.0.0.0/16
@@ -85,7 +85,6 @@ following default CIDR block sizes to maximize capacity:
 ! Availability Zone 4
 ^! 10.0.96.0/19
 !===
-
 |Public subnets
 ^|10.0.128.0/18
 |
