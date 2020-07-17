@@ -89,7 +89,7 @@ following default CIDR block sizes to maximize capacity:
 ^|10.0.128.0/18
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
 ^! 10.0.128.0/20
@@ -107,7 +107,7 @@ ACL
 ^|10.0.192.0/19
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
 ^! 10.0.192.0/21
@@ -123,7 +123,7 @@ ACL
 ^|10.0.224.0/19
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
 ^! 10.0.224.0/21
@@ -140,7 +140,7 @@ Alternatively, there may be situations where you would want to separate the CIDR
 by dividing the VPC into Availability Zones and then into subnet types. The recommended
 CIDR blocks to maximize capacity for this scenario are as follows:
 
-[cols="60,40a", options="header",grid=rows]
+[cols="60,40a", options="header",grid=none, frame=topbot, stripes=even]
 |===
 | VPC 
 ^| 10.0.0.0/16
@@ -149,7 +149,7 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 ^|10.0.0.0/18
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Private subnet A 
 ^! 10.0.0.0/19
@@ -165,7 +165,7 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 ^|10.0.64.0/18
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Private subnet A 
 ^! 10.0.64.0/19
@@ -181,7 +181,7 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 ^|10.0.128.0/18
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Private subnet A 
 ^! 10.0.128.0/19
@@ -197,7 +197,7 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 ^|10.0.192.0/18
 |
 | 
-[cols="2,1", grid=rows, frame=none]
+[cols="2,1", grid=rows, frame=topbot]
 !===
 ! Private subnet A 
 ^! 10.0.192.0/19
