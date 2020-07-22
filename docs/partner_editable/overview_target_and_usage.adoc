@@ -2,8 +2,6 @@
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
 
-This Quick Start reference deployment guide provides step-by-step instructions for deploying {partner-product-name} on the AWS Cloud.
-
 This Quick Start provides a networking foundation for AWS Cloud infrastructures. It
 deploys an Amazon Virtual Private Cloud (Amazon VPC) according to AWS best practices
 and guidelines. Amazon VPC is the networking layer for Amazon Elastic Compute Cloud
