@@ -1,7 +1,7 @@
 // Add steps as necessary for accessing the software, post-configuration, and testing. Don’t include full usage instructions for your software, but add links to your product documentation for that information.
 //Should any sections not be applicable, remove them
 
-== Post deployment steps
+== Add AWS services or other applications
 // If Post-deployment steps are required, add them here. If not, remove the heading
 
 After you use this Quick Start to build your VPC environment, you can deploy additional

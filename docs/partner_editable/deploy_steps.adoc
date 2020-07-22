@@ -28,7 +28,7 @@ NOTE: You are responsible for the cost of the AWS services used while running th
 [cols=2*]
 |===
 ^|http://qs_launch_link[Deploy {partner-product-name} on AWS^] 
-^|link:=../../template/aws-vpc.template.yaml[View template^]
+^|link:=../../templates/aws-vpc.template.yaml[View template^]
 |===
 
 Also, make sure that the domain name option in the DHCP options is configured as explained in the http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_DHCP_Options.html[Amazon VPC documentation^]. You provide your VPC settings when you launch the Quick Start.
