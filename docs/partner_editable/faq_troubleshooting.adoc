@@ -1,0 +1,33 @@
+// Add any tips or answers to anticipated questions. This could include the following troubleshooting information. If you don’t have any other Q&A to add, change “FAQ” to “Troubleshooting.”
+
+== FAQ
+
+*Q.* I encountered a *CREATE_FAILED* error when I launched the Quick Start.
+
+*A.* If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with *Rollback on failure* set to *No*. (This setting is under *Advanced* in the AWS CloudFormation console, *Options* page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
+// If you’re deploying on Linux instances, provide the location for log files on Linux, or omit this sentence.
+
+WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Please make sure to delete the stack when you finish troubleshooting.
+
+For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting AWS CloudFormation^] on the AWS website.
+
+*Q.* I encountered a size limitation error when I deployed the AWS CloudFormation templates.
+
+*A.* We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see the http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS documentation^].
+
+
+== Troubleshooting
+
+The following table lists specific *CREATE_FAILED* error messages you might encounter.
+
+|===
+|Error message|Possible cause|What to do
+
+|*API: ec2: RunInstances Not authorized for images: ami-ID*|The template is referencing an AMI that has expired.|We refresh AMIs on a regular basis, but our schedule isn’t always synchronized with AWS AMI updates. If you get this error message, notify us, and we’ll update the template with the new AMI ID.
+
+If you’d like to fix the template yourself, you can https://fwd.aws/px53q[download it] and update the `Mappings` section with the latest AMI ID for your region.
+|*We currently do not have sufficient t2.small capacity in the AZ you requested*|The NAT instance requires a larger or different instance type|Switch to an instance type that supports higher capacity. If a higher-capacity instance type isn’t available, try a different Availability Zone or region. Or you can complete the https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&limitType=service-code-[request form] in the AWS Support Center to increase the Amazon EC2 limit for the instance type or region. Limit increases are tied to the region they were requested for.
+|*Instance ID did not stabilize*|You have exceeded your IOPS for the region.|Request a limit increase by completing the https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&limitType=service-code-[request form] in the AWS Support Center.
+|===
+
+If you encounter a template validation error during deployment, check for a mismatch in the values of the *Availability Zones* and *Number of Availability Zones* parameters. If you select more Availability Zones than you request, the AWS CloudFormation template won’t validate. Correct the parameters so that they’re in sync, and redeploy the Quick Start.

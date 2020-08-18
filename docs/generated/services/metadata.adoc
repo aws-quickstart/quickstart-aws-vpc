@@ -1,0 +1,17 @@
+
+:template_aws_ec2_dhcpoptions:
+:template_aws_ec2_eip:
+:template_aws_ec2_internetgateway:
+:template_aws_ec2_natgateway:
+:template_aws_ec2_networkacl:
+:template_aws_ec2_networkaclentry:
+:template_aws_ec2_route:
+:template_aws_ec2_routetable:
+:template_aws_ec2_subnet:
+:template_aws_ec2_subnetnetworkaclassociation:
+:template_aws_ec2_subnetroutetableassociation:
+:template_aws_ec2_vpc:
+:template_aws_ec2_vpcdhcpoptionsassociation:
+:template_aws_ec2_vpcendpoint:
+:template_aws_ec2_vpcgatewayattachment:
+:template_ec2:

@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Building a Modular and Scalable Virtual Network Architecture with Amazon VPC</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<title>Amazon VPC on the AWS Cloud</title>
 <style>
+
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
 /* Uncomment @import statement to use as custom stylesheet */
-/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
 audio,video{display:inline-block}
 audio:not([controls]){display:none;height:0}
@@ -71,7 +71,7 @@ a:hover,a:focus{color:#1d4b8f}
 a img{border:0}
 p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
 p aside{font-size:.875em;line-height:1.35;font-style:italic}
-h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#34478c;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
 h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
 h1{font-size:2.125em}
 h2{font-size:1.6875em}
@@ -155,18 +155,43 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #header #revnumber{text-transform:capitalize}
 #header #revnumber::after{content:"\00a0"}
 #content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
-#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc{
+  border-bottom:1px solid #e7e7e9;
+  padding-bottom:.5em;
+  width: 230px;
+}
 #toc>ul{margin-left:.125em}
 #toc ul.sectlevel0>li>a{font-style:italic}
 #toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
 #toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
 #toc li{line-height:1.3334;margin-top:.3334em}
-#toc a{text-decoration:none}
-#toc a:active{text-decoration:underline}
-#toctitle{color:#7a2518;font-size:1.2em}
+#toc a{
+  font-family: "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  text-decoration:none;
+  color:#ccc;
+  display: block;
+  font-size:1rem;
+  line-height: 2rem;
+}
+#toc a:hover{color:#e6e6e6}
+#toc a:active{
+  text-decoration:none;
+  color:#777;
+}
+#toctitle{
+  padding-top:0;
+  overflow:hidden;
+  background:#283e5b;
+  border-bottom: 4px solid #435c7c;
+  width:320px;
+  height:154px;
+  top:0;
+  left:0;
+  color: #283e5b;
+}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
-#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2{margin-top:0!important;background:#1c222a;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;/*! padding:1.25em 1em; */height:100%;overflow:auto;padding-right: 0px;}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
 #toc.toc2 ul ul{margin-left:0;padding-left:1em}
@@ -175,15 +200,20 @@ body.toc2.toc-right{padding-left:0;padding-right:15em}
 body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
 @media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
 #toc.toc2{width:20em}
-#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2 #toctitle{
+  font-size:1.375em;
+  background-repeat: no-repeat;
+  background-size: 160.8px 136.483px;
+  background-position: center;
+  }
 #toc.toc2>ul{font-size:.95em}
 #toc.toc2 ul ul{padding-left:1.25em}
 body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
 #content #toc>:first-child{margin-top:0}
 #content #toc>:last-child{margin-bottom:0}
-#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
-#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#footer{max-width:100%;background:#1c222a;padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44;/*! background: #e6e6e6; */}
 #content{margin-bottom:.625em}
 .sect1{padding-bottom:.625em}
 @media screen and (min-width:768px){#content{margin-bottom:1.25em}
@@ -434,64 +464,392 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer{background:none}
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+
+/* -------------------------   QS CSS entries ---------------------------- */
+@font-face {
+  font-family: 'Amazon Ember Light';
+  src        :
+    local('Amazon Ember Light'),
+    local('AmazonEmberLight'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_lt-019e0ec3f9b521056e66e31fdcbc8323e5cd1938._V299195751_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_lt-bc9ed0fce860a46f3cb061034280c23400e6e8b6._V299195751_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Light';
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Light'),
+    local('AmazonEmberLight-Bold'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-46b91bda68161c14e554a779643ef4957431987b._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-b605252f87b8b3df5ae206596dac0938fc5888bc._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Light';
+  font-style : italic;
+  src        :
+    local('Amazon Ember Light'),
+    local('AmazonEmberLight-Italic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_ltit-96be47a559388a2b219577124589435c09a361fe._V299195751_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_ltit-b561f11b5c8be92ac17f6b713dd9d4b6e2f00c8d._V299195751_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Light';
+  font-style : italic;
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Light'),
+    local('AmazonEmberLight-BoldItalic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_ltit-96be47a559388a2b219577124589435c09a361fe._V299195751_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_ltit-b561f11b5c8be92ac17f6b713dd9d4b6e2f00c8d._V299195751_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Regular';
+  src        :
+    local('Amazon Ember Regular'),
+    local('AmazonEmberRegular'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_rg-fd81bacb6a659a8c8c95828226b74594ab985060._V299195749_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_rg-0acf3bc8b64d470d8888d84741a19533394654c6._V299195749_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Regular';
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Regular'),
+    local('AmazonEmberRegular-Bold'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-46b91bda68161c14e554a779643ef4957431987b._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-b605252f87b8b3df5ae206596dac0938fc5888bc._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Regular';
+  font-style : italic;
+  src        :
+    local('Amazon Ember Regular'),
+    local('AmazonEmberRegular-Italic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_rgit-af980fe9c64fc17ece72cba4e3e7fdf54babeea6._V299195748_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_rgit-4fae4842b3446774d86579b9b024858a848644e8._V299195748_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Regular';
+  font-style : italic;
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Regular'),
+    local('AmazonEmberRegular-BoldItalic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-80ff7aba37dd1ff5a6b90233a19e3a780a96dc2f._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-57598ce426a612be5a1d15eee08252668fca5e7a._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Medium';
+  src        :
+    local('Amazon Ember Medium'),
+    local('AmazonEmberMedium'),
+    url('https://m.media-amazon.com/images/G/01/amazonservices/fonts/amazonember_md_base-webfont._V525237381_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/amazonservices/fonts/amazonember_md_base-webfont._V525237386_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Medium';
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Medium'),
+    local('AmazonEmberMedium-Bold'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-46b91bda68161c14e554a779643ef4957431987b._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-b605252f87b8b3df5ae206596dac0938fc5888bc._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Medium';
+  font-style : italic;
+  src        :
+    local('Amazon Ember Medium'),
+    local('AmazonEmberMedium-Italic'),
+    url('https://m.media-amazon.com/images/G/01/agdm/fonts/amazonember/amazonember_mdit-webfont._V522331917_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/agdm/fonts/amazonember/amazonember_mdit-webfont._V522331917_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Medium';
+  font-style : italic;
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Medium'),
+    local('AmazonEmberMedium-BoldItalic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-80ff7aba37dd1ff5a6b90233a19e3a780a96dc2f._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-57598ce426a612be5a1d15eee08252668fca5e7a._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Heavy';
+  src        :
+    local('Amazon Ember Heavy'),
+    local('AmazonEmberHeavy'),
+    url('https://m.media-amazon.com/images/G/01/acs/fonts/amazonember_he-webfont._V278446113_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/acs/fonts/amazonember_he-webfont._V278446115_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Heavy';
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Heavy'),
+    local('AmazonEmberHeavy-Bold'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-46b91bda68161c14e554a779643ef4957431987b._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-b605252f87b8b3df5ae206596dac0938fc5888bc._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Heavy';
+  font-style : italic;
+  src        :
+    local('Amazon Ember Heavy'),
+    local('AmazonEmberHeavy-Italic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-80ff7aba37dd1ff5a6b90233a19e3a780a96dc2f._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-57598ce426a612be5a1d15eee08252668fca5e7a._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Heavy';
+  font-style : italic;
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Heavy'),
+    local('AmazonEmberHeavy-BoldItalic'),
+    url('https://m.media-amazon.com/images/G/01/agdm/fonts/amazonember/amazonember_heit-webfont._V522331917_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/agdm/fonts/amazonember/amazonember_heit-webfont._V522331917_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Thin';
+  src        :
+    local('Amazon Ember Thin'),
+    local('AmazonEmberThin'),
+    url('https://m.media-amazon.com/images/G/01/mobile-apps/devportal2/content/alexa/prize/20160810/fonts/AmazonEmber/amazonember-thin-webfont._V282715032_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/mobile-apps/devportal2/content/alexa/prize/20160810/fonts/AmazonEmber/amazonember-thin-webfont._V282715033_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Thin';
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Thin'),
+    local('AmazonEmberThin-Bold'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-46b91bda68161c14e554a779643ef4957431987b._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bd-b605252f87b8b3df5ae206596dac0938fc5888bc._V2_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Thin';
+  font-style : italic;
+  src        :
+    local('Amazon Ember Thin'),
+    local('AmazonEmberThin-Italic'),
+    url('https://m.media-amazon.com/images/G/01/mobile-apps/devportal2/content/alexa/prize/20160810/fonts/AmazonEmber/amazonember-thinit-webfont._V282715033_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/mobile-apps/devportal2/content/alexa/prize/20160810/fonts/AmazonEmber/amazonember-thinit-webfont._V282715032_.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Amazon Ember Thin';
+  font-style : italic;
+  font-weight: 700;
+  src        :
+    local('Amazon Ember Thin'),
+    local('AmazonEmberThin-BoldItalic'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-80ff7aba37dd1ff5a6b90233a19e3a780a96dc2f._V2_.woff2') format('woff2'),
+    url('https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-amazonember_bdit-57598ce426a612be5a1d15eee08252668fca5e7a._V2_.woff') format('woff');
+}
+
+
+.tip {
+  border-top: 30px solid rgba(92, 184, 92, 0.8);
+  background: #E6F9E6;
+}
+
+.note {
+  border-top: 30px solid #6AB0DE;
+  background: #E7F2FA;
+}
+
+.warning {
+  border-top: 30px solid #F0B37E;
+  background: #FFF2DB;
+}
+
+.caution {
+  border-top: 30px solid rgba(217, 83, 79, 0.8);
+  background: #FAE2E2;
+}
+
+.important {
+  border-top: 30px solid rgba(217, 83, 79, 0.8);
+  background: #FAE2E2;
+}
+
+#content {
+  max-width: 100rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+body {
+  font-family: "Amazon Ember Regular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+}
+
+/* added */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin        : 0.85rem 0 1.7rem 0;
+  text-rendering: optimizeLegibility;
+  color: #ec7211;
+}
+
+p {
+  margin: 1rem 0;
+}
+
+/* QS Table of Contents */
+
+#toc {
+  overflow-x: hidden !important;
+}
+
+#toc>ul li {
+  padding    : 0.3rem 0.6rem;
+  margin-top : 0;
+  line-height: 1;
+}
+
+#toc>ul li a {
+  line-height: 1.6;
+}
+
+#toc a {
+  /* TOC details */
+  font-family  : "Amazon Ember Light", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  margin-left  : -1rem;
+  margin-right : -1rem;
+  padding-left : 1rem;
+  padding-right: 1rem;
+  background   : transparent;
+  box-sizing   : border-box;
+  cursor       : pointer;
+  font-weight  : 300 !important;
+}
+
+#toc.toc2 #toctitle{
+  background-image: url('images/AWS-Logo.svg');
+}
+
+/* QS Tables */
+
+table.tableblock .title,
+.imageblock .title {
+  font-family  : "Amazon Ember Light", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-size: 1.1rem;
+  color: #34478c;
+}
+table p {
+  margin: 0rem;
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article toc2 toc-left">
+<body class="book toc2 toc-left">
 <div id="header">
-<h1>Building a Modular and Scalable Virtual Network Architecture with Amazon VPC</h1>
 <div id="toc" class="toc2">
-<div id="toctitle">Quick Start Reference Deployment</div>
+<div id="toctitle"></div>
 <ul class="sectlevel1">
-<li><a href="#_about_this_guide">About this guide</a></li>
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#_quick_links">Quick Links</a></li>
+<li><a href="#_amazon_vpc_on_aws">Amazon VPC on AWS</a></li>
 <li><a href="#_cost">Cost</a></li>
-<li><a href="#_architecture">Architecture</a>
+<li><a href="#_software_licenses">Software licenses</a></li>
+<li><a href="#_architecture">Architecture</a></li>
+<li><a href="#_planning_the_deployment">Planning the deployment</a>
 <ul class="sectlevel2">
-<li><a href="#_aws_services">AWS Services</a></li>
-<li><a href="#_best_practices">Best Practices</a></li>
+<li><a href="#_specialized_knowledge">Specialized knowledge</a></li>
+<li><a href="#_aws_account">AWS account</a></li>
+<li><a href="#_technical_requirements">Technical requirements</a></li>
+</ul>
+</li>
+<li><a href="#_deployment_steps">Deployment steps</a>
+<ul class="sectlevel2">
+<li><a href="#_sign_in_to_your_aws_account">Sign in to your AWS account</a></li>
+<li><a href="#_launch_the_quick_start">Launch the Quick Start</a></li>
+<li><a href="#_launch_a_new_vpc">Launch a New VPC</a></li>
+</ul>
+</li>
+<li><a href="#_add_aws_services_or_other_applications">Add AWS services or other applications</a></li>
+<li><a href="#_best_practices_for_using_amazon_vpc_on_aws">Best practices for using Amazon VPC on AWS</a>
+<ul class="sectlevel2">
 <li><a href="#_subnet_sizing">Subnet Sizing</a></li>
 </ul>
 </li>
-<li><a href="#_deployment_steps">Deployment Steps</a>
+<li><a href="#_security">Security</a>
 <ul class="sectlevel2">
-<li><a href="#_step_1_prepare_an_aws_account">Step 1 Prepare An AWS Account</a></li>
-<li><a href="#_step_2_launch_the_stack">Step 2 Launch the stack</a></li>
-<li><a href="#_step_3_add_aws_services_or_other_applications">Step 3. Add AWS Services or Other Applications</a></li>
-<li><a href="#_troubleshoot">Troubleshoot</a></li>
-<li><a href="#_security">Security</a></li>
 <li><a href="#_public_and_private_subnets">Public and Private Subnets</a></li>
+<li><a href="#_using_security_groups_and_network_acls">Using Security Groups and Network ACLs</a></li>
 </ul>
 </li>
+<li><a href="#_other_useful_information">Other useful information</a>
+<ul class="sectlevel2">
+<li><a href="#_aws_services">AWS services</a></li>
+<li><a href="#_quick_start_reference_deployments">Quick Start reference deployments</a></li>
 <li><a href="#_github_repository">GitHub Repository</a></li>
-<li><a href="#_document_revisions">Document Revisions</a></li>
+</ul>
+</li>
+<li><a href="#_faq">FAQ</a></li>
+<li><a href="#_troubleshooting">Troubleshooting</a></li>
+<li><a href="#_send_us_feedback">Send us feedback</a></li>
+<li><a href="#_quick_start_reference_deployments_2">Quick Start reference deployments</a></li>
+<li><a href="#_github_repository_2">GitHub repository</a>
+<ul class="sectlevel3">
+<li><a href="#_notices">Notices</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_about_this_guide">About this guide</h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="paragraph">
-<p>This Quick Start reference deployment guide discusses architectural
-considerations and configuration steps for deploying a modular Amazon
-Virtual Private Cloud (Amazon VPC) environment on the Amazon Web
-Services (AWS) Cloud. It also provides links for viewing and launching
-<a href="http://aws.amazon.com/cloudformation/">AWS CloudFormation</a> templates that
-automate the deployment.</p>
+<h2 id="_amazon_vpc_on_the_aws_cloud" class="discrete text-center">Amazon VPC on the AWS Cloud</h2>
+<h2 id="_quick_start_reference_deployment" class="discrete text-left text-center">Quick Start Reference Deployment</h2>
+<div class="imageblock text-center">
+<div class="content">
+<img src="https://aws-quickstart.s3.amazonaws.com/quickstart-aws-vpc/docs/boilerplate/.images/aws-quickstart-graphic.png" alt="QS" width="80" height="80">
 </div>
-<div class="paragraph">
-<p>The guide is for IT infrastructure architects, DevOps engineers, and
-administrators who would like to build a flexible, modular AWS
-networking infrastructure as a baseline for their deployments.</p>
 </div>
-<div class="paragraph">
-<p><a href="http://aws.amazon.com/quickstart/">Quick Starts</a> are automated reference
-deployments for AWS Cloud infrastructure components and key enterprise
-workloads on the AWS Cloud. Each Quick Start launches, configures, and
-runs AWS compute, network, storage, and other services, using AWS best
-practices for security and availability.</p>
+<div class="paragraph text-center">
+<p><strong>July, 2020</strong><br>
+<em></em><br>
+<em>Santiago Cardenas, AWS Quick Start team</em></p>
+</div>
+<div class="admonitionblock tip text-left">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Visit our <a href="https://github.com/aws-quickstart/quickstart-aws-vpc" target="_blank" rel="noopener">GitHub repository</a> for source files and to post feedback,
+report bugs, or submit feature ideas for this Quick Start.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph text-left">
+<p>This Quick Start was created by aws in collaboration with Amazon Web Services (AWS). <a href="http://aws.amazon.com/quickstart/" target="_blank" rel="noopener">Quick Starts</a> are automated reference deployments that use AWS CloudFormation templates to deploy key technologies on AWS, following AWS best practices.</p>
 </div>
 </div>
 </div>
@@ -499,60 +857,46 @@ practices for security and availability.</p>
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start provides a networking foundation for AWS Cloud
-infrastructures. It deploys an Amazon Virtual Private Cloud (Amazon VPC)
-according to AWS best practices and guidelines. Amazon VPC is the
-networking layer for Amazon Elastic Compute Cloud (Amazon EC2) and
-provides a private, isolated section of the AWS Cloud where you can
-launch AWS services and other resources in a virtual network. For a
-discussion of best design practices for Amazon VPC environments, see the
-documentation and articles listed in the
-<a href="#additional-resources">Additional Resources</a> section.</p>
+<p>This Quick Start provides a networking foundation for AWS Cloud infrastructures. It
+deploys an Amazon Virtual Private Cloud (Amazon VPC) according to AWS best practices
+and guidelines. Amazon VPC is the networking layer for Amazon Elastic Compute Cloud
+(Amazon EC2) and provides a private, isolated section of the AWS Cloud where you can
+launch AWS services and other resources in a virtual network. For a discussion of best
+design practices for Amazon VPC environments, see the documentation and articles listed
+in the <a href="#_other_useful_information">Other useful information</a> section.</p>
 </div>
-<div class="paragraph">
-<p>The Amazon VPC architecture includes public and private subnets. The
-first set of private subnets share the default network access control
-list (ACL) from the Amazon VPC, and a second, optional set of private
-subnets includes dedicated custom network ACLs per subnet. The Quick
-Start divides the Amazon VPC address space in a predictable manner
-across multiple Availability Zones, and deploys either NAT instances or
-NAT gateways for outbound Internet access, depending on the AWS Region
-you deploy the Quick Start in.</p>
-</div>
-<div class="paragraph">
-<p>You can use this Quick Start as a building block for your own
-deployments. You can scale it up or down by adding or removing subnets
-and Availability Zones according to your needs, and add other
-infrastructure components and software layers to complete your AWS
-environment.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Amazon may share who uses AWS
+Quick Starts with the AWS Partner Network (APN) Partner that
+collaborated with AWS on the content of the Quick Start.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quick_links">Quick Links</h2>
+<h2 id="_amazon_vpc_on_aws">Amazon VPC on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The links in this section are for your convenience. Before you launch
-the Quick Start, please review the architecture, configuration, and
-other considerations discussed in this guide.</p>
+<p>The Amazon VPC architecture includes public and private subnets. The first set of private
+subnets share the default network access control list (ACL) from the Amazon VPC, and a
+second, optional set of private subnets includes dedicated custom network ACLs per subnet.
+The Quick Start divides the Amazon VPC address space in a predictable manner across
+multiple Availability Zones, and deploys either NAT instances or NAT gateways for
+outbound Internet access, depending on the AWS Region you deploy the Quick Start in.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>If you have an AWS account and you’re already familiar with AWS
-services, you can <a href="https://fwd.aws/mm853">launch the Quick Start</a> to build
-the architecture shown in <a href="#figure1">Figure 1</a> in your AWS account.
-The deployment takes approximately 5 minutes. If you’re new to AWS,
-please follow the <a href="#subnet-sizing">step-by-step instructions</a>
-provided later in this guide.</p>
-</li>
-<li>
-<p>If you want to take a look under the covers, you can
-<a href="https://fwd.aws/px53q">view the AWS CloudFormation template</a> that
-automates the deployment. The template includes default settings that
-you can customize by following the instructions in this guide.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>You can use this Quick Start as a building block for your own deployments. You can scale it
+up or down by adding or removing subnets and Availability Zones according to your needs,
+and add other infrastructure components and software layers to complete your AWS
+environment.</p>
 </div>
 </div>
 </div>
@@ -561,23 +905,34 @@ you can customize by following the instructions in this guide.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You are responsible for the cost of the AWS services used while running
-this Quick Start reference deployment. There is no additional cost for
+this Quick Start. There is no additional cost for
 using the Quick Start.</p>
 </div>
 <div class="paragraph">
 <p>The AWS CloudFormation template for this Quick Start includes
 configuration parameters that you can customize. Some of the settings,
-such as the instance type, number of Availability Zones, use of NAT
-gateways or NAT instances (depending on the AWS Region you choose), and
-amount of data that flows through the NAT device, will determine the
-cost of deployment. To get an estimate, you can use the
-<a href="http://calculator.s3.amazonaws.com/index.html">AWS Simple Monthly
-Calculator</a>.</p>
+such as the instance type, affect the cost of deployment. For cost estimates,
+see the pricing pages for each AWS service you use. Prices are subject to change.</p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+After you deploy the Quick Start, enable the <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-gettingstarted-turnonreports.html" target="_blank" rel="noopener">AWS Cost and Usage Report</a> to deliver billing metrics to an Amazon Simple Storage Service (Amazon S3) bucket in your account. It provides cost estimates based on usage throughout each month and aggregates the data at the end of the month. For more information about the report, see the <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-costusage.html" target="_blank" rel="noopener">AWS documentation</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_software_licenses">Software licenses</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>For pricing details, see the <a href="https://aws.amazon.com/ec2/pricing/">Amazon
-EC2 pricing</a> and <a href="https://aws.amazon.com/vpc/pricing/">Amazon VPC pricing</a>
-pages.</p>
+<p>There are no licencing requirements for this Quick Start</p>
 </div>
 </div>
 </div>
@@ -585,259 +940,121 @@ pages.</p>
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Quick Start with the <strong>default parameters</strong> builds the
-following virtual networking environment in the AWS Cloud.</p>
+<p>Deploying this Quick Start for a new virtual private cloud (VPC) with
+<strong>default parameters</strong> builds the following <em>Amazon VPC</em> environment in the
+AWS Cloud.</p>
 </div>
-<div class="imageblock">
+<div id="architecture1" class="imageblock">
 <div class="content">
-<img src="images/architecture.png" alt="Architecture" width="640" height="480">
+<a class="image" href="images/architecture_diagram.png"><img src="images/architecture_diagram.png" alt="Architecture" width="648" height="439"></a>
 </div>
+<div class="title">Figure 1. Quick Start architecture for <em>Amazon VPC</em> on AWS</div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Note that the IP addresses exclude five addresses from each subnet
-that are reserved and unavailable for use.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Figure 1: Modular Amazon VPC architecture on AWS
-(<a href="https://docs.aws.amazon.com/quickstart/latest/vpc/images/quickstart-vpc-design-fullscreen.png">full-screen view</a>)</p>
-</div>
-<div class="paragraph">
-<p>The AWS CloudFormation template sets up the virtual network and creates
-networking resources.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The IP addresses exclude five addresses from each subnet that are reserved and unavailable for use *
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>The template creates a Multi-AZ, multi-subnet VPC infrastructure with
-managed NAT gateways in the public subnet for each Availability Zone.
-You can also create additional private subnets with dedicated custom
-network access control lists (ACLs). If you deploy the Quick Start in a
-region that doesn’t support NAT gateways, NAT instances are deployed
-instead. Default subnet sizes are based on a typical deployment but can
-be reconfigured, as discussed in the <a href="#subnet-sizing">Subnet Sizing</a>
-section.</p>
+<p>As shown in Figure 1, the Quick Start sets up the following:</p>
 </div>
 <div class="paragraph">
-<p>The Quick Start also includes VPC endpoints, which provide a secure,
-reliable connection to Amazon S3 without requiring an Internet gateway,
-a NAT device, or a virtual private gateway. With these endpoints, you
-can access S3 resources from within the VPC created by the Quick Start.
-These endpoints are valid only for the AWS Region in which you launch
-the Quick Start.</p>
+<p>The AWS CloudFormation template sets up the virtual network and creates networking
+resources.</p>
 </div>
 <div class="paragraph">
-<p>The Quick Start uses the default endpoint policy, which gives any user
-or service within the VPC full access to Amazon S3 resources. This
-policy supplements any IAM user policies or S3 bucket policies that you
-may have in place.</p>
+<p>The template creates a Multi-AZ, multi-subnet VPC infrastructure with managed NAT
+gateways in the public subnet for each Availability Zone. You can also create additional
+private subnets with dedicated custom network access control lists (ACLs). If you deploy
+the Quick Start in a region that doesn’t support NAT gateways, NAT instances are deployed
+instead. Default subnet sizes are based on a typical deployment but can be reconfigured, as
+discussed in the <a href="#_subnet_sizing">Subnet Sizing</a> section.</p>
 </div>
 <div class="paragraph">
-<p>The Quick Start also enables Domain Name System (DNS) resolution in the
-VPC. For more information about VPC endpoints, see the
-<a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-endpoints-s3.html">AWS
-documentation</a>.</p>
+<p>The Quick Start also includes VPC endpoints, which provide a secure, reliable connection to
+Amazon S3 without requiring an Internet gateway, a NAT device, or a virtual private
+gateway. With these endpoints, you can access S3 resources from within the VPC created by
+the Quick Start. These endpoints are valid only for the AWS Region in which you launch the
+Quick Start.</p>
 </div>
+<div class="paragraph">
+<p>The Quick Start uses the default endpoint policy, which gives any user or service within the
+VPC full access to Amazon S3 resources. This policy supplements any IAM user policies or
+S3 bucket policies that you may have in place.</p>
+</div>
+<div class="paragraph">
+<p>The Quick Start also enables Domain Name System (DNS) resolution in the VPC. For more
+information about VPC endpoints, see the <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-s3.html">AWS documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_planning_the_deployment">Planning the deployment</h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="_aws_services">AWS Services</h3>
+<h3 id="_specialized_knowledge">Specialized knowledge</h3>
 <div class="paragraph">
-<p>The core AWS components used by this Quick Start include the following
-AWS services. (If you are new to AWS, see the
-<a href="http://docs.aws.amazon.com/gettingstarted/latest/awsgsg-intro/intro.html">Getting
-Started section</a> of the AWS documentation.)</p>
+<p>This deployment guide requires a moderate level of familiarity with
+AWS services. If you’re new to AWS, visit the
+<a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started Resource Center</a>
+and the <a href="https://aws.amazon.com/training/">AWS Training and Certification
+website</a>. These sites provide materials for learning how to design,
+deploy, and operate your infrastructure and applications on the AWS
+Cloud.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://aws.amazon.com/documentation/vpc/">Amazon VPC</a> – The Amazon
-Virtual Private Cloud (Amazon VPC) service lets you provision a private,
-isolated section of the AWS Cloud where you can launch AWS services and
-other resources in a virtual network that you define. You have complete
-control over your virtual networking environment, including selection of
-an IP address range, creation of subnets, and configuration of route
-tables and network gateways.</p>
-</li>
-<li>
-<p><a href="http://aws.amazon.com/documentation/ec2/">Amazon EC2</a> – The Amazon
-Elastic Compute Cloud (Amazon EC2) service enables you to launch virtual
-machine instances with a variety of operating systems. You can choose
-from existing Amazon Machine Images (AMIs) or import your own virtual
-machine images.</p>
-</li>
-<li>
-<p><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html">Amazon
-EBS</a> – Amazon Elastic Block Store (Amazon EBS) provides persistent
-block-level storage volumes for use with Amazon EC2 instances in the AWS
-Cloud. Each Amazon EBS volume is automatically replicated within its
-Availability Zone to protect you from component failure, offering high
-availability and durability. Amazon EBS volumes provide consistent and
-low-latency performance to run your workloads.</p>
-</li>
-<li>
-<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html">NAT
-Gateway</a> – NAT gateways are network address translation (NAT) devices,
-which provide outbound Internet access to instances in a private
-subnets, but prevent the Internet from accessing those instances. NAT
-gateways provide better availability and bandwidth than NAT instances.
-The NAT Gateway service is a managed service that takes care of
-administering NAT gateways for you. NAT gateways aren’t supported in all
-AWS Regions. This Quick Start deploys NAT instances in regions where NAT
-gateways aren’t available.</p>
-</li>
-<li>
-<p>AWS CloudFormation<br>
-<a href="http://aws.amazon.com/documentation/cloudformation/" class="bare">http://aws.amazon.com/documentation/cloudformation/</a></p>
-</li>
-<li>
-<p>Amazon EC2</p>
-</li>
-<li>
-<p>User guide for Microsoft Windows:
-<a href="http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/" class="bare">http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/</a></p>
-</li>
-<li>
-<p>User guide for Linux:<br>
-<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/" class="bare">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/</a></p>
-</li>
-<li>
-<p>Amazon VPC<br>
-<a href="http://aws.amazon.com/documentation/vpc/" class="bare">http://aws.amazon.com/documentation/vpc/</a></p>
-</li>
-<li>
-<p>Security groups<br>
-<a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html" class="bare">https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html</a></p>
-</li>
-<li>
-<p>Network ACLs<br>
-<a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html" class="bare">https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html</a></p>
-</li>
-<li>
-<p>NAT gateways<br>
-<a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html" class="bare">http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html</a></p>
-</li>
-<li>
-<p>Best practices for implementing VPCs</p>
-</li>
-<li>
-<p>AWS Single VPC Design<br>
-<a href="http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf" class="bare">http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf</a></p>
-</li>
-<li>
-<p>Your VPC and Subnets<br>
-<a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" class="bare">http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html</a></p>
-</li>
-<li>
-<p>Practical VPC Design<br>
-<a href="https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc" class="bare">https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>This Quick Start assumes familiarity with VPC architecure and CloudFormation.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_best_practices">Best Practices</h3>
+<h3 id="_aws_account">AWS account</h3>
 <div class="paragraph">
-<p>The architecture built by this Quick Start supports AWS best practices
-for high availability and security. The Quick Start provides:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Up to four Availability Zones for high availability and disaster
-recovery. (AWS recommends maximizing your use of Availability Zones to
-isolate a data center outage.) Availability Zones are geographically
-distributed within a region and spaced for best insulation and stability
-in the event of a natural disaster.</p>
-</li>
-<li>
-<p>Separate subnets for unique routing requirements. AWS recommends using
-public subnets for external-facing resources and private subnets for
-internal resources. For each Availability Zone, this Quick Start
-provisions one public subnet and one private subnet by default. (If you
-need public subnets only, you can disable the creation of the private
-subnets.) For subnet sizing strategies, see the next section.</p>
-</li>
-<li>
-<p>Additional layer of security. AWS recommends using network ACLs as
-firewalls to control inbound and outbound traffic at the subnet level.
-This Quick Start provides an option to create a network ACL protected
-subnet in each Availability Zone. These network ACLs provide individual
-controls that you can customize as a second layer of defense.</p>
-</li>
-</ul>
+<p>If you don’t already have an AWS account, create one at <a href="https://aws.amazon.com/" target="_blank" rel="noopener">https://aws.amazon.com</a> by following the on-screen instructions. Part of the sign-up process involves receiving a phone call and entering a PIN using the phone keypad.</p>
 </div>
 <div class="paragraph">
-<p>We recommend that you use network ACLs sparingly for the following
-reasons: they can be complex to manage, they are stateless, every IP
-address must be explicitly opened in each (inbound/outbound) direction,
-and they affect a complete subnet. We recommend that you use security
-groups more often than network ACLs, and create and apply these based on
-a schema that works for your organization. Some examples are server
-roles and application roles. For more information about security groups
-and network ACLs, see the <a href="#security">Security</a> section later in this
-guide.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Independent route tables configured for every private subnet to
-control the flow of traffic within and outside the Amazon VPC. The
-public subnets share a single routing table, because they all use the
-same Internet gateway as the sole route to communicate with the
-Internet.</p>
-</li>
-<li>
-<p>Highly available NAT gateways, where supported, instead of NAT
-instances. NAT gateways offer major advantages in terms of deployment,
-availability, and maintenance. For more information see the
-<a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-comparison.html">comparison</a>
-provided in the Amazon VPC documentation.</p>
-</li>
-<li>
-<p>Spare capacity for additional subnets, to support your environment as
-it grows or changes over time.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>For additional information about these best practices, see the following
-documentation:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf">AWS
-Single VPC Design</a> from the AWS Answers website</p>
-</li>
-<li>
-<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html">Your
-VPC and Subnets</a> in the Amazon VPC documentation</p>
-</li>
-<li>
-<p><a href="https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc">Practical
-VPC Design</a> in the AWS Startups blog</p>
-</li>
-<li>
-<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html">Network
-ACLs</a> in the Amazon VPC documentation</p>
-</li>
-</ul>
+<p>Your AWS account is automatically signed up for all AWS services. You are charged only for the services you use.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_subnet_sizing">Subnet Sizing</h3>
+<h3 id="_technical_requirements">Technical requirements</h3>
 <div class="paragraph">
-<p>In this Quick Start, the sizing of CIDR blocks used in the subnets is
-based on a typical deployment, where private subnets would have roughly
-double the number of instances found in public subnets. However, during
-deployment, you can use the CIDR block parameters to resize the CIDR
-scopes to meet your architectural needs.</p>
+<p>Before you launch the Quick Start, your account must be configured as specified in the following table. Otherwise, deployment might fail.</p>
 </div>
+<div class="sect3">
+<h4 id="_resource_limits">Resource limits</h4>
 <div class="paragraph">
-<p>In the default subnet allocation, the VPC is divided into subnet types
-and then further segmented per Availability Zone, as illustrated in
-<a href="#figure1">Figure 1</a>. The Quick Start provides the following default
-CIDR block sizes to maximize capacity:</p>
+<p>If necessary, request <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">service quota increases</a> for the following resources. You might need to request increases if your existing deployment currently uses these resources, and this Quick Start deployment could result in exceeding the default quotas. The <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">Service Quotas console</a> displays your usage and quotas for some aspects of some services. For more information, see the <a href="https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html" target="_blank" rel="noopener">AWS documentation</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Resource</th>
+<th class="tableblock halign-left valign-top">This deployment uses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPCs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_supported_regions">Supported regions</h4>
+<div class="paragraph">
+<p>The following regions are currently supported by this Quick Start.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -847,657 +1064,1199 @@ CIDR block sizes to maximize capacity:</p>
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">VPC</th>
-<th class="tableblock halign-left valign-top">10.0.0.0/16</th>
-<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Opt-in Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnets A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.0.0/17</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">us-east-2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">US East (Ohio)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.0.0/19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">us-east-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">US East (N. Virginia)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.32.0/19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">us-west-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">US West (N. California)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.64.0/19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">us-west-2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">US West (Oregon)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.96.0/19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">af-south-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Africa (Cape Town)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnets</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.128.0/18</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-east-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Hong Kong)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.128.0/20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-south-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Mumbai)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.144.0/20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-northeast-3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Osaka-Local)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.160.0/20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-northeast-2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Seoul)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.176.0/20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-southeast-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Singapore)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnets B with dedicated custom network ACL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.192.0/19</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-southeast-2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Sydney)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.192.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ap-northeast-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Asia Pacific (Tokyo)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.200.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ca-central-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canada (Central)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.208.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eu-central-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Europe (Frankfurt)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.216.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eu-west-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Europe (Ireland)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.224.0/19</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eu-west-2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Europe (London)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.224.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eu-south-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Europe (Milan)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.232.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eu-west-3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Europe (Paris)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.240.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eu-north-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Europe (Stockholm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.248.0/21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">me-south-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Middle East (Bahrain)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sa-east-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">South America (São Paulo)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not required</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>Alternatively, there may be situations where you would want to separate
-the CIDR scopes by dividing the VPC into Availability Zones and then
-into subnet types. The recommended CIDR blocks to maximize capacity for
-this scenario are as follows:</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Certain regions are available on an opt-in basis. Refer to the AWS Documentation on <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing Regions</a> for more information.
+</td>
+</tr>
+</table>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">VPC</th>
-<th class="tableblock halign-left valign-top">10.0.0.0/16</th>
-<th class="tableblock halign-left valign-top"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.0.0/18</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.0.0/19</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.32.0/20</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.48.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.56.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availibility Zone 2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.64.0/18</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.64.0/19</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.96.0/20</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.112.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.120.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.128.0/18</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.128.0/19</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.160.0/20</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.176.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.184.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10.0.192.0/18</strong></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.192.0/19</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.224.0/20</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.240.0/21</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.248.0/21</p></td>
-</tr>
-</tbody>
-</table>
+</div>
+<div class="sect3">
+<h4 id="_ec2_key_pairs">EC2 key pairs</h4>
 <div class="paragraph">
-<p>To customize the CIDR ranges for this scenario or to implement your own
-segmentation strategy, you can configure the Quick Start parameters
-described in <a href="#step-2.-launch-the-stack">step 2</a>. For more
-information about VPC and subnet sizing, see the
-<a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html#VPC_Sizing">AWS documentation</a>.</p>
+<p>Make sure that at least one <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pair</a> exists in your AWS account in the Region where you plan to deploy the Quick Start. Make note of the key pair name. You need it during deployment. To create a key pair, follow the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">instructions in the AWS documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already being used by a production instance.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_iam_permissions">IAM permissions</h4>
+<div class="paragraph">
+<p>Before launching the Quick Start, you must log in to the AWS Management Console with <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html" target="_blank" rel="noopener">IAM permissions</a> for the resources and actions the templates deploy.</p>
+</div>
+<div class="paragraph">
+<p>The <em>AdministratorAccess</em> managed policy within IAM provides sufficient permissions, although your organization may choose to use a custom policy with more restrictions.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deployment_options">Deployment options</h4>
+<div class="paragraph">
+<p>This Quick Start provides one deployment option:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploy a new VPC (end-to-end deployment)</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, and other infrastructure components.</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_deployment_steps">Deployment Steps</h2>
+<h2 id="_deployment_steps">Deployment steps</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Follow the step-by-step instructions in this section to build the
-virtual network environment illustrated in <a href="#figure1">Figure 1</a> in
-your AWS account. The AWS CloudFormation template provided with this
-Quick Start bootstraps the AWS networking infrastructure on the AWS
-Cloud from scratch.</p>
-</div>
 <div class="sect2">
-<h3 id="_step_1_prepare_an_aws_account">Step 1 Prepare An AWS Account</h3>
+<h3 id="_sign_in_to_your_aws_account">Sign in to your AWS account</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>If you don’t already have an AWS account, create one at
-<a href="https://aws.amazon.com" class="bare">https://aws.amazon.com</a> by following the on-screen instructions. Part of
-the sign-up process involves receiving a phone call and entering a PIN
-using the phone keypad.</p>
+<p>Sign in to your AWS account at <a href="https://aws.amazon.com" class="bare">https://aws.amazon.com</a> with an IAM user role that has the necessary permissions. For details, see <a href="#_planning_the_deployment">Planning the deployment</a> earlier in this guide.</p>
 </li>
 <li>
-<p>Use the region selector in the navigation bar to choose the AWS Region
-where you want to deploy the Quick Start on AWS.</p>
+<p>Make sure that your AWS account is configured correctly, as discussed in the <a href="#_technical_requirements">Technical requirements</a> section.</p>
 </li>
 </ol>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_launch_the_quick_start">Launch the Quick Start</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Sign in to your AWS account, and choose the following option to launch the AWS CloudFormation template.</p>
+</li>
+</ol>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Amazon VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="=../../templates/aws-vpc.template.yaml" target="_blank" rel="noopener">View template</a></p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p><span class="image"><img src="images/media/image3.png" alt="image" width="138" height="282"></span></p>
+<p>Also, make sure that the domain name option in the DHCP options is configured as explained in the <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_DHCP_Options.html" target="_blank" rel="noopener">Amazon VPC documentation</a>. You provide your VPC settings when you launch the Quick Start.</p>
 </div>
 <div class="paragraph">
-<p>Figure 2: Choosing an AWS Region</p>
+<p>Each deployment takes about 5 minutes to complete.</p>
 </div>
-<div class="paragraph">
-<p><strong>Tip</strong> Consider choosing a region closest to your data center or
-corporate network to reduce network latency between systems running on
-AWS and the systems and users on your corporate network.</p>
-</div>
-<div class="paragraph">
-<p>Also, note that your choice of region will determine whether the Quick
-Start deploys NAT gateways or NAT instances for network connections. For
-a list of regions that support NAT gateways, see
-<a href="http://aws.amazon.com/vpc/pricing/">Amazon VPC pricing</a>.</p>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for Amazon VPC will be built. The template is launched in the us-west-2 Region by default.</p>
+</li>
+</ol>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="3">
 <li>
-<p>Create a
-<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html">key
-pair</a> in your preferred region. To do this, in the navigation pane of
-the Amazon EC2 console, choose <strong>Key Pairs</strong>, <strong>Create Key Pair</strong>, type a
-name, and then choose <strong>Create</strong>.</p>
+<p>On the <strong>Create stack</strong> page, keep the default setting for the template URL, and then choose <strong>Next</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. For example, you can change the network configuration parameters if you
+want to reconfigure the subnet segmentation used for the VPC, as discussed earlier in
+the <a href="#_subnet_sizing">Subnet Sizing</a> section.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/media/image4.png" alt="image" width="634" height="307"></span></p>
+<p>In the following tables, parameters are listed by category and described separately for the deployment options. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
 </div>
-<div class="paragraph">
-<p>Figure 3: Creating a key pair</p>
-</div>
-<div class="paragraph">
-<p>Amazon EC2 uses public-key cryptography to encrypt and decrypt login
-information. To be able to log in to your instances, you must create a
-key pair. With Windows instances, we use the key pair to obtain the
-administrator password via the Amazon EC2 console and then log in using
-Remote Desktop Protocol (RDP) as explained in the
-<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">step-by-step
-instructions</a> in the <em>Amazon Elastic Compute Cloud User Guide</em>. On
-Linux, we use the key pair to authenticate SSH login.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_step_2_launch_the_stack">Step 2 Launch the stack</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="https://fwd.aws/mm853">Launch the Quick Start</a> into your AWS account.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>The template is launched in the US West (Oregon) region by default. You
-can change the region by using the region selector in the navigation
-bar.</p>
-</div>
-<div class="paragraph">
-<p>This stack takes approximately 5 minutes to create.</p>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong> You are responsible for the cost of the AWS services used while
-running this Quick Start reference deployment. There is no additional
-cost for using this Quick Start. See the pricing pages for each AWS
-service you will be using in this Quick Start for full details.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="4">
-<li>
-<p>On the <strong>Select Template</strong> page, keep the default setting for the Amazon
-S3 template URL, and then choose <strong>Next</strong>.</p>
-</li>
-<li>
-<p>On the <strong>Specify Details</strong> page, review the following parameters for the
-template, provide values for parameters that require your input, and
-customize the default settings as necessary. For example, you can change
-the network configuration parameters if you want to reconfigure the
-subnet segmentation used for the VPC, as discussed earlier in the
-<a href="#subnet_sizing">Subnet Sizing</a> section.</p>
-</li>
-</ol>
-</div>
-<div class="sect3">
-<h4 id="_parameters">Parameters</h4>
-<div class="admonitionblock important">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Last Change to input parameters on: 2020-04-22 20:42:59
+Unless you are customizing the Quick Start templates for your own deployment projects, we recommend that you keep the default settings for the parameters labeled <code>Quick Start S3 bucket name</code>, <code>Quick Start S3 bucket
+Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parameter settings automatically updates code references to point to a new Quick Start location. For more information, see the <a href="https://aws-quickstart.github.io/option1.html" target="_blank" rel="noopener">AWS Quick Start Contributor’s Guide</a>.
 </td>
 </tr>
 </table>
 </div>
-<div id="availability-zone-configuration" class="paragraph">
-<p>Availability zone Configuration</p>
 </div>
+<div class="sect2">
+<h3 id="_launch_a_new_vpc">Launch a New VPC</h3>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Availability Zone Configuration</caption>
 <colgroup>
-<col style="width: 27%;">
+<col style="width: 16%;">
 <col style="width: 11%;">
-<col style="width: 62%;">
+<col style="width: 73%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Default value</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Availability Zones</strong>(<code>AvailabilityZones</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Requires Input</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List
-of Availability Zones to use for the subnets in the VPC. Note: The
-logical order is preserved.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zones
+(<code>AvailabilityZones</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Number of Availability Zones</strong>(<code>NumberOfAZs</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of
-Availability Zones to use in the VPC. This must match your selections in
-the list of Availability Zones parameter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Availability Zones
+(<code>NumberOfAZs</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Availability Zones to use in the VPC. This must match your selections in the list of Availability Zones parameter.</p></td>
 </tr>
 </tbody>
 </table>
-<div id="network-configuration" class="paragraph">
-<p>Network Configuration</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Network Configuration</caption>
 <colgroup>
-<col style="width: 29%;">
-<col style="width: 4%;">
-<col style="width: 67%;">
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Default value</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VPC CIDR</strong>(<code>VPCCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.0.0/16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR
+(<code>VPCCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.0.0/16</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the VPC</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Public subnet 1 CIDR</strong>(<code>PublicSubnet1CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.128.0/20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for the public DMZ subnet 1 located in Availability Zone 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create public subnets
+(<code>CreatePublicSubnets</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to false to create only private subnets. If false, CreatePrivateSubnets must be True and the CIDR parameters for ALL public subnets will be ignored</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Public subnet 2 CIDR</strong>(<code>PublicSubnet2CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.144.0/20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for the public DMZ subnet 2 located in Availability Zone 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 1 CIDR
+(<code>PublicSubnet1CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.128.0/20</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the public DMZ subnet 1 located in Availability Zone 1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Public subnet 3 CIDR</strong>(<code>PublicSubnet3CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.160.0/20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for the public DMZ subnet 3 located in Availability Zone 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 2 CIDR
+(<code>PublicSubnet2CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.144.0/20</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the public DMZ subnet 2 located in Availability Zone 2</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Public subnet 4 CIDR</strong>(<code>PublicSubnet4CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.176.0/20</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for the public DMZ subnet 4 located in Availability Zone 4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 3 CIDR
+(<code>PublicSubnet3CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.160.0/20</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the public DMZ subnet 3 located in Availability Zone 3</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Public Subnets</strong>(<code>PublicSubnetTag1</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Network=Public</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to
-add to public subnets, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 4 CIDR
+(<code>PublicSubnet4CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.176.0/20</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the public DMZ subnet 4 located in Availability Zone 4</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Public Subnets</strong>(<code>PublicSubnetTag2</code>)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to public
-subnets, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Public Subnets
+(<code>PublicSubnetTag1</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to public subnets, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Public Subnets</strong>(<code>PublicSubnetTag3</code>)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to public
-subnets, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Public Subnets
+(<code>PublicSubnetTag2</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to public subnets, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Create private subnets</strong>(<code>CreatePrivateSubnets</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Set to false
-to create only public subnets. If false, the CIDR parameters for ALL
-private subnets will be ignored.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Public Subnets
+(<code>PublicSubnetTag3</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to public subnets, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 1A CIDR</strong>(<code>PrivateSubnet1ACIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.0.0/19</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for private subnet 1A located in Availability Zone 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create private subnets
+(<code>CreatePrivateSubnets</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to false to create only public subnets. If false, the CIDR parameters for ALL private subnets will be ignored.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 2A CIDR</strong>(<code>PrivateSubnet2ACIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.32.0/19</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for private subnet 2A located in Availability Zone 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create NAT Gateways
+(<code>CreateNATGateways</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to false when creating only private subnets. If True, both CreatePublicSubnets and CreatePrivateSubnets must also be true.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 3A CIDR</strong>(<code>PrivateSubnet3ACIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.64.0/19</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for private subnet 3A located in Availability Zone 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 1A CIDR
+(<code>PrivateSubnet1ACIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.0.0/19</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 1A located in Availability Zone 1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 4A CIDR</strong>(<code>PrivateSubnet4ACIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.96.0/19</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR
-block for private subnet 4A located in Availability Zone 4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 2A CIDR
+(<code>PrivateSubnet2ACIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.32.0/19</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 2A located in Availability Zone 2</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Private A Subnets</strong>(<code>PrivateSubnetATag1</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Network=Private</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 3A CIDR
+(<code>PrivateSubnet3ACIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.64.0/19</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 3A located in Availability Zone 3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 4A CIDR
+(<code>PrivateSubnet4ACIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.96.0/19</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 4A located in Availability Zone 4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Private A Subnets
+(<code>PrivateSubnetATag1</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to private subnets A, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Private A Subnets</strong>(<code>PrivateSubnetATag2</code>)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to
-private subnets A, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Private A Subnets
+(<code>PrivateSubnetATag2</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to private subnets A, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Private A Subnets</strong>(<code>PrivateSubnetATag3</code>)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to
-private subnets A, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Private A Subnets
+(<code>PrivateSubnetATag3</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to private subnets A, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Create additional private subnets with dedicated network
-ACLs</strong>(<code>CreateAdditionalPrivateSubnets</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Set to true to create a
-network ACL protected subnet in each Availability Zone. If false, the
-CIDR parameters for those subnets will be ignored. If true, it also
-requires that the 'Create private subnets' parameter is also true to
-have any effect.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create additional private subnets with dedicated network ACLs
+(<code>CreateAdditionalPrivateSubnets</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to true to create a network ACL protected subnet in each Availability Zone. If false, the CIDR parameters for those subnets will be ignored. If true, it also requires that the 'Create private subnets' parameter is also true to have any effect.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 1B with dedicated network ACL
-CIDR</strong>(<code>PrivateSubnet1BCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.192.0/21</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private
-subnet 1B with dedicated network ACL located in Availability Zone 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 1B with dedicated network ACL CIDR
+(<code>PrivateSubnet1BCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.192.0/21</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 1B with dedicated network ACL located in Availability Zone 1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 2B with dedicated network ACL
-CIDR</strong>(<code>PrivateSubnet2BCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.200.0/21</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private
-subnet 2B with dedicated network ACL located in Availability Zone 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 2B with dedicated network ACL CIDR
+(<code>PrivateSubnet2BCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.200.0/21</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 2B with dedicated network ACL located in Availability Zone 2</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 3B with dedicated network ACL
-CIDR</strong>(<code>PrivateSubnet3BCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.208.0/21</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private
-subnet 3B with dedicated network ACL located in Availability Zone 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 3B with dedicated network ACL CIDR
+(<code>PrivateSubnet3BCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.208.0/21</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 3B with dedicated network ACL located in Availability Zone 3</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Private subnet 4B with dedicated network ACL
-CIDR</strong>(<code>PrivateSubnet4BCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10.0.216.0/21</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private
-subnet 4B with dedicated network ACL located in Availability Zone 4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 4B with dedicated network ACL CIDR
+(<code>PrivateSubnet4BCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.216.0/21</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 4B with dedicated network ACL located in Availability Zone 4</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Private B Subnets</strong>(<code>PrivateSubnetBTag1</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Network=Private</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Private B Subnets
+(<code>PrivateSubnetBTag1</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to private subnets B, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Private B Subnets</strong>(<code>PrivateSubnetBTag2</code>)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to
-private subnets B, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Private B Subnets
+(<code>PrivateSubnetBTag2</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to private subnets B, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tag for Private B Subnets</strong>(<code>PrivateSubnetBTag3</code>)</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to
-private subnets B, in format Key=Value (Optional)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tag for Private B Subnets
+(<code>PrivateSubnetBTag3</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag to add to private subnets B, in format Key=Value (Optional)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VPC Tenancy</strong>(<code>VPCTenancy</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">default</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The allowed tenancy of
-instances launched into the VPC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC Tenancy
+(<code>VPCTenancy</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The allowed tenancy of instances launched into the VPC</p></td>
 </tr>
 </tbody>
 </table>
-<div id="deprecated-nat-instance-configuration" class="paragraph">
-<p>DEPRECATED: NAT Instance Configuration</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Deprecated: NAT Instance Configuration</caption>
 <colgroup>
-<col style="width: 46%;">
-<col style="width: 8%;">
-<col style="width: 46%;">
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Default value</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>DEPRECATED: Key pair name</strong>(<code>KeyPairName</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">deprecated</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DEPRECATED.
-NAT gateways are now supported in all regions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated: Key pair name
+(<code>KeyPairName</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deprecated</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. NAT gateways are now supported in all regions.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>DEPRECATED: NAT instance type</strong>(<code>NATInstanceType</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">deprecated</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DEPRECATED. NAT gateways are now supported in all regions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated: NAT instance type
+(<code>NATInstanceType</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deprecated</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. NAT gateways are now supported in all regions.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="olist arabic">
+<ol class="arabic" start="5">
+<li>
+<p>On the options page, you can <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html" target="_blank" rel="noopener">specify tags</a> (key-value pairs) for resources in your stack and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html" target="_blank" rel="noopener">set advanced options</a>. When you’re done, choose <strong>Next</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Review</strong> page, review and confirm the template settings. Under <strong>Capabilities</strong>, select the two check boxes to acknowledge that the template creates IAM resources and might require the ability to automatically expand macros.</p>
+</li>
+<li>
+<p>Choose <strong>Create stack</strong> to deploy the stack.</p>
+</li>
+<li>
+<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Amazon VPC deployment is ready.</p>
+</li>
+<li>
+<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in figure 2, to view the created resources.</p>
+</li>
+</ol>
+</div>
+<div id="cfn_outputs" class="imageblock">
+<div class="content">
+<img src="images/cfn_outputs.png" alt="cfn_outputs" width="648" height="439">
+</div>
+<div class="title">Figure 2. Amazon VPC outputs after successful deployment</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_aws_services_or_other_applications">Add AWS services or other applications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After you use this Quick Start to build your VPC environment, you can deploy additional
+Quick Starts or deploy your own applications on top of this AWS infrastructure. If you
+decide to extend your AWS environment with <a href="https://aws.amazon.com/quickstart/">additional Quick Starts</a> for trial or production
+use, we recommend that you choose the option to deploy the Quick Start into an existing
+VPC, where that option is available.</p>
+</div>
+<div class="paragraph">
+<p>If you decide to deploy additional private subnets with dedicated network ACLs, make sure
+you review the configuration and adjust it accordingly. By default, the custom ACLs are
+configured to allow all inbound and outbound traffic to flow in order to facilitate the
+deployment of additional infrastructure. For more information, see <a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html">Network ACLs</a> and
+<a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Appendix_NACLs.html">Recommended Network ACL Rules for Your VPC</a> in the Amazon VPC documentation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_using_amazon_vpc_on_aws">Best practices for using Amazon VPC on AWS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The architecture built by this Quick Start supports AWS best practices for high availability
+and security. The Quick Start provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Up to four Availability Zones for high availability and disaster recovery. (AWS
+recommends maximizing your use of Availability Zones to isolate a data center outage.)
+Availability Zones are geographically distributed within a region and spaced for best
+insulation and stability in the event of a natural disaster.</p>
+</li>
+<li>
+<p>Separate subnets for unique routing requirements. AWS recommends using public
+subnets for external-facing resources and private subnets for internal resources. For
+each Availability Zone, this Quick Start provisions one public subnet and one private
+subnet by default. (If you need public subnets only, you can disable the creation of the
+private subnets.) For subnet sizing strategies, see the next section.</p>
+</li>
+<li>
+<p>Additional layer of security. AWS recommends using network ACLs as firewalls to
+control inbound and outbound traffic at the subnet level. This Quick Start provides an
+option to create a network ACL protected subnet in each Availability Zone. These
+network ACLs provide individual controls that you can customize as a second layer of
+defense.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We recommend that you use network ACLs sparingly for the following reasons: they can
+be complex to manage, they are stateless, every IP address must be explicitly opened in
+each (inbound/outbound) direction, and they affect a complete subnet. We recommend
+that you use security groups more often than network ACLs, and create and apply these
+based on a schema that works for your organization. Some examples are server roles and
+application roles. For more information about security groups and network ACLs, see
+the <a href="#_security">Security</a> section later in this guide.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Independent route tables configured for every private subnet to control the flow of
+traffic within and outside the Amazon VPC. The public subnets share a single routing
+table, because they all use the same Internet gateway as the sole route to communicate
+with the Internet.</p>
+</li>
+<li>
+<p>Highly available NAT gateways, where supported, instead of NAT instances. NAT
+gateways offer major advantages in terms of deployment, availability, and maintenance.
+For more information see the <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-comparison.html">comparison</a> provided in the Amazon VPC documentation.</p>
+</li>
+<li>
+<p>Spare capacity for additional subnets, to support your environment as it grows or
+changes over time.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For additional information about these best practices, see the following documentation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf">AWS Single VPC Design</a> from the AWS Answers website</p>
+</li>
+<li>
+<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html">Your VPC and Subnets</a> in the Amazon VPC documentation</p>
+</li>
+<li>
+<p><a href="https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc">Practical VPC Design</a> in the AWS Startups blog</p>
+</li>
+<li>
+<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html">Network ACLs</a> in the Amazon VPC documentation</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_subnet_sizing">Subnet Sizing</h3>
+<div class="paragraph">
+<p>In this Quick Start, the sizing of CIDR blocks used in the subnets is based on a typical
+deployment, where private subnets would have roughly double the number of instances
+found in public subnets. However, during deployment, you can use the CIDR block
+parameters to resize the CIDR scopes to meet your architectural needs.</p>
+</div>
+<div class="paragraph">
+<p>In the default subnet allocation, the VPC is divided into subnet types and then further
+segmented per Availability Zone, as illustrated in <a href="#_architecture">Figure 1</a>. The Quick Start provides the
+following default CIDR block sizes to maximize capacity:</p>
+</div>
+<table class="tableblock frame-topbot grid-none stripes-even stretch">
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">VPC</th>
+<th class="tableblock halign-center valign-top">10.0.0.0/16</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnets A</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.0.0/17</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.0.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.32.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.64.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.96.0/19</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnets</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.128.0/18</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.128.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.144.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.160.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.176.0/20</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnets B with
+dedicated custom network
+ACL</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.192.0/19</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.192.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.200.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.208.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.216.0/21</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.224.0/19</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.224.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.232.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.240.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.248.0/21</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Alternatively, there may be situations where you would want to separate the CIDR scopes
+by dividing the VPC into Availability Zones and then into subnet types. The recommended
+CIDR blocks to maximize capacity for this scenario are as follows:</p>
+</div>
+<table class="tableblock frame-topbot grid-none stripes-even stretch">
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">VPC</th>
+<th class="tableblock halign-center valign-top">10.0.0.0/16</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 1</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.0.0/18</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.0.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.32.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.48.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.56.0/21</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 2</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.64.0/18</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.64.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.96.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.112.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.120.0/21</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 3</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.128.0/18</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.128.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.160.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.176.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.184.0/21</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone 4</p></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="paragraph">
+<p>10.0.192.0/18</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><table class="tableblock frame-topbot grid-rows stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet A</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.192.0/19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.224.0/20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet B</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.240.0/21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spare subnet capacity</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10.0.248.0/21</p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>To customize the CIDR ranges for this scenario or to implement your own segmentation
+strategy, you can configure the Quick Start parameters described in <a href="#_launch_a_new_vpc">Launch a new VPC</a>. For more
+information about VPC and subnet sizing, see the <a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html#VPC_Sizing">AWS documentation</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_security">Security</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_public_and_private_subnets">Public and Private Subnets</h3>
+<div class="paragraph">
+<p>This Quick Start provisions one public and one private subnet in each Availability Zone by
+default. You can also choose to add additional private subnets with dedicated network
+ACLs.</p>
+</div>
+<div class="paragraph">
+<p>A public subnet is directly routable to the Internet via a route in the route table that points
+to the Internet gateway. This type of subnet allows the use of Elastic IPs and public IPs, and
+(if the security group and network ACLs permit) a public subnet is reachable from the
+Internet. A public subnet is useful as a DMZ infrastructure for web servers and for Internetfacing Elastic Load Balancing (ELB) load balancers.</p>
+</div>
+<div class="paragraph">
+<p>Private subnets can indirectly route to the Internet via a NAT instance or NAT gateway.
+These NAT devices reside in a public subnet in order to route directly to the Internet.
+Instances in a private subnet are not externally reachable from outside the Amazon VPC,
+regardless of whether they have a public or Elastic IP address attached. A private subnet is
+useful for application servers and databases.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_security_groups_and_network_acls">Using Security Groups and Network ACLs</h3>
+<div class="paragraph">
+<p>The following table describes the differences between security groups and network ACLs:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Security group</th>
+<th class="tableblock halign-left valign-top">Network ACL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Operates at the instance level (first layer of defense)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Operates at the subnet level (second layer of defense)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Supports allow rules only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Supports allow rules and deny rules</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Is stateful: Return traffic is automatically allowed, regardless of any rules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Is stateless: Return traffic must be explicitly allowed by rules</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We evaluate all rules before deciding whether to allow traffic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We process rules in numerical order when deciding whether to allow traffic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Applies to an instance only if someone specifies the security group when launching the instance, or associates the security group with the instance later on</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Automatically applies to all instances in the subnets it&#8217;s associated with (backup layer of defense, so you don&#8217;t have to rely on someone specifying the security group)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The network ACLs in this Quick Start are configured as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All public and private subnets are associated with the same default network ACL, which
+is automatically created for all VPCs on AWS. This network ACL allows all inbound and
+outbound traffic. As you deploy instances and services, you should associate them with
+security groups and allow only the traffic and ports needed for your application.</p>
+</li>
+<li>
+<p>Each additional private subnet is associated with a custom network ACL (1:1 ratio).
+These network ACLs are initially configured to allow all inbound and outbound traffic to
+facilitate the deployment of additional instances and services. As with the other subnets,
+you should use security groups to secure the environment internally, and you can lock
+down the custom network ACLs during or after deployment as required by your
+application.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the Quick Start deploys NAT instances instead of NAT gateways in the AWS Region you
+selected, it adds a single security group as a virtual firewall. This security group is required
+for NAT instances and any other instances in the private subnets to access the Internet. The
+security group is configured as follows:</p>
+</div>
+<div class="sect3">
+<h4 id="_inbound">Inbound:</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Source</th>
+<th class="tableblock halign-left valign-top">Protocol</th>
+<th class="tableblock halign-left valign-top">Ports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<div class="sect3">
+<h4 id="_outbound">Outbound:</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Destination</th>
+<th class="tableblock halign-left valign-top">Protocol</th>
+<th class="tableblock halign-left valign-top">Ports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.0.0/0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For additional details, see <a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Security.html">Security in Your VPC</a> in the Amazon VPC documentation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_useful_information">Other useful information</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_aws_services">AWS services</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://aws.amazon.com/documentation/cloudformation/">AWS CloudFormation</a></p>
+</li>
+<li>
+<p>Amazon EC2</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/">User guide for Microsoft Windows</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/">User guide for Linux:</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="http://aws.amazon.com/documentation/vpc/">Amazon VPC</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html">Security groups</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html">Network ACLs</a></p>
+</li>
+<li>
+<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html">NAT gateways</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Best practices for implementing VPCs</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf">AWS Single VPC Design</a></p>
+</li>
+<li>
+<p><a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html">Your VPC and Subnets</a></p>
+</li>
+<li>
+<p><a href="https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc">Practical VPC Design</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_step_3_add_aws_services_or_other_applications">Step 3. Add AWS Services or Other Applications</h3>
-<div class="paragraph">
-<p>After you use this Quick Start to build your VPC environment, you can
-deploy additional Quick Starts or deploy your own applications on top of
-this AWS infrastructure. If you decide to extend your AWS environment
-with <a href="https://aws.amazon.com/quickstart/">additional Quick Starts</a> for
-trial or production use, we recommend that you choose the option to
-deploy the Quick Start into an existing VPC, where that option is
-available.</p>
-</div>
-<div class="paragraph">
-<p>If you decide to deploy additional private subnets with dedicated
-network ACLs, make sure you review the configuration and adjust it
-accordingly. By default, the custom ACLs are configured to allow all
-inbound and outbound traffic to flow in order to facilitate the
-deployment of additional infrastructure. For more information, see
-<a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html">Network
-ACLs</a> and
-<a href="https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Appendix_NACLs.html">Recommended
-Network ACL Rules for Your VPC</a> in the Amazon VPC documentation.</p>
+<h3 id="_quick_start_reference_deployments">Quick Start reference deployments</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/quickstart/">AWS Quick Start home page</a></p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_troubleshoot">Troubleshoot</h3>
+<h3 id="_github_repository">GitHub Repository</h3>
 <div class="paragraph">
-<p>When you deploy this Quick Start, if you encounter a <strong>CREATE_FAILED</strong>
-error instead of the <strong>CREATE_COMPLETE</strong> status code, we recommend that
-you relaunch the template with <strong>Rollback on failure</strong> set to <strong>No</strong>. (This
-setting is under <strong>Advanced</strong> in the AWS CloudFormation console, <strong>Options</strong>
-page.) With this setting, the stack’s state will be retained and the
-instance will be left running, so you can troubleshoot the issue.
-(You’ll want to look at the log files in
-%ProgramFiles%\Amazon\EC2ConfigService and in the C:\cfn\log folder.)</p>
+<p>You can visit our <a href="https://fwd.aws/rdXz7">GitHub repository</a> to download the templates and scripts for this Quick
+Start, to post your comments, and to share your customizations with others.</p>
 </div>
-<div class="quoteblock">
-<blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_faq">FAQ</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p><strong>Important</strong> When you set <strong>Rollback on failure</strong> to <strong>No</strong>, you’ll continue
-to incur AWS charges for this stack. Please make sure to delete the
-stack when you’ve finished troubleshooting.</p>
-</div>
-</blockquote>
+<p><strong>Q.</strong> I encountered a <strong>CREATE_FAILED</strong> error when I launched the Quick Start.</p>
 </div>
 <div class="paragraph">
-<p>The following table lists specific <strong>CREATE_FAILED</strong> error messages you
-might encounter.</p>
+<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with <strong>Rollback on failure</strong> set to <strong>No</strong>. (This setting is under <strong>Advanced</strong> in the AWS CloudFormation console, <strong>Options</strong> page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Please make sure to delete the stack when you finish troubleshooting.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For additional information, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting AWS CloudFormation</a> on the AWS website.</p>
+</div>
+<div class="paragraph">
+<p><strong>Q.</strong> I encountered a size limitation error when I deployed the AWS CloudFormation templates.</p>
+</div>
+<div class="paragraph">
+<p><strong>A.</strong> We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting">Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following table lists specific <strong>CREATE_FAILED</strong> error messages you might encounter.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1514,136 +2273,71 @@ might encounter.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">API: ec2: RunInstances Not authorized for images:
-<a href="https://forums.aws.amazon.com/"><em>ami-ID</em></a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The template is referencing an
-AMI that has expired.</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>We refresh AMIs on a regular basis, but our schedule isn’t always
-synchronized with AWS AMI updates. If you get this error message, notify
-us, and we’ll update the template with the new AMI ID.</p>
-</div>
-<div class="paragraph">
-<p>If you’d like to fix the template yourself, you can
-<a href="https://fwd.aws/px53q">download it</a> and update the Mappings section with
-the latest AMI ID for your region.</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>API: ec2: RunInstances Not authorized for images: ami-ID</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template is referencing an AMI that has expired.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We refresh AMIs on a regular basis, but our schedule isn’t always synchronized with AWS AMI updates. If you get this error message, notify us, and we’ll update the template with the new AMI ID.</p>
+<p class="tableblock">If you’d like to fix the template yourself, you can <a href="https://fwd.aws/px53q">download it</a> and update the <code>Mappings</code> section with the latest AMI ID for your region.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">We currently do not have sufficient t2.small capacity in the AZ you
-requested</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The NAT instance requires a larger or different instance
-type.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to an instance type that supports higher capacity. If a
-higher-capacity instance type isn’t available, try a different
-Availability Zone or region. Or you can complete the
-<a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-">request
-form</a> in the AWS Support Center to increase the Amazon EC2 limit for the
-instance type or region. Limit increases are tied to the region they
-were requested for.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>We currently do not have sufficient t2.small capacity in the AZ you requested</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The NAT instance requires a larger or different instance type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to an instance type that supports higher capacity. If a higher-capacity instance type isn’t available, try a different Availability Zone or region. Or you can complete the <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-">request form</a> in the AWS Support Center to increase the Amazon EC2 limit for the instance type or region. Limit increases are tied to the region they were requested for.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Instance <em>ID</em> did not stabilize</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">You have exceeded your IOPS for the
-region.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://aws.amazon.com/support/createCase?serviceLimitIncreaseType=ebs-volumes&amp;type=service_limit_increase">Request
-a limit increase</a> by completing the
-<a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-">request
-form</a> in the AWS Support Center.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Instance ID did not stabilize</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You have exceeded your IOPS for the region.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request a limit increase by completing the <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-">request form</a> in the AWS Support Center.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>If you encounter a template validation error during deployment, check
-for a mismatch in the values of the <strong>Availability Zones</strong> and <strong>Number of
-Availability Zones</strong> parameters. If you select more Availability Zones
-than you request, the AWS CloudFormation template won’t validate.
-Correct the parameters so that they’re in sync, and redeploy the Quick
-Start.</p>
-</div>
-<div class="paragraph">
-<p>For additional information, see
-<a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html">Troubleshooting
-AWS CloudFormation</a> on the AWS website. If the problem you encounter
-isn’t covered on that page or in the table, please visit the
-<a href="https://console.aws.amazon.com/support/">AWS Support Center</a>. If you’re
-filing a support ticket, please attach the install.log file from the
-master instance (this is the log file that is located in the
-/root/install folder) to the ticket.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_security">Security</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_public_and_private_subnets">Public and Private Subnets</h3>
-<div class="paragraph">
-<p>This Quick Start provisions one public and one private subnet in each
-Availability Zone by default. You can also choose to add additional
-private subnets with dedicated network ACLs.</p>
-</div>
-<div class="paragraph">
-<p>A public subnet is directly routable to the Internet via a route in the
-route table that points to the Internet gateway. This type of subnet
-allows the use of Elastic IPs and public IPs, and (if the security group
-and network ACLs permit) a public subnet is reachable from the Internet.
-A public subnet is useful as a DMZ infrastructure for web servers and
-for Internet-facing Elastic Load Balancing (ELB) load balancers.</p>
-</div>
-<div class="paragraph">
-<p>Private subnets can indirectly route to the Internet via a NAT instance
-or NAT gateway. These NAT devices reside in a public subnet in order to
-route directly to the Internet. Instances in a private subnet are not
-externally reachable from outside the Amazon VPC, regardless of whether
-they have a public or Elastic IP address attached. A private subnet is
-useful for application servers and databases.</p>
-</div>
-<div class="paragraph">
-<p><strong>Quick Start reference deployments</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>AWS Quick Start home page<br>
-<a href="https://aws.amazon.com/quickstart/" class="bare">https://aws.amazon.com/quickstart/</a></p>
-</li>
-</ul>
-</div>
+<p>If you encounter a template validation error during deployment, check for a mismatch in the values of the <strong>Availability Zones</strong> and <strong>Number of Availability Zones</strong> parameters. If you select more Availability Zones than you request, the AWS CloudFormation template won’t validate. Correct the parameters so that they’re in sync, and redeploy the Quick Start.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_github_repository">GitHub Repository</h2>
+<h2 id="_send_us_feedback">Send us feedback</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can visit our [GitHub repository] to download
+<p>To post feedback, submit feature ideas, or report bugs, use the <strong>Issues</strong> section of the <a href="https://github.com/aws-quickstart/quickstart-aws-vpc" target="_blank" rel="noopener">GitHub repository</a> for this Quick Start. If you’d like to submit code, please review the <a href="https://aws-quickstart.github.io/" target="_blank" rel="noopener">Quick Start Contributor’s Guide</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quick_start_reference_deployments_2">Quick Start reference deployments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>See the <a href="https://aws.amazon.com/quickstart/">AWS Quick Start home page</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_github_repository_2">GitHub repository</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can visit our <a href="https://github.com/aws-quickstart/quickstart-aws-vpc" target="_blank" rel="noopener">GitHub repository</a> to download
 the templates and scripts for this Quick Start, to post your comments,
 and to share your customizations with others.</p>
 </div>
+<hr>
+<div class="paragraph">
+<p>© 2020, Amazon Web Services Inc., or its affiliates, and aws. All rights reserved.</p>
 </div>
+<div class="sect3">
+<h4 id="_notices">Notices</h4>
+<div class="paragraph">
+<p>This document is provided for informational purposes only. It represents AWS’s current product offerings and practices as of the date of issue of this document, which are subject to change without notice. Customers are responsible for making their own independent assessment of the information in this document and any use of AWS’s products or services, each of which is provided “as is” without warranty of any kind, whether expressed or implied. This document does not create any warranties, representations, contractual commitments, conditions, or assurances from AWS, its affiliates, suppliers, or licensors. The responsibilities and liabilities of AWS to its customers are controlled by AWS agreements, and this document is not part of, nor does it modify, any agreement between AWS and its customers.</p>
 </div>
-<div class="sect1">
-<h2 id="_document_revisions">Document Revisions</h2>
-<div class="sectionbody">
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-See releases in git <a href="https://github.com/aws-quickstart/quickstart-aws-vpc/releases" class="bare">https://github.com/aws-quickstart/quickstart-aws-vpc/releases</a>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" class="bare">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-22 20:42:31 UTC
+Last updated 2020-08-18 22:10:45 UTC
 </div>
 </div>
 </body>
