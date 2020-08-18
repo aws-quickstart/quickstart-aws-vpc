@@ -1,0 +1,5 @@
+// There are generally two deployment options. If additional are required, add them here
+
+This Quick Start provides one deployment option:
+
+* *Deploy a new VPC (end-to-end deployment)*. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, and other infrastructure components. 

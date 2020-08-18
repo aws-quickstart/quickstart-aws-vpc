@@ -1,0 +1,323 @@
+// Add steps as necessary for accessing the software, post-configuration, and testing. Don’t include full usage instructions for your software, but add links to your product documentation for that information.
+//Should any sections not be applicable, remove them
+
+== Add AWS services or other applications
+// If Post-deployment steps are required, add them here. If not, remove the heading
+
+After you use this Quick Start to build your VPC environment, you can deploy additional
+Quick Starts or deploy your own applications on top of this AWS infrastructure. If you
+decide to extend your AWS environment with https://aws.amazon.com/quickstart/[additional Quick Starts] for trial or production
+use, we recommend that you choose the option to deploy the Quick Start into an existing
+VPC, where that option is available.
+
+If you decide to deploy additional private subnets with dedicated network ACLs, make sure
+you review the configuration and adjust it accordingly. By default, the custom ACLs are
+configured to allow all inbound and outbound traffic to flow in order to facilitate the
+deployment of additional infrastructure. For more information, see https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Network ACLs] and
+https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Appendix_NACLs.html[Recommended Network ACL Rules for Your VPC] in the Amazon VPC documentation.
+
+== Best practices for using {partner-product-name} on AWS
+// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
+
+The architecture built by this Quick Start supports AWS best practices for high availability
+and security. The Quick Start provides:
+
+* Up to four Availability Zones for high availability and disaster recovery. (AWS
+recommends maximizing your use of Availability Zones to isolate a data center outage.)
+Availability Zones are geographically distributed within a region and spaced for best
+insulation and stability in the event of a natural disaster.
+
+* Separate subnets for unique routing requirements. AWS recommends using public
+subnets for external-facing resources and private subnets for internal resources. For
+each Availability Zone, this Quick Start provisions one public subnet and one private
+subnet by default. (If you need public subnets only, you can disable the creation of the
+private subnets.) For subnet sizing strategies, see the next section.
+
+* Additional layer of security. AWS recommends using network ACLs as firewalls to
+control inbound and outbound traffic at the subnet level. This Quick Start provides an
+option to create a network ACL protected subnet in each Availability Zone. These
+network ACLs provide individual controls that you can customize as a second layer of
+defense.
+
+We recommend that you use network ACLs sparingly for the following reasons: they can
+be complex to manage, they are stateless, every IP address must be explicitly opened in
+each (inbound/outbound) direction, and they affect a complete subnet. We recommend
+that you use security groups more often than network ACLs, and create and apply these
+based on a schema that works for your organization. Some examples are server roles and
+application roles. For more information about security groups and network ACLs, see
+the link:#_security[Security] section later in this guide.
+
+* Independent route tables configured for every private subnet to control the flow of
+traffic within and outside the Amazon VPC. The public subnets share a single routing
+table, because they all use the same Internet gateway as the sole route to communicate
+with the Internet.
+
+* Highly available NAT gateways, where supported, instead of NAT instances. NAT
+gateways offer major advantages in terms of deployment, availability, and maintenance.
+For more information see the http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-comparison.html[comparison] provided in the Amazon VPC documentation.
+
+* Spare capacity for additional subnets, to support your environment as it grows or
+changes over time.
+
+For additional information about these best practices, see the following documentation:
+
+* http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf[AWS Single VPC Design] from the AWS Answers website
+* http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html[Your VPC and Subnets] in the Amazon VPC documentation
+* https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc[Practical VPC Design] in the AWS Startups blog
+* http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Network ACLs] in the Amazon VPC documentation
+
+=== Subnet Sizing
+
+In this Quick Start, the sizing of CIDR blocks used in the subnets is based on a typical
+deployment, where private subnets would have roughly double the number of instances
+found in public subnets. However, during deployment, you can use the CIDR block
+parameters to resize the CIDR scopes to meet your architectural needs.
+
+In the default subnet allocation, the VPC is divided into subnet types and then further
+segmented per Availability Zone, as illustrated in link:#_architecture[Figure 1]. The Quick Start provides the
+following default CIDR block sizes to maximize capacity:
+
+[cols="60,40a", options="header",grid=none, frame=topbot, stripes=even]
+|===
+| VPC 
+^| 10.0.0.0/16
+
+|Private subnets A
+^|10.0.0.0/17
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Availability Zone 1
+^! 10.0.0.0/19
+! Availability Zone 2
+^! 10.0.32.0/19
+! Availability Zone 3
+^! 10.0.64.0/19
+! Availability Zone 4
+^! 10.0.96.0/19
+!===
+|Public subnets
+^|10.0.128.0/18
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Availability Zone 1
+^! 10.0.128.0/20
+! Availability Zone 2
+^! 10.0.144.0/20
+! Availability Zone 3
+^! 10.0.160.0/20
+! Availability Zone 4
+^! 10.0.176.0/20
+!===
+
+|Private subnets B with
+dedicated custom network
+ACL
+^|10.0.192.0/19
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Availability Zone 1
+^! 10.0.192.0/21
+! Availability Zone 2
+^! 10.0.200.0/21
+! Availability Zone 3
+^! 10.0.208.0/21
+! Availability Zone 4
+^! 10.0.216.0/21
+!===
+
+|Spare subnet capacity
+^|10.0.224.0/19
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Availability Zone 1
+^! 10.0.224.0/21
+! Availability Zone 2
+^! 10.0.232.0/21
+! Availability Zone 3
+^! 10.0.240.0/21
+! Availability Zone 4
+^! 10.0.248.0/21
+!===
+|===
+
+Alternatively, there may be situations where you would want to separate the CIDR scopes
+by dividing the VPC into Availability Zones and then into subnet types. The recommended
+CIDR blocks to maximize capacity for this scenario are as follows:
+
+[cols="60,40a", options="header",grid=none, frame=topbot, stripes=even]
+|===
+| VPC 
+^| 10.0.0.0/16
+
+|Availability Zone 1 
+^|10.0.0.0/18
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A 
+^! 10.0.0.0/19
+! Public subnet
+^! 10.0.32.0/20
+! Private subnet B
+^! 10.0.48.0/21
+! Spare subnet capacity
+^! 10.0.56.0/21
+!===
+
+|Availability Zone 2 
+^|10.0.64.0/18
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A 
+^! 10.0.64.0/19
+! Public subnet
+^! 10.0.96.0/20
+! Private subnet B
+^! 10.0.112.0/21
+! Spare subnet capacity
+^! 10.0.120.0/21
+!===
+
+|Availability Zone 3 
+^|10.0.128.0/18
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A 
+^! 10.0.128.0/19
+! Public subnet
+^! 10.0.160.0/20
+! Private subnet B
+^! 10.0.176.0/21
+! Spare subnet capacity
+^! 10.0.184.0/21
+!===
+
+|Availability Zone 4
+^|10.0.192.0/18
+|
+| 
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A 
+^! 10.0.192.0/19
+! Public subnet
+^! 10.0.224.0/20
+! Private subnet B
+^! 10.0.240.0/21
+! Spare subnet capacity
+^! 10.0.248.0/21
+!===
+|===
+
+To customize the CIDR ranges for this scenario or to implement your own segmentation
+strategy, you can configure the Quick Start parameters described in link:#_launch_a_new_vpc[Launch a new VPC]. For more
+information about VPC and subnet sizing, see the https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html#VPC_Sizing[AWS documentation].
+
+
+
+== Security
+// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
+
+=== Public and Private Subnets
+This Quick Start provisions one public and one private subnet in each Availability Zone by
+default. You can also choose to add additional private subnets with dedicated network
+ACLs.
+
+A public subnet is directly routable to the Internet via a route in the route table that points
+to the Internet gateway. This type of subnet allows the use of Elastic IPs and public IPs, and
+(if the security group and network ACLs permit) a public subnet is reachable from the
+Internet. A public subnet is useful as a DMZ infrastructure for web servers and for Internetfacing Elastic Load Balancing (ELB) load balancers.
+
+Private subnets can indirectly route to the Internet via a NAT instance or NAT gateway.
+These NAT devices reside in a public subnet in order to route directly to the Internet.
+Instances in a private subnet are not externally reachable from outside the Amazon VPC,
+regardless of whether they have a public or Elastic IP address attached. A private subnet is
+useful for application servers and databases.
+
+=== Using Security Groups and Network ACLs
+The following table describes the differences between security groups and network ACLs:
+
+|===
+|Security group  |Network ACL
+
+// Space needed to maintain table headers
+|Operates at the instance level (first layer of defense)  |Operates at the subnet level (second layer of defense)
+|Supports allow rules only |Supports allow rules and deny rules
+|Is stateful: Return traffic is automatically allowed, regardless of any rules|Is stateless: Return traffic must be explicitly allowed by rules
+|We evaluate all rules before deciding whether to allow traffic|We process rules in numerical order when deciding whether to allow traffic
+|Applies to an instance only if someone specifies the security group when launching the instance, or associates the security group with the instance later on| Automatically applies to all instances in the subnets it's associated with (backup layer of defense, so you don't have to rely on someone specifying the security group)
+|===
+
+The network ACLs in this Quick Start are configured as follows:
+
+* All public and private subnets are associated with the same default network ACL, which
+is automatically created for all VPCs on AWS. This network ACL allows all inbound and
+outbound traffic. As you deploy instances and services, you should associate them with
+security groups and allow only the traffic and ports needed for your application.
+* Each additional private subnet is associated with a custom network ACL (1:1 ratio).
+These network ACLs are initially configured to allow all inbound and outbound traffic to
+facilitate the deployment of additional instances and services. As with the other subnets,
+you should use security groups to secure the environment internally, and you can lock
+down the custom network ACLs during or after deployment as required by your
+application.
+
+If the Quick Start deploys NAT instances instead of NAT gateways in the AWS Region you
+selected, it adds a single security group as a virtual firewall. This security group is required
+for NAT instances and any other instances in the private subnets to access the Internet. The
+security group is configured as follows:
+
+==== Inbound:
+|===
+|Source|Protocol|Ports
+
+|VPC CIDR|All|All
+|===
+
+==== Outbound:
+|===
+|Destination|Protocol|Ports
+
+|0.0.0.0/0 |All|All
+|===
+
+For additional details, see https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Security.html[Security in Your VPC] in the Amazon VPC documentation.
+
+== Other useful information
+//Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
+
+=== AWS services
+* http://aws.amazon.com/documentation/cloudformation/[AWS CloudFormation]
+
+* Amazon EC2
+** http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/[User guide for Microsoft Windows]
+** https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/[User guide for Linux:]
+
+* http://aws.amazon.com/documentation/vpc/[Amazon VPC]
+** https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html[Security groups]
+** https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Network ACLs]
+** http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-gateway.html[NAT gateways]
+
+* Best practices for implementing VPCs
+** http://d0.awsstatic.com/aws-answers/AWS_Single_VPC_Design.pdf[AWS Single VPC Design]
+** http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html[Your VPC and Subnets]
+** https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc[Practical VPC Design]
+
+=== Quick Start reference deployments
+* https://aws.amazon.com/quickstart/[AWS Quick Start home page]
+
+=== GitHub Repository
+You can visit our https://fwd.aws/rdXz7[GitHub repository] to download the templates and scripts for this Quick
+Start, to post your comments, and to share your customizations with others. 

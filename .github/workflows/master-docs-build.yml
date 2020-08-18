@@ -1,4 +1,4 @@
-name: update_docs
+name: main-documentation
 
 on:
   push:
@@ -11,35 +11,27 @@ jobs:
     steps:
     - name: Checkout (master)
       uses: actions/checkout@v2
-    - name: Get new doc updates 
+    - name: Get new doc updates
       run: |
-           git remote update
-           git fetch
-           git checkout --track origin/gh-pages
-           rm -rf docs/*
-           git restore -s master docs
+           wget https://raw.githubusercontent.com/aws-quickstart/quickstart-documentation-base-common/master/.utils/configure_git_env.sh
+           chmod +x configure_git_env.sh
+           ./configure_git_env.sh
     - name: Setup python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
-        python-version: 3.7.6
-    - name: install dependencies
-      run: |
-           sudo apt-get install pandoc -y
-           pip3 install -r docs/utils/requirements.txt
-           docs/utils/generate_parms.py
-    - name: Build documentation
+        python-version: 3.x
+    - name: Generate dynamic content.
+      run: ./docs/boilerplate/.utils/generate_dynamic_content.sh
+    - name: Run local actions
       id: adoc
-      uses: avattathil/asciidoctor-action@master
+      uses: ./docs/boilerplate/.actions/asciidoctor-action
       with:
-          program: "asciidoctor --backend=html5 -o index.html -a toc2 docs/index.adoc"
-    - name: Stage changes gh-pages
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A
-        git commit -a -m "Update documentation"
-    - name: Push updates to gh-pages
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GH_TOKEN }}
-        branch: gh-pages
+        program: "./docs/boilerplate/.utils/build_docs.sh"
+    - name: Stage and Push changes to gh-pages branch.
+      run: ./docs/boilerplate/.utils/commit_and_push_to_ghpages.sh
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    - name: Configure gh-pages source and trigger build if necessary.
+      run: ./docs/boilerplate/.utils/config_and_trigger_gh-pages.sh
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

@@ -1,0 +1,11 @@
+// Replace the content in <>
+// Identify your target audience and explain how/why they would use this Quick Start.
+//Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
+
+This Quick Start provides a networking foundation for AWS Cloud infrastructures. It
+deploys an Amazon Virtual Private Cloud (Amazon VPC) according to AWS best practices
+and guidelines. Amazon VPC is the networking layer for Amazon Elastic Compute Cloud
+(Amazon EC2) and provides a private, isolated section of the AWS Cloud where you can
+launch AWS services and other resources in a virtual network. For a discussion of best
+design practices for Amazon VPC environments, see the documentation and articles listed
+in the link:#_other_useful_information[Other useful information] section.
