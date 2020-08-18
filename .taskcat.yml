@@ -1,4 +1,4 @@
-project:
+roject:
   name: quickstart-aws-vpc
   owner: quickstart@amazon.com
   package_lambda: false
