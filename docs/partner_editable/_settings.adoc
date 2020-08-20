@@ -7,7 +7,7 @@
 :quickstart-contributors: Santiago Cardenas, AWS Quick Start team
 :deployment_time: 5 minutes
 :default_deployment_region: us-west-2
-//:production_build:
+:production_build:
 // Uncomment these two attributes if you are leveraging
 // - an AWS Marketplace listing.
 // Additional content will be auto-generated based on these attributes.
