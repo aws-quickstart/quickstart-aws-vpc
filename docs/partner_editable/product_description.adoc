@@ -5,6 +5,9 @@
 The Amazon VPC architecture includes public and private subnets. The first set of private
 subnets share the default network access control list (ACL) from the Amazon VPC, and a
 second, optional set of private subnets includes dedicated custom network ACLs per subnet.
+
+Optionally you may choose to deploy a completely public VPC (no private subnets), or a completely private VPC (no public subnets).
+
 The Quick Start divides the Amazon VPC address space in a predictable manner across
 multiple Availability Zones, and deploys either NAT instances or NAT gateways for
 outbound Internet access, depending on the AWS Region you deploy the Quick Start in.
