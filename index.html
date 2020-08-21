@@ -762,6 +762,11 @@ table.tableblock .title,
 table p {
   margin: 0rem;
 }
+
+/* Add border around hyperlink images */
+a img {
+    border: 1px solid #A4A4A4;
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -849,7 +854,7 @@ report bugs, or submit feature ideas for this Quick Start.
 </table>
 </div>
 <div class="paragraph text-left">
-<p>This Quick Start was created by aws in collaboration with Amazon Web Services (AWS). <a href="http://aws.amazon.com/quickstart/" target="_blank" rel="noopener">Quick Starts</a> are automated reference deployments that use AWS CloudFormation templates to deploy key technologies on AWS, following AWS best practices.</p>
+<p>This Quick Start was created by  in collaboration with Amazon Web Services (AWS). <a href="http://aws.amazon.com/quickstart/" target="_blank" rel="noopener">Quick Starts</a> are automated reference deployments that use AWS CloudFormation templates to deploy key technologies on AWS, following AWS best practices.</p>
 </div>
 </div>
 </div>
@@ -887,8 +892,13 @@ collaborated with AWS on the content of the Quick Start.
 <div class="paragraph">
 <p>The Amazon VPC architecture includes public and private subnets. The first set of private
 subnets share the default network access control list (ACL) from the Amazon VPC, and a
-second, optional set of private subnets includes dedicated custom network ACLs per subnet.
-The Quick Start divides the Amazon VPC address space in a predictable manner across
+second, optional set of private subnets includes dedicated custom network ACLs per subnet.</p>
+</div>
+<div class="paragraph">
+<p>Optionally you may choose to deploy a completely public VPC (no private subnets), or a completely private VPC (no public subnets).</p>
+</div>
+<div class="paragraph">
+<p>The Quick Start divides the Amazon VPC address space in a predictable manner across
 multiple Availability Zones, and deploys either NAT instances or NAT gateways for
 outbound Internet access, depending on the AWS Region you deploy the Quick Start in.</p>
 </div>
@@ -1052,7 +1062,7 @@ Cloud.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_supported_regions">Supported regions</h4>
+<h4 id="_supported_regions">Supported Regions</h4>
 <div class="paragraph">
 <p>The following regions are currently supported by this Quick Start.</p>
 </div>
@@ -1569,13 +1579,13 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 <p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Amazon VPC deployment is ready.</p>
 </li>
 <li>
-<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in figure 2, to view the created resources.</p>
+<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Amazon VPC outputs after successful deployment</a>, to view the created resources.</p>
 </li>
 </ol>
 </div>
 <div id="cfn_outputs" class="imageblock">
 <div class="content">
-<img src="images/cfn_outputs.png" alt="cfn_outputs" width="648" height="439">
+<a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="648" height="439"></a>
 </div>
 <div class="title">Figure 2. Amazon VPC outputs after successful deployment</div>
 </div>
@@ -2321,7 +2331,7 @@ and to share your customizations with others.</p>
 </div>
 <hr>
 <div class="paragraph">
-<p>© 2020, Amazon Web Services Inc., or its affiliates, and aws. All rights reserved.</p>
+<p>© 2020, Amazon Web Services Inc., or its affiliates, and . All rights reserved.</p>
 </div>
 <div class="sect3">
 <h4 id="_notices">Notices</h4>
@@ -2337,7 +2347,7 @@ and to share your customizations with others.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-18 22:10:45 UTC
+Last updated 2020-08-21 13:19:44 UTC
 </div>
 </div>
 </body>
