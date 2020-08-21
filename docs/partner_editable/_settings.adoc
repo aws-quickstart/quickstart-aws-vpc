@@ -1,6 +1,6 @@
 :quickstart-project-name: quickstart-aws-vpc
 :partner-product-name: Amazon VPC
-:partner-company-name: aws
+:partner-company-name: 
 :doc-month: July
 :doc-year: 2020
 :partner-contributors: 
