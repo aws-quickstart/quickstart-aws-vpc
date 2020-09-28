@@ -27,7 +27,7 @@ NOTE: You are responsible for the cost of the AWS services used while running th
 
 [cols=2*]
 |===
-^|http://qs_launch_link[Deploy {partner-product-name} on AWS^] 
+^|https://fwd.aws/mm853[Deploy {partner-product-name} on AWS^] 
 ^|link:=../../templates/aws-vpc.template.yaml[View template^]
 |===
 
