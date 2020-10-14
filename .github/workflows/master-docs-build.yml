@@ -3,17 +3,17 @@ name: main-documentation
 on:
   push:
     branches:
-    - master
+    - main
 jobs:
   build-adocs:
     runs-on: ubuntu-18.04
     name: asciidoc builder
     steps:
-    - name: Checkout (master)
+    - name: Checkout (main)
       uses: actions/checkout@v2
     - name: Get new doc updates
       run: |
-           wget https://raw.githubusercontent.com/aws-quickstart/quickstart-documentation-base-common/master/.utils/configure_git_env.sh
+           wget https://raw.githubusercontent.com/aws-quickstart/quickstart-documentation-base-common/main/.utils/configure_git_env.sh
            chmod +x configure_git_env.sh
            ./configure_git_env.sh
     - name: Setup python
