@@ -63,7 +63,7 @@ Metadata:
           - VPCFlowLogsMaxAggregationInterval
           - VPCFlowLogsTrafficType
       - Label:
-          default: Deprecated: NAT Instance Configuration
+          default: Deprecated - NAT Instance Configuration
         Parameters:
           - KeyPairName
           - NATInstanceType
