@@ -1,5 +1,5 @@
 // Replace the content in <>
-// Briefly describe the software. Use consistent and clear branding. 
+// Briefly describe the software. Use consistent and clear branding.
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
 The Amazon VPC architecture includes public and private subnets. The first set of private
@@ -9,10 +9,9 @@ second, optional set of private subnets includes dedicated custom network ACLs p
 Optionally you may choose to deploy a completely public VPC (no private subnets), or a completely private VPC (no public subnets).
 
 The Quick Start divides the Amazon VPC address space in a predictable manner across
-multiple Availability Zones, and deploys either NAT instances or NAT gateways for
-outbound Internet access, depending on the AWS Region you deploy the Quick Start in.
+multiple Availability Zones, and deploys NAT gateways for outbound Internet access.
 
 You can use this Quick Start as a building block for your own deployments. You can scale it
 up or down by adding or removing subnets and Availability Zones according to your needs,
 and add other infrastructure components and software layers to complete your AWS
-environment. 
+environment.

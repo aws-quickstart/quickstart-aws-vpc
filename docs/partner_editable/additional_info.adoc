@@ -52,9 +52,9 @@ traffic within and outside the Amazon VPC. The public subnets share a single rou
 table, because they all use the same Internet gateway as the sole route to communicate
 with the Internet.
 
-* Highly available NAT gateways, where supported, instead of NAT instances. NAT
-gateways offer major advantages in terms of deployment, availability, and maintenance.
-For more information see the http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-comparison.html[comparison] provided in the Amazon VPC documentation.
+* Highly available NAT gateways deployed, that offer major advantages in terms of deployment,
+availability, and maintenance over NAT instances. For more information see the http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-nat-comparison.html[comparison]
+provided in the Amazon VPC documentation.
 
 * Spare capacity for additional subnets, to support your environment as it grows or
 changes over time.
@@ -79,13 +79,13 @@ following default CIDR block sizes to maximize capacity:
 
 [cols="60,40a", options="header",grid=none, frame=topbot, stripes=even]
 |===
-| VPC 
+| VPC
 ^| 10.0.0.0/16
 
 |Private subnets A
 ^|10.0.0.0/17
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
@@ -100,7 +100,7 @@ following default CIDR block sizes to maximize capacity:
 |Public subnets
 ^|10.0.128.0/18
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
@@ -118,7 +118,7 @@ dedicated custom network
 ACL
 ^|10.0.192.0/19
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
@@ -134,7 +134,7 @@ ACL
 |Spare subnet capacity
 ^|10.0.224.0/19
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
 ! Availability Zone 1
@@ -154,16 +154,16 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 
 [cols="60,40a", options="header",grid=none, frame=topbot, stripes=even]
 |===
-| VPC 
+| VPC
 ^| 10.0.0.0/16
 
-|Availability Zone 1 
+|Availability Zone 1
 ^|10.0.0.0/18
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
-! Private subnet A 
+! Private subnet A
 ^! 10.0.0.0/19
 ! Public subnet
 ^! 10.0.32.0/20
@@ -173,13 +173,13 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 ^! 10.0.56.0/21
 !===
 
-|Availability Zone 2 
+|Availability Zone 2
 ^|10.0.64.0/18
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
-! Private subnet A 
+! Private subnet A
 ^! 10.0.64.0/19
 ! Public subnet
 ^! 10.0.96.0/20
@@ -189,13 +189,13 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 ^! 10.0.120.0/21
 !===
 
-|Availability Zone 3 
+|Availability Zone 3
 ^|10.0.128.0/18
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
-! Private subnet A 
+! Private subnet A
 ^! 10.0.128.0/19
 ! Public subnet
 ^! 10.0.160.0/20
@@ -208,10 +208,10 @@ CIDR blocks to maximize capacity for this scenario are as follows:
 |Availability Zone 4
 ^|10.0.192.0/18
 |
-| 
+|
 [cols="2,1", grid=rows, frame=topbot]
 !===
-! Private subnet A 
+! Private subnet A
 ^! 10.0.192.0/19
 ! Public subnet
 ^! 10.0.224.0/20
@@ -241,8 +241,8 @@ to the Internet gateway. This type of subnet allows the use of Elastic IPs and p
 (if the security group and network ACLs permit) a public subnet is reachable from the
 Internet. A public subnet is useful as a DMZ infrastructure for web servers and for Internetfacing Elastic Load Balancing (ELB) load balancers.
 
-Private subnets can indirectly route to the Internet via a NAT instance or NAT gateway.
-These NAT devices reside in a public subnet in order to route directly to the Internet.
+Private subnets can indirectly route to the Internet via a NAT gateway.
+NAT Gateways reside in a public subnet in order to route directly to the Internet.
 Instances in a private subnet are not externally reachable from outside the Amazon VPC,
 regardless of whether they have a public or Elastic IP address attached. A private subnet is
 useful for application servers and databases.
@@ -274,27 +274,6 @@ you should use security groups to secure the environment internally, and you can
 down the custom network ACLs during or after deployment as required by your
 application.
 
-If the Quick Start deploys NAT instances instead of NAT gateways in the AWS Region you
-selected, it adds a single security group as a virtual firewall. This security group is required
-for NAT instances and any other instances in the private subnets to access the Internet. The
-security group is configured as follows:
-
-==== Inbound:
-|===
-|Source|Protocol|Ports
-
-|VPC CIDR|All|All
-|===
-
-==== Outbound:
-|===
-|Destination|Protocol|Ports
-
-|0.0.0.0/0 |All|All
-|===
-
-For additional details, see https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Security.html[Security in Your VPC] in the Amazon VPC documentation.
-
 == Other useful information
 //Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
 
@@ -320,4 +299,4 @@ For additional details, see https://docs.aws.amazon.com/AmazonVPC/latest/UserGui
 
 === GitHub Repository
 You can visit our https://fwd.aws/rdXz7[GitHub repository] to download the templates and scripts for this Quick
-Start, to post your comments, and to share your customizations with others. 
+Start, to post your comments, and to share your customizations with others.
