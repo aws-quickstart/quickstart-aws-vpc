@@ -713,6 +713,11 @@ Resources:
   PublicSubnet1:
     Condition: PublicSubnetsCondition
     Type: AWS::EC2::Subnet
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W33
+            reason: "(W33) EC2 Subnet should not have MapPublicIpOnLaunch set to true"
     Properties:
       VpcId: !Ref 'VPC'
       CidrBlock: !Ref 'PublicSubnet1CIDR'
@@ -739,6 +744,11 @@ Resources:
   PublicSubnet2:
     Condition: PublicSubnetsCondition
     Type: AWS::EC2::Subnet
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W33
+            reason: "(W33) EC2 Subnet should not have MapPublicIpOnLaunch set to true"
     Properties:
       VpcId: !Ref 'VPC'
       CidrBlock: !Ref 'PublicSubnet2CIDR'
@@ -765,6 +775,11 @@ Resources:
   PublicSubnet3:
     Condition: PublicSubnets&3AZCondition
     Type: AWS::EC2::Subnet
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W33
+            reason: "(W33) EC2 Subnet should not have MapPublicIpOnLaunch set to true"
     Properties:
       VpcId: !Ref 'VPC'
       CidrBlock: !Ref 'PublicSubnet3CIDR'
@@ -791,6 +806,11 @@ Resources:
   PublicSubnet4:
     Condition: PublicSubnets&4AZCondition
     Type: AWS::EC2::Subnet
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W33
+            reason: "(W33) EC2 Subnet should not have MapPublicIpOnLaunch set to true"
     Properties:
       VpcId: !Ref 'VPC'
       CidrBlock: !Ref 'PublicSubnet4CIDR'
@@ -942,6 +962,11 @@ Resources:
   PrivateSubnet1BNetworkAclEntryInbound:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: false
@@ -952,6 +977,11 @@ Resources:
   PrivateSubnet1BNetworkAclEntryOutbound:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: true
@@ -1001,6 +1031,11 @@ Resources:
   PrivateSubnet2BNetworkAclEntryInbound:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: false
@@ -1011,6 +1046,11 @@ Resources:
   PrivateSubnet2BNetworkAclEntryOutbound:
     Condition: AdditionalPrivateSubnetsCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: true
@@ -1060,6 +1100,11 @@ Resources:
   PrivateSubnet3BNetworkAclEntryInbound:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: false
@@ -1070,6 +1115,11 @@ Resources:
   PrivateSubnet3BNetworkAclEntryOutbound:
     Condition: AdditionalPrivateSubnets&3AZCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: true
@@ -1119,6 +1169,11 @@ Resources:
   PrivateSubnet4BNetworkAclEntryInbound:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: false
@@ -1129,6 +1184,11 @@ Resources:
   PrivateSubnet4BNetworkAclEntryOutbound:
     Condition: AdditionalPrivateSubnets&4AZCondition
     Type: AWS::EC2::NetworkAclEntry
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W66
+            reason: "(W66) To avoid opening all ports for Allow rules, EC2 NetworkACL Entry Protocol should be either 6 (for TCP), 17 (for UDP), 1 (for ICMP), or 58 (for ICMPv6, which must include an IPv6 CIDR block, ICMP type, and code)."
     Properties:
       CidrBlock: '0.0.0.0/0'
       Egress: true
