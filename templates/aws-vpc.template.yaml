@@ -1417,25 +1417,25 @@ Outputs:
     Value: !Ref 'NAT4EIP'
     Export:
       Name: !Sub '${AWS::StackName}-NAT4EIP'
-  NATGateway1:
+  NATGateway1ID:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     Description: NATGateway 1 ID
     Value: !Ref 'NATGateway1'
     Export:
       Name: !Sub '${AWS::StackName}-NATGateway1'
-  NATGateway2:
+  NATGateway2ID:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     Description: NATGateway 2 ID
     Value: !Ref 'NATGateway2'
     Export:
       Name: !Sub '${AWS::StackName}-NATGateway2'
-  NATGateway3:
+  NATGateway3ID:
     Condition: NATGateways&PublicSubnets&PrivateSubnets&3AZCondition
     Description: NATGateway 3 ID
     Value: !Ref 'NATGateway3'
     Export:
       Name: !Sub '${AWS::StackName}-NATGateway3'
-  NATGateway4:
+  NATGateway4ID:
     Condition: NATGateways&PublicSubnets&PrivateSubnets&4AZCondition
     Description: NATGateway 4 ID
     Value: !Ref 'NATGateway4'
