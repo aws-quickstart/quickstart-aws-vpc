@@ -63,11 +63,6 @@ Metadata:
           - VPCFlowLogsMaxAggregationInterval
           - VPCFlowLogsTrafficType
           - VPCFlowLogsCloudWatchKMSKey
-      - Label:
-          default: Deprecated - NAT Instance Configuration
-        Parameters:
-          - KeyPairName
-          - NATInstanceType
     ParameterLabels:
       AvailabilityZones:
         default: Availability Zones
@@ -81,10 +76,6 @@ Metadata:
         default: Create public subnets
       CreateVPCFlowLogsToCloudWatch:
         default: Create VPC Flow Logs (CloudWatch)
-      KeyPairName:
-        default: 'Deprecated: Key pair name'
-      NATInstanceType:
-        default: 'Deprecated: NAT instance type'
       NumberOfAZs:
         default: Number of Availability Zones
       PrivateSubnet1ACIDR:
@@ -185,14 +176,6 @@ Parameters:
       - 'false'
     Default: 'false'
     Description: Set to true to create VPC flow logs for the VPC and publish them to CloudWatch. If false, VPC flow logs will not be created.
-    Type: String
-  KeyPairName:
-    Default: deprecated
-    Description: Deprecated. NAT gateways are now supported in all regions.
-    Type: String
-  NATInstanceType:
-    Default: deprecated
-    Description: Deprecated. NAT gateways are now supported in all regions.
     Type: String
   NumberOfAZs:
     AllowedValues:
