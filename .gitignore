@@ -2,3 +2,9 @@ taskcat_outputs/*
 .taskcat_overrides.yml
 .taskcat/*
 .DS_Store
+
+# cfn module build
+cfn-module/*.zip
+cfn-module/*.json
+cfn-module/fragments/
+cfn-module/rpdk.log
