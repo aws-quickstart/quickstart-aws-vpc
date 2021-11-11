@@ -1,0 +1,5 @@
+ssm_app_manager:
+  should_upload: true
+  documents_list:
+    - document_name: AWSQuickStarts-AWS-VPC
+      template_name: aws-vpc.template.yaml
