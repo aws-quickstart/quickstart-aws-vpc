@@ -1,10 +1,24 @@
-taskcat_outputs/*
+# TaskCat
+taskcat_outputs/
+.taskcat/
 .taskcat_overrides.yml
-.taskcat/*
-.DS_Store
+functions/packages/
+*.zip
 
 # cfn module build
 cfn-module/*.zip
 cfn-module/*.json
 cfn-module/fragments/
 cfn-module/rpdk.log
+
+# Docs
+# docs/
+index.html
+prod_example.html
+
+# macOS
+.DS_Store
+
+# IDE workspace settings
+.vscode/
+.idea/
