@@ -95,17 +95,17 @@ Metadata:
       PrivateSubnet4BCIDR:
         default: Private subnet 4B with dedicated network ACL CIDR
       PrivateSubnetATag1:
-        default: Tag for Private A Subnets
+        default: Tag Pair 1 for Private A Subnets
       PrivateSubnetATag2:
-        default: Tag for Private A Subnets
+        default: Tag Pair 2 for Private A Subnets
       PrivateSubnetATag3:
-        default: Tag for Private A Subnets
+        default: Tag Pair 3 for Private A Subnets
       PrivateSubnetBTag1:
-        default: Tag for Private B Subnets
+        default: Tag Pair 1 for Private B Subnets
       PrivateSubnetBTag2:
-        default: Tag for Private B Subnets
+        default: Tag Pair 2 for Private B Subnets
       PrivateSubnetBTag3:
-        default: Tag for Private B Subnets
+        default: Tag Pair 3 for Private B Subnets
       PublicSubnet1CIDR:
         default: Public subnet 1 CIDR
       PublicSubnet2CIDR:
@@ -115,11 +115,11 @@ Metadata:
       PublicSubnet4CIDR:
         default: Public subnet 4 CIDR
       PublicSubnetTag1:
-        default: Tag for Public Subnets
+        default: Tag Pair 1 for Public Subnets
       PublicSubnetTag2:
-        default: Tag for Public Subnets
+        default: Tag Pair 2 for Public Subnets
       PublicSubnetTag3:
-        default: Tag for Public Subnets
+        default: Tag Pair 3 for Public Subnets
       VPCCIDR:
         default: VPC CIDR
       VPCFlowLogsCloudWatchKMSKey:
