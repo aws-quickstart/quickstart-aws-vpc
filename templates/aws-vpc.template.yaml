@@ -1425,6 +1425,10 @@ Resources:
   S3VPCEndpoint:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::VPCEndpoint
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks: [EIAMPolicyActionWildcard, EPolicyWildcardPrincipal]
     Properties:
       PolicyDocument:
         Version: 2012-10-17
