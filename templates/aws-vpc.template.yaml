@@ -5,6 +5,7 @@ Description: >-
   doesn't support NAT gateways, NAT instances are deployed instead. **WARNING** This template creates AWS resources. You will be billed for the AWS
   resources used if you create a stack from this template. (qs-1qnnspaap)
 Metadata:
+  LICENSE: Apache License, Version 2.0
   QuickStartDocumentation:
     EntrypointName: 'Launch a New VPC'
     OptionalParameters:
