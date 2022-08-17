@@ -392,12 +392,14 @@ Parameters:
   VPCFlowLogsCloudWatchKMSKey:
     Type: String
     Description: >-
-      (Optional) KMS Key ARN to use for encrypting the VPC flow logs data. If
+      (Optional) KMS key ARN to use for encrypting the VPC flow logs data. If
       empty, encryption is enabled with CloudWatch Logs managing the
       server-side encryption keys.
-    AllowedPattern: ^$|^arn:aws(-cn|-us-gov)?:kms:[a-z0-9-]+:\d{12}:key\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$
+    AllowedPattern: ^$|^arn:aws(-cn)?:kms:[a-z0-9-]+:\d{12}:key\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$
     ConstraintDescription: >-
-      Key ARN example:
+      Invalid KMS ARN or attempting to use in GovCloud. The AWS::Logs::LogGroup
+      CloudFormation resource does not yet support the KmsKeyId property in
+      GovCloud. Key ARN example:
       'arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'.
     Default: ''
   VPCFlowLogsLogFormat:
