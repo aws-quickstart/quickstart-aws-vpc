@@ -1,3 +1,0 @@
-// Include details about the license and how they can sign up. If no license is required, clarify that. 
-
-There are no licencing requirements for this Quick Start
