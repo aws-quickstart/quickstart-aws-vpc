@@ -1,4 +1,4 @@
-This Quick Start deploys {partner-product-name} on the AWS Cloud. This guide covers the steps necessary to deploy this Quick Start.
+This Quick Start deploys {partner-product-name} ({partner-product-short-name}) on the AWS Cloud. This guide covers the steps necessary to deploy this Quick Start.
 
 // For advanced information about the product, troubleshooting, or additional functionality, refer to the https://{quickstart-github-org}.github.io/{quickstart-project-name}/operational/index.html[Operational Guide^].
 
