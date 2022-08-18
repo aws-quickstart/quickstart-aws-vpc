@@ -26,10 +26,10 @@ project:
     - us-east-2
     - us-west-1
     - us-west-2
-    # - us-gov-east-1
-    # - us-gov-west-1
-    # - cn-north-1
-    # - cn-northwest-1
+    - us-gov-east-1
+    - us-gov-west-1
+    - cn-north-1
+    - cn-northwest-1
 tests:
   vpc-complete-all-possible-regions:
     parameters:
@@ -88,10 +88,10 @@ tests:
       # *New customers can access two Availability Zones in US West (Northern California).
       # - us-west-1
       - us-west-2
-      # - us-gov-east-1
-      # - us-gov-west-1
-      # - cn-north-1
-      # - cn-northwest-1
+      - us-gov-east-1
+      - us-gov-west-1
+      - cn-north-1
+      - cn-northwest-1
   4az-complete-all-possible-regions:
     parameters:
       AvailabilityZones: $[taskcat_getaz_4]
