@@ -1420,7 +1420,16 @@ Resources:
     Metadata:
       cfn-lint:
         config:
-          ignore_checks: [EIAMPolicyActionWildcard, EPolicyWildcardPrincipal]
+          ignore_checks:
+            - EIAMPolicyActionWildcard
+            - EPolicyWildcardPrincipal
+          ignore_reasons:
+            EIAMPolicyActionWildcard: >-
+              This is based on AWS documentation- filtering via bucket policy
+              is generally preferred.
+            EIAMPolicyWildcardResource: >-
+              This is based on AWS documentation- filtering via bucket policy
+              is generally preferred.
     Properties:
       PolicyDocument:
         Version: 2012-10-17
