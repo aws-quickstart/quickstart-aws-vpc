@@ -1,0 +1,6 @@
+// Add any unique troubleshooting steps here.
+
+For troubleshooting common Quick Start issues, refer to the https://fwd.aws/rA69w?[AWS Quick Start General Information Guide^] and https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting CloudFormation^].
+
+// == Resources
+// Uncomment section and add links to any external resources that are specified by the partner.

@@ -1,0 +1,3 @@
+[submodule "docs/boilerplate"]
+	path = docs/boilerplate
+	url = https://github.com/aws-ia/aws-ia-documentation-base-common.git
