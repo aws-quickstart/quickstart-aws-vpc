@@ -1,0 +1,10 @@
+# TaskCat
+.taskcat/
+taskcat_outputs/
+.taskcat_overrides.yml
+
+# macOS
+.DS_Store
+
+# IDE workspace settings
+.vscode/
