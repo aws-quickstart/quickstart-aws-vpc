@@ -13,7 +13,7 @@ NOTE: *Five IP addresses in each VPC subnet CIDR block are reserved and unavaila
 
 As shown in <<architecture1>>, this Quick Start sets up the following:
 
-* A highly available architecture that spans two Availability Zones.*
+* A highly available architecture that spans two to four Availability Zones.
 * A virtual private cloud (VPC) configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.
 * In the public subnets:
 ** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.
