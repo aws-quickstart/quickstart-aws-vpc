@@ -8,8 +8,6 @@ However, you can use the CIDR block parameters to resize the CIDR scopes to meet
 In the default subnet allocation, the VPC is divided into subnet types and then further segmented per Availability Zone, as illustrated in link:#_architecture[Figure 1].
 The Quick Start provides the following default CIDR block sizes to maximize capacity:
 
-NOTE: The first five IP addresses in each CIDR block are reserved and unavailable for use.
-
 .Default IP address allocation
 [cols="50,50a", options="header", grid=none, frame=topbot, stripes=even]
 |===

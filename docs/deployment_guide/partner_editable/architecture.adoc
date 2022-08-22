@@ -9,6 +9,8 @@ AWS Cloud.
 .Quick Start architecture for {partner-product-short-name} on AWS
 image::../docs/deployment_guide/images/architecture_diagram.png[Architecture]
 
+NOTE: *Five IP addresses in each VPC subnet CIDR block are reserved and unavailable for use. For additional information, see the https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-basics[AWS documentation].
+
 As shown in <<architecture1>>, this Quick Start sets up the following:
 
 * A highly available architecture that spans two Availability Zones.*
