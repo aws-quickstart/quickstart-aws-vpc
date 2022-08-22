@@ -19,6 +19,9 @@ As shown in <<architecture1>>, this Quick Start sets up the following:
 ** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.
 * A configurable number of private subnets with dedicated custom network access control lists (ACLs) per Availability Zone.
 * Domain Name System (DNS) resolution in the VPC.
+* Routing tables:
+** Each private subnet has an independent routing table configured to control the flow of traffic within and outside the VPC.
+** The public subnets share a single routing table because they all use the same internet gateway as the sole route to communicate with the internet.
 * A VPC gateway endpoint for Amazon Simple Storage Service (Amazon S3), which provide a secure, reliable connection to Amazon S3 without requiring an internet gateway, NAT gateway, or virtual private gateway.
 ** This uses the default endpoint policy, which gives any user or service within the VPC full access to Amazon S3 resources.
    This policy supplements any IAM user policies or S3 bucket policies that you may have in place.
