@@ -12,7 +12,7 @@ cfn-module/fragments/
 cfn-module/rpdk.log
 
 # Docs
-# docs/
+docs/
 index.html
 prod_example.html
 
