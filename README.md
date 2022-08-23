@@ -1,9 +1,7 @@
 # quickstart-aws-vpc
 
-This Quick Start provides a networking foundation for AWS Cloud infrastructures. It deploys an Amazon Virtual Private Cloud (Amazon VPC) according to AWS best practices and guidelines.
+For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/9VdxN).
 
-The Amazon VPC architecture includes public and private subnets. The first set of private subnets share the default network access control list (ACL) from the Amazon VPC, and a second, optional set of private subnets include dedicated custom network ACLs per subnet. The Quick Start divides the Amazon VPC address space in a predictable manner across multiple Availability Zones, and deploys NAT gateways in each Availability Zone, which provide highly available outbound internet access for the private subnets.
+To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo.
 
-For architectural details, best practices, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/9VdxN).
-
-![Quick Start VPC Design Architecture](https://docs.aws.amazon.com/quickstart/latest/vpc/images/quickstart-vpc-design-fullscreen.png)
+To submit code for this Quick Start, see the [AWS Quick Start Contributor's Kit](https://aws-quickstart.github.io/).
