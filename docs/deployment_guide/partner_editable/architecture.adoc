@@ -3,30 +3,35 @@
 Deploying this Quick Start with default parameters builds the following {partner-product-short-name} environment in the
 AWS Cloud.
 
-// Replace this example diagram with your own. Follow our wiki guidelines: https://w.amazon.com/bin/view/AWS_Quick_Starts/Process_for_PSAs/#HPrepareyourarchitecturediagram. Upload your source PowerPoint file to the GitHub {deployment name}/docs/images/ directory in its repository.
-
 [#architecture1]
 .Quick Start architecture for {partner-product-short-name} on AWS
-image::../docs/deployment_guide/images/architecture_diagram.png[Architecture]
-
-NOTE: *Five IP addresses in each VPC subnet CIDR block are reserved and unavailable for use. For additional information, see the https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-basics[AWS documentation].
+image::../docs/deployment_guide/images/vpc-architecture_diagram.png[Architecture]
 
 As shown in <<architecture1>>, this Quick Start sets up the following:
 
 * A highly available architecture that spans two to four Availability Zones.
-* A virtual private cloud (VPC) configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.
-* In the public subnets:
-** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.
-* A configurable number of private subnets with dedicated custom network access control lists (ACLs) per Availability Zone.
-* Domain Name System (DNS) resolution in the VPC.
-* Routing tables:
-** Each private subnet has an independent routing table configured to control the flow of traffic within and outside the VPC.
-** The public subnets share a single routing table because they all use the same internet gateway as the sole route to communicate with the internet.
-* A VPC gateway endpoint for Amazon Simple Storage Service (Amazon S3), which provide a secure, reliable connection to Amazon S3 without requiring an internet gateway, NAT gateway, or virtual private gateway.
-** This uses the default endpoint policy, which gives any user or service within the VPC full access to Amazon S3 resources.
-   This policy supplements any IAM user policies or S3 bucket policies that you may have in place.
-** With these endpoints, you can access S3 resources from within the VPC created by the Quick Start.
-   These endpoints are valid only for the AWS Region in which you launch the Quick Start.
-** For more information about VPC endpoints, see the https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-s3.html[AWS documentation].
 
-NOTE: Default subnet sizes are based on a typical deployment but can be reconfigured, as discussed in the link:#_predeployment_steps[Predeployment steps] section.
+* A virtual private cloud (VPC) configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.
+The VPC provides Domain Name System (DNS) resolution.
+
+* Public subnets with dedicated custom network access control lists (ACLs) for each Availability Zone.
+Managed network address translation (NAT) gateways allow outbound internet access for resources in the private subnets.
+The public subnets share a single routing table because they all use the same internet gateway as the sole route to communicate with the internet.
+
+* A configurable number of private subnets with dedicated custom network ACLs for each Availability Zone.
+Each private subnet has an independent routing table configured to control the flow of traffic within and outside the VPC.
+Spare capacity for adding subnets supports your environment as it grows.
+
+* A VPC gateway endpoint for Amazon Simple Storage Service (Amazon S3).
+This endpoint provides a secure, reliable connection to Amazon S3 without requiring an internet gateway, NAT gateway, or virtual private gateway.
+The endpoint uses the default endpoint policy, which gives any user or service within the VPC full access to Amazon S3 resources.
+This policy supplements any IAM user policies or S3 bucket policies that you may have in place.
+With this endpoint, you can access S3 resources from within the VPC created by the Quick Start.
+This endpoint is valid only for the AWS Region in which you launch the Quick Start.
+
+*Related Amazon VPC documentation:*
+
+* https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-basics[Subnet basics^]
+* https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-s3.html[Gateway endpoints for Amazon S3^]
+
+NOTE: Default subnet sizes are based on a typical deployment. You can reconfigure the sizes, as discussed in the link:#_predeployment_steps[Predeployment steps] section.
