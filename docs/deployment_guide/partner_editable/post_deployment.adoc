@@ -1,11 +1,13 @@
-// Include any postdeployment steps here, such as steps necessary to test that the deployment was successful. If there are no postdeployment steps, leave this file empty.
-
 == Postdeployment steps
 
-After you use this Quick Start to build your VPC environment, you can deploy additional Quick Starts or deploy your own applications on top of this AWS infrastructure.
-If you decide to extend your AWS environment with https://aws.amazon.com/quickstart/[additional Quick Starts] for trial or production use, we recommend that you choose the option to deploy the Quick Start into an existing VPC, where that option is available.
+After you use this Quick Start to build your Amazon VPC environment, you can deploy additional Quick Starts or deploy your own applications on top of this AWS infrastructure.
+If you extend your AWS environment with additional https://aws.amazon.com/quickstart/[AWS Quick Starts^] for trial or production use, choose the option to deploy the Quick Start into an existing VPC where that option is available.
 
-If you decide to deploy additional private subnets with dedicated network ACLs, make sure you review the configuration and adjust it accordingly.
-By default, the custom ACLs are configured to allow all inbound and outbound traffic to flow in order to facilitate the deployment of additional infrastructure.
-For more information, see https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Network ACLs] and
-https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Appendix_NACLs.html[Recommended Network ACL Rules for Your VPC] in the Amazon VPC documentation.
+If you deploy additional private subnets with dedicated network ACLs, review the configuration and adjust it accordingly.
+By default, the custom ACLs are configured to allow all inbound and outbound traffic to flow to facilitate the deployment of additional infrastructure.
+For more information, refer to the Amazon VPC documentation:
+
+* https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Control traffic to subnets using Network ACLs^]
+* https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Appendix_NACLs.html[Recommended Network ACL Rules for Your VPC^]
+
+//TODO Troy, That last URL redirects to "What is Amazon VPC?" Maybe point here instead? https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html (Pro tip: We add a caret at the end of the link text, right before the closing bracket, throughout in our docs so that the links open in a new tab.)

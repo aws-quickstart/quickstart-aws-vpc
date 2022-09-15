@@ -1,5 +1,7 @@
 // Edit this placeholder text as necessary to describe the deployment options.
 
-This Quick Start provides the following deployment option:
+This Quick Start provides one deployment option:
 
-* https://fwd.aws/mm853[Deploy a new {partner-product-short-name}^]. This option builds a new AWS environment that consists of the VPC, subnets, NAT gateways, and other infrastructure components.
+* https://fwd.aws/mm853?[Deploy a new {partner-product-short-name} environment^]. This environment consists of a VPC, subnets, NAT gateways, and other infrastructure components.
+
+//TODO Troy, Will this permalink continue to point to the same destination? Or do we need to redefine it, in which case, how do you want to coordinate the timing?
