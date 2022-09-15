@@ -452,8 +452,8 @@ Rules:
           - !Equals [!Ref CreatePrivateSubnets, 'true']
           - !Equals [!Ref CreatePublicSubnets, 'true']
         AssertDescription: >-
-          To enable NAT gateways, you must set both CreatePrivateSubnets and
-          CreatePublicSubnets to 'true'.
+          To enable NAT gateways, both CreatePrivateSubnets and
+          CreatePublicSubnets must be set to 'true'.
   Subnets:
     Assertions:
       - Assert: !Or
