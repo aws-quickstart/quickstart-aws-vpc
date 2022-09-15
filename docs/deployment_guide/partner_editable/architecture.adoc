@@ -14,13 +14,15 @@ As shown in <<architecture1>>, this Quick Start sets up the following:
 * A virtual private cloud (VPC) configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.
 The VPC provides Domain Name System (DNS) resolution.
 
-* Public subnets with dedicated custom network access control lists (ACLs) for each Availability Zone.
-Managed network address translation (NAT) gateways allow outbound internet access for resources in the private subnets.
-The public subnets share a single routing table because they all use the same internet gateway as the sole route to communicate with the internet.
+* In the public subnets:
+** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.
+** Dedicated custom network access control lists (ACLs) for each Availability Zone.
+** A single routing table (not shown) because the public subnets all use the same internet gateway as the sole route to communicate with the internet.
 
-* A configurable number of private subnets with dedicated custom network ACLs for each Availability Zone.
-Each private subnet has an independent routing table configured to control the flow of traffic within and outside the VPC.
-Spare capacity for adding subnets supports your environment as it grows.
+* In the private subnets:
+** Dedicated custom network ACLs for each Availability Zone.
+** An independent routing table for each private subnet (not shown) configured to control the flow of traffic within and outside the VPC.
+** Spare capacity for adding subnets to support your environment as it grows.
 
 * A VPC gateway endpoint for Amazon Simple Storage Service (Amazon S3).
 This endpoint provides a secure, reliable connection to Amazon S3 without requiring an internet gateway, NAT gateway, or virtual private gateway.
