@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  This template creates a Multi-AZ, multi-subnet VPC infrastructure with
-  managed NAT gateways in the public subnet for each availability zone. You can
+  This template creates a Multi-AZ, multisubnet VPC infrastructure with
+  managed NAT gateways in the public subnet for each Availability Zone. You can
   also create additional private subnets with dedicated custom network access
-  control lists (ACLs). If you deploy the Quick Start in a region that doesn't
+  control lists (ACLs). If you deploy the Quick Start in an AWS Region that doesn't
   support NAT gateways, NAT instances are deployed instead.
   **WARNING** This template creates AWS resources. You will be billed for the
   AWS resources used if you create a stack from this template. (qs-1qnnspaap)
@@ -14,7 +14,7 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: Availability zone configuration
+          default: Availability Zone configuration
         Parameters:
           - AvailabilityZones
           - NumberOfAZs
@@ -49,7 +49,7 @@ Metadata:
           - PrivateSubnetBTag3
           - VPCTenancy
       - Label:
-          default: VPC flow logs configuration
+          default: VPC Flow Logs configuration
         Parameters:
           - CreateVPCFlowLogsToCloudWatch
           - VPCFlowLogsLogFormat
@@ -59,9 +59,9 @@ Metadata:
           - VPCFlowLogsCloudWatchKMSKey
     ParameterLabels:
       AvailabilityZones:
-        default: Availability zones
+        default: Availability Zones
       CreateAdditionalPrivateSubnets:
-        default: Create additional private subnets with dedicated network ACLs
+        default: Create additional private subnets
       CreateNATGateways:
         default: Create NAT gateways
       CreatePrivateSubnets:
@@ -132,14 +132,14 @@ Parameters:
   AvailabilityZones:
     Type: List<AWS::EC2::AvailabilityZone::Name>
     Description: >-
-      List of Availability Zones to use for the subnets in the VPC, and the
+      Availability Zones to use for the subnets in the VPC. The
       specified logical order is preserved.
   CreateAdditionalPrivateSubnets:
     Type: String
     Description: >-
-      Choose true to create a network ACL protected subnet in each Availability
+      Choose true to create additional private subnets with dedicated network ACLs in each Availability
       Zone. If false, the CIDR parameters for those subnets will be ignored. If
-      true, it also requires that the CreatePrivateSubnets parameter is also
+      true, the CreatePrivateSubnets parameter must also be
       true to have any effect.
     AllowedValues:
       - 'true'
@@ -158,7 +158,7 @@ Parameters:
     Type: String
     Description: >-
       Choose false to create only private subnets. If false,
-      CreatePrivateSubnets must be true and the CIDR parameters for all public
+      CreatePrivateSubnets must be true, and the CIDR parameters for all public
       subnets will be ignored.
     AllowedValues:
       - 'true'
@@ -195,7 +195,7 @@ Parameters:
   PrivateSubnet1ACIDR:
     Type: String
     Description: >-
-      CIDR block for private subnet 1A located in availability zone 1.
+      CIDR block for private subnet 1A located in Availability Zone 1.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -204,7 +204,7 @@ Parameters:
     Type: String
     Description: >-
       CIDR block for private subnet 1B with dedicated network ACL located in
-      availability zone 1.
+      Availability Zone 1.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -212,7 +212,7 @@ Parameters:
   PrivateSubnet2ACIDR:
     Type: String
     Description: >-
-      CIDR block for private subnet 2A located in availability zone 2.
+      CIDR block for private subnet 2A located in Availability Zone 2.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -221,7 +221,7 @@ Parameters:
     Type: String
     Description: >-
       CIDR block for private subnet 2B with dedicated network ACL located in
-      availability zone 2.
+      Availability Zone 2.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -229,7 +229,7 @@ Parameters:
   PrivateSubnet3ACIDR:
     Type: String
     Description: >-
-      CIDR block for private subnet 3A located in availability zone 3.
+      CIDR block for private subnet 3A located in Availability Zone 3.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -238,7 +238,7 @@ Parameters:
     Type: String
     Description: >-
       CIDR block for private subnet 3B with dedicated network ACL located
-      in availability zone 3.
+      in Availability Zone 3.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -246,7 +246,7 @@ Parameters:
   PrivateSubnet4ACIDR:
     Type: String
     Description: >-
-      CIDR block for private subnet 4A located in availability zone 4.
+      CIDR block for private subnet 4A located in Availability Zone 4.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -255,7 +255,7 @@ Parameters:
     Type: String
     Description: >-
       CIDR block for private subnet 4B with dedicated network ACL located in
-      availability zone 4.
+      Availability Zone 4.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -266,7 +266,7 @@ Parameters:
       (Optional) Tag to add to private subnets A, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: Network=Private
@@ -276,7 +276,7 @@ Parameters:
       (Optional) Tag to add to private subnets A, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: ''
@@ -286,7 +286,7 @@ Parameters:
       (Optional) Tag to add to private subnets A, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: ''
@@ -296,7 +296,7 @@ Parameters:
       (Optional) Tag to add to private subnets B, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: Network=Private
@@ -306,7 +306,7 @@ Parameters:
       (Optional) Tag to add to private subnets B, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: ''
@@ -316,14 +316,14 @@ Parameters:
       (Optional) Tag to add to private subnets B, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: ''
   PublicSubnet1CIDR:
     Type: String
     Description: >-
-      CIDR block for the public DMZ subnet 1 located in availability zone 1.
+      CIDR block for the public DMZ subnet 1 located in Availability Zone 1.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -331,7 +331,7 @@ Parameters:
   PublicSubnet2CIDR:
     Type: String
     Description: >-
-      CIDR block for the public DMZ subnet 2 located in availability zone 2.
+      CIDR block for the public DMZ subnet 2 located in Availability Zone 2.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -339,7 +339,7 @@ Parameters:
   PublicSubnet3CIDR:
     Type: String
     Description: >-
-      CIDR block for the public DMZ subnet 3 located in availability zone 3.
+      CIDR block for the public DMZ subnet 3 located in Availability Zone 3.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -347,7 +347,7 @@ Parameters:
   PublicSubnet4CIDR:
     Type: String
     Description: >-
-      CIDR block for the public DMZ subnet 4 located in availability zone 4.
+      CIDR block for the public DMZ subnet 4 located in Availability Zone 4.
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
@@ -358,7 +358,7 @@ Parameters:
       (Optional) Tag to add to public subnets, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: Network=Public
@@ -368,7 +368,7 @@ Parameters:
       (Optional) Tag to add to public subnets, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: ''
@@ -378,7 +378,7 @@ Parameters:
       (Optional) Tag to add to public subnets, in format 'key=value'.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
-      Tags must be in format 'key=value'. Keys can only contain
+      Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
     Default: ''
@@ -452,8 +452,8 @@ Rules:
           - !Equals [!Ref CreatePrivateSubnets, 'true']
           - !Equals [!Ref CreatePublicSubnets, 'true']
         AssertDescription: >-
-          To enable NAT gateways you must have both CreatePrivateSubnets and
-          CreatePublicSubnets set to 'true'.
+          To enable NAT gateways, you must set both CreatePrivateSubnets and
+          CreatePublicSubnets to 'true'.
   Subnets:
     Assertions:
       - Assert: !Or
@@ -1551,13 +1551,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-NATGateway4
   PrivateSubnet1ACIDR:
     Condition: PrivateSubnetsCondition
-    Description: Private subnet 1A CIDR in availability zone 1.
+    Description: Private subnet 1A CIDR in Availability Zone 1.
     Value: !Ref PrivateSubnet1ACIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet1ACIDR
   PrivateSubnet1AID:
     Condition: PrivateSubnetsCondition
-    Description: Private subnet 1A ID in availability zone 1.
+    Description: Private subnet 1A ID in Availability Zone 1.
     Value: !Ref PrivateSubnet1A
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet1AID
@@ -1569,13 +1569,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet1ARouteTable
   PrivateSubnet1BCIDR:
     Condition: AdditionalPrivateSubnetsCondition
-    Description: Private subnet 1B CIDR in availability zone 1.
+    Description: Private subnet 1B CIDR in Availability Zone 1.
     Value: !Ref PrivateSubnet1BCIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet1BCIDR
   PrivateSubnet1BID:
     Condition: AdditionalPrivateSubnetsCondition
-    Description: Private subnet 1B ID in availability zone 1.
+    Description: Private subnet 1B ID in Availability Zone 1.
     Value: !Ref PrivateSubnet1B
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet1BID
@@ -1587,13 +1587,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet1BRouteTable
   PrivateSubnet2ACIDR:
     Condition: PrivateSubnetsCondition
-    Description: Private subnet 2A CIDR in availability zone 2.
+    Description: Private subnet 2A CIDR in Availability Zone 2.
     Value: !Ref PrivateSubnet2ACIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2ACIDR
   PrivateSubnet2AID:
     Condition: PrivateSubnetsCondition
-    Description: Private subnet 2A ID in availability zone 2.
+    Description: Private subnet 2A ID in Availability Zone 2.
     Value: !Ref PrivateSubnet2A
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2AID
@@ -1605,13 +1605,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2ARouteTable
   PrivateSubnet2BCIDR:
     Condition: AdditionalPrivateSubnetsCondition
-    Description: Private subnet 2B CIDR in availability zone 2.
+    Description: Private subnet 2B CIDR in Availability Zone 2.
     Value: !Ref PrivateSubnet2BCIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2BCIDR
   PrivateSubnet2BID:
     Condition: AdditionalPrivateSubnetsCondition
-    Description: Private subnet 2B ID in availability zone 2.
+    Description: Private subnet 2B ID in Availability Zone 2.
     Value: !Ref PrivateSubnet2B
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2BID
@@ -1623,13 +1623,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2BRouteTable
   PrivateSubnet3ACIDR:
     Condition: PrivateSubnets&3AZCondition
-    Description: Private subnet 3A CIDR in availability zone 3.
+    Description: Private subnet 3A CIDR in Availability Zone 3.
     Value: !Ref PrivateSubnet3ACIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet3ACIDR
   PrivateSubnet3AID:
     Condition: PrivateSubnets&3AZCondition
-    Description: Private subnet 3A ID in availability zone 3.
+    Description: Private subnet 3A ID in Availability Zone 3.
     Value: !Ref PrivateSubnet3A
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet3AID
@@ -1641,13 +1641,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet3ARouteTable
   PrivateSubnet3BCIDR:
     Condition: AdditionalPrivateSubnets&3AZCondition
-    Description: Private subnet 3B CIDR in availability zone 3.
+    Description: Private subnet 3B CIDR in Availability Zone 3.
     Value: !Ref PrivateSubnet3BCIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet3BCIDR
   PrivateSubnet3BID:
     Condition: AdditionalPrivateSubnets&3AZCondition
-    Description: Private subnet 3B ID in availability zone 3.
+    Description: Private subnet 3B ID in Availability Zone 3.
     Value: !Ref PrivateSubnet3B
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet3BID
@@ -1659,13 +1659,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet3BRouteTable
   PrivateSubnet4ACIDR:
     Condition: PrivateSubnets&4AZCondition
-    Description: Private subnet 4A CIDR in availability zone 4.
+    Description: Private subnet 4A CIDR in Availability Zone 4.
     Value: !Ref PrivateSubnet4ACIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet4ACIDR
   PrivateSubnet4AID:
     Condition: PrivateSubnets&4AZCondition
-    Description: Private subnet 4A ID in availability zone 4.
+    Description: Private subnet 4A ID in Availability Zone 4.
     Value: !Ref PrivateSubnet4A
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet4AID
@@ -1677,13 +1677,13 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet4ARouteTable
   PrivateSubnet4BCIDR:
     Condition: AdditionalPrivateSubnets&4AZCondition
-    Description: Private subnet 4B CIDR in availability zone 4.
+    Description: Private subnet 4B CIDR in Availability Zone 4.
     Value: !Ref PrivateSubnet4BCIDR
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet4BCIDR
   PrivateSubnet4BID:
     Condition: AdditionalPrivateSubnets&4AZCondition
-    Description: Private subnet 4B ID in availability zone 4.
+    Description: Private subnet 4B ID in Availability Zone 4.
     Value: !Ref PrivateSubnet4B
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet4BID
@@ -1695,49 +1695,49 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet4BRouteTable
   PublicSubnet1CIDR:
     Condition: PublicSubnetsCondition
-    Description: Public subnet 1 CIDR in availability zone 1.
+    Description: Public subnet 1 CIDR in Availability Zone 1.
     Value: !Ref PublicSubnet1CIDR
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet1CIDR
   PublicSubnet1ID:
     Condition: PublicSubnetsCondition
-    Description: Public subnet 1 ID in availability zone 1.
+    Description: Public subnet 1 ID in Availability Zone 1.
     Value: !Ref PublicSubnet1
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet1ID
   PublicSubnet2CIDR:
     Condition: PublicSubnetsCondition
-    Description: Public subnet 2 CIDR in availability zone 2.
+    Description: Public subnet 2 CIDR in Availability Zone 2.
     Value: !Ref PublicSubnet2CIDR
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet2CIDR
   PublicSubnet2ID:
     Condition: PublicSubnetsCondition
-    Description: Public subnet 2 ID in availability zone 2.
+    Description: Public subnet 2 ID in Availability Zone 2.
     Value: !Ref PublicSubnet2
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet2ID
   PublicSubnet3CIDR:
     Condition: PublicSubnets&3AZCondition
-    Description: Public subnet 3 CIDR in availability zone 3.
+    Description: Public subnet 3 CIDR in Availability Zone 3.
     Value: !Ref PublicSubnet3CIDR
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet3CIDR
   PublicSubnet3ID:
     Condition: PublicSubnets&3AZCondition
-    Description: Public subnet 3 ID in availability zone 3.
+    Description: Public subnet 3 ID in Availability Zone 3.
     Value: !Ref PublicSubnet3
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet3ID
   PublicSubnet4CIDR:
     Condition: PublicSubnets&4AZCondition
-    Description: Public subnet 4 CIDR in availability zone 4.
+    Description: Public subnet 4 CIDR in Availability Zone 4.
     Value: !Ref PublicSubnet4CIDR
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet4CIDR
   PublicSubnet4ID:
     Condition: PublicSubnets&4AZCondition
-    Description: Public subnet 4 ID in availability zone 4.
+    Description: Public subnet 4 ID in Availability Zone 4.
     Value: !Ref PublicSubnet4
     Export:
       Name: !Sub ${AWS::StackName}-PublicSubnet4ID
