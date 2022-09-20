@@ -1,1 +1,1 @@
-This Quick Start deploys {partner-product-name} ({partner-product-short-name}) on the AWS Cloud. This guide covers the steps necessary to deploy this Quick Start. For more information on {partner-product-short-name}, refer to the https://docs.aws.amazon.com/vpc/index.html[Amazon Virtual Private Cloud Documentation^].
+This guide covers the information you need to deploy the https://docs.aws.amazon.com/vpc/index.html[{partner-product-name} ({partner-product-short-name})^] Quick Start in the AWS Cloud.
