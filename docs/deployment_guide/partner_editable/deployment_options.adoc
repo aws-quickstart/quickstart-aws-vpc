@@ -1,0 +1,5 @@
+// Edit this placeholder text as necessary to describe the deployment options.
+
+This Quick Start provides one deployment option:
+
+* https://fwd.aws/mm853?[Deploy a new {partner-product-short-name} environment^]. This environment consists of a VPC, subnets, NAT gateways, and other infrastructure components.

@@ -1,0 +1,3 @@
+There is no cost to use this Quick Start, but you will be billed for any AWS services or resources that this Quick Start deploys. For more information, refer to the https://fwd.aws/rA69w?[AWS Quick Start General Information Guide^].
+
+There are no licensing requirements for this Quick Start.

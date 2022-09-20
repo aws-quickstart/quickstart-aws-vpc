@@ -1,0 +1,160 @@
+//Include any predeployment steps here, such as signing up for a Marketplace AMI or making any changes to a partner account. If there are no predeployment steps, leave this file empty.
+
+== Predeployment steps
+
+In this Quick Start, the default sizing of CIDR blocks used in the subnets is based on a typical deployment, where private subnets would have roughly double the number of instances found in public subnets.
+You can use the CIDR block parameters to resize the CIDR scopes to meet your architectural needs.
+
+In the default subnet allocation, the VPC is divided into subnet types and then further segmented by Availability Zone, as illustrated in <<architecture1>>.
+The Quick Start provides default CIDR block sizes to maximize capacity, as listed in <<default_ip_address_allocation>>:
+
+[#default_ip_address_allocation]
+.Default IP address allocation
+[cols="40,60a", options="header", grid=none, frame=topbot, stripes=even]
+|===
+| VPC
+^| 10.0.0.0/16
+
+|Private subnets A
+^| 10.0.0.0/17
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+
+! Availability Zone 1
+^! 10.0.0.0/19
+! Availability Zone 2
+^! 10.0.32.0/19
+! Availability Zone 3
+^! 10.0.64.0/19
+! Availability Zone 4
+^! 10.0.96.0/19
+!===
+
+| Public subnets
+^| 10.0.128.0/18
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+
+! Availability Zone 1
+^! 10.0.128.0/20
+! Availability Zone 2
+^! 10.0.144.0/20
+! Availability Zone 3
+^! 10.0.160.0/20
+! Availability Zone 4
+^! 10.0.176.0/20
+!===
+
+| Private subnets B with dedicated custom network ACL
+^| 10.0.192.0/19
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Availability Zone 1
+^! 10.0.192.0/21
+! Availability Zone 2
+^! 10.0.200.0/21
+! Availability Zone 3
+^! 10.0.208.0/21
+! Availability Zone 4
+^! 10.0.216.0/21
+!===
+
+|Spare subnet capacity
+^|10.0.224.0/19
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Availability Zone 1
+^! 10.0.224.0/21
+! Availability Zone 2
+^! 10.0.232.0/21
+! Availability Zone 3
+^! 10.0.240.0/21
+! Availability Zone 4
+^! 10.0.248.0/21
+!===
+|===
+
+In some situations, you may want to separate the CIDR scopes by dividing the VPC into Availability Zones and then into subnet types.
+The recommended CIDR blocks to maximize capacity for this scenario are listed in <<alternate_IP_address_allocation>>:
+
+[#alternate_IP_address_allocation]
+.Alternate IP address allocation
+[cols="40,60a", options="header",grid=none, frame=topbot, stripes=even]
+|===
+| VPC
+^| 10.0.0.0/16
+
+|Availability Zone 1
+^|10.0.0.0/18
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A
+^! 10.0.0.0/19
+! Public subnet
+^! 10.0.32.0/20
+! Private subnet B
+^! 10.0.48.0/21
+! Spare subnet capacity
+^! 10.0.56.0/21
+!===
+
+|Availability Zone 2
+^|10.0.64.0/18
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A
+^! 10.0.64.0/19
+! Public subnet
+^! 10.0.96.0/20
+! Private subnet B
+^! 10.0.112.0/21
+! Spare subnet capacity
+^! 10.0.120.0/21
+!===
+
+|Availability Zone 3
+^|10.0.128.0/18
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A
+^! 10.0.128.0/19
+! Public subnet
+^! 10.0.160.0/20
+! Private subnet B
+^! 10.0.176.0/21
+! Spare subnet capacity
+^! 10.0.184.0/21
+!===
+
+|Availability Zone 4
+^|10.0.192.0/18
+|
+|
+[cols="2,1", grid=rows, frame=topbot]
+!===
+! Private subnet A
+^! 10.0.192.0/19
+! Public subnet
+^! 10.0.224.0/20
+! Private subnet B
+^! 10.0.240.0/21
+! Spare subnet capacity
+^! 10.0.248.0/21
+!===
+|===
+
+For more information, refer to https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-sizing[Subnet sizing^].

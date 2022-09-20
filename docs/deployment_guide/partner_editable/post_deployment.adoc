@@ -1,0 +1,11 @@
+== Postdeployment steps
+
+After you use this Quick Start to build your Amazon VPC environment, you can deploy additional Quick Starts or deploy your own applications on top of this AWS infrastructure.
+If you extend your AWS environment with additional https://aws.amazon.com/quickstart/[AWS Quick Starts^] for trial or production use, choose the option to deploy the Quick Start into an existing VPC where that option is available.
+
+If you deploy additional private subnets with dedicated network ACLs, review the configuration and adjust it accordingly.
+By default, the custom ACLs are configured to allow all inbound and outbound traffic to flow to facilitate the deployment of additional infrastructure.
+For more information, refer to the Amazon VPC documentation:
+
+* https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_ACLs.html[Control traffic to subnets using Network ACLs^]
+* https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#vpc-recommended-nacl-rules[Recommended rules for VPC scenarios^]

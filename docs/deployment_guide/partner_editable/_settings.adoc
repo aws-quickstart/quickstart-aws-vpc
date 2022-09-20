@@ -1,0 +1,14 @@
+:quickstart-project-name: quickstart-aws-vpc
+:quickstart-github-org: aws-quickstart
+:partner-product-name: Amazon Virtual Private Cloud
+:partner-product-short-name: Amazon VPC
+// :partner-company-name: Amazon Web Services, Inc.
+:doc-month: September
+:doc-year: 2022
+// :partner-contributors:
+// :other-contributors: Akua Mansa, Trek10
+// :aws-contributors:
+:aws-ia-contributors: Santiago Cardenas & Troy Lindsay, AWS Integration & Automation team
+:deployment_time: 5 minutes
+:default_deployment_region: us-west-2
+// :private_repo:
