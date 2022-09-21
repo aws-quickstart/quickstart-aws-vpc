@@ -21,7 +21,7 @@ The VPC provides Domain Name System (DNS) resolution.
 
 * In the private subnets:
 ** Dedicated custom network ACLs for each Availability Zone.
-** An independent routing table for each private subnet (not shown) configured to control the flow of traffic within and outside the VPC.
+** An independent routing table (not shown) for each private subnet configured to control the flow of traffic within and outside the VPC.
 ** Spare capacity for adding subnets to support your environment as it grows.
 
 * A VPC gateway endpoint for Amazon Simple Storage Service (Amazon S3).
