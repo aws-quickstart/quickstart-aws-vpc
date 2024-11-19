@@ -57,6 +57,10 @@ Metadata:
           - VPCFlowLogsMaxAggregationInterval
           - VPCFlowLogsTrafficType
           - VPCFlowLogsCloudWatchKMSKey
+      - Label:
+          default: IAM
+        Parameters:
+          - PermissionsBoundaryArn
     ParameterLabels:
       AvailabilityZones:
         default: Availability Zones
@@ -128,6 +132,8 @@ Metadata:
         default: VPC flow logs - traffic type
       VPCTenancy:
         default: VPC tenancy
+      PermissionsBoundaryArn:
+        default: Will be attached to all created IAM Roles to satisfy security requirements
 Parameters:
   AvailabilityZones:
     Type: List<AWS::EC2::AvailabilityZone::Name>
@@ -444,6 +450,10 @@ Parameters:
       - default
       - dedicated
     Default: default
+  PermissionsBoundaryArn:
+    Description: Will be attached to all created IAM Roles to satisfy security requirements
+    Type: String
+    Default: ''
 Rules:
   NAT:
     RuleCondition: !Equals [!Ref CreateNATGateways, 'true']
@@ -529,6 +539,7 @@ Conditions:
   PublicSubnetTag3Condition: !Not [!Equals [!Ref PublicSubnetTag3, '']]
   VPCFlowLogsCloudWatchKMSKeyCondition: !Not [!Equals [!Ref VPCFlowLogsCloudWatchKMSKey, '']]
   VPCFlowLogsToCloudWatchCondition: !Equals [!Ref CreateVPCFlowLogsToCloudWatch, 'true']
+  PermissionsBoundaryProvided: !Not [!Equals ["", !Ref PermissionsBoundaryArn]]
 Resources:
   DHCPOptions:
     Type: AWS::EC2::DHCPOptions
@@ -1454,6 +1465,12 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       Description: Rights to publish VPC flow logs to CloudWatch Logs.
+      PermissionsBoundary:
+        !If [
+          PermissionsBoundaryProvided,
+          !Ref PermissionsBoundaryArn,
+          !Ref AWS::NoValue,
+        ]
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
